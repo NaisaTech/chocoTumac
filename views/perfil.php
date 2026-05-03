@@ -1,6 +1,21 @@
 <?php
+// Bloquear acceso directo a esta vista por URL
+if (!defined('CHOCOTUMAC_APP')) {
+    header("Location: /choco_tumac/index.php");
+    exit();
+}
 session_start();
-if (!isset($_SESSION['user'])) { header("Location: /choco_tumac/index.php"); exit(); }
+
+// Prevenir caché del navegador
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
+
+// Protección de ruta — redirigir si no hay sesión activa
+if (!isset($_SESSION['user'])) {
+    header("Location: /choco_tumac/index.php?view=login&error=" . urlencode("Tu sesión ha expirado. Inicia sesión nuevamente."));
+    exit();
+}
 $user = $_SESSION['user'];
 ?>
 <!DOCTYPE html>
