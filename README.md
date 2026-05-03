@@ -62,9 +62,8 @@ El proyecto sigue el patrón MVC (Modelo - Vista - Controlador):
 ## Instalación y uso
 
 1. Clonar el repositorio:
-   ```bash
+   bash
    git clone [URL_DEL_REPOSITORIO]
-````
 
 2. Mover el proyecto a la carpeta `www` de WampServer.
 
@@ -72,9 +71,9 @@ El proyecto sigue el patrón MVC (Modelo - Vista - Controlador):
 
 4. Configurar la conexión en:
 
-   ```
+   
    config/database.php
-   ```
+   
 
 5. Importar el script SQL del proyecto.
 
@@ -98,7 +97,7 @@ El proyecto sigue el patrón MVC (Modelo - Vista - Controlador):
 * Bloqueo de acceso directo a vistas
 * Control de caché en rutas protegidas
 
----
+
 
 ## Pruebas
 
@@ -139,7 +138,6 @@ Las pruebas cubren:
 
 ## Licencia
 
-Este proyecto se distribuye bajo la licencia [Especificar licencia].
 
-```
-```
+
+
