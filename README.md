@@ -1,6 +1,3 @@
-Aquí tienes el README limpio, formal y listo para copiar y pegar directamente:
-
-````markdown
 # ChocoTumac
 
 ## Versión 1.0.0 – Sprint 1
