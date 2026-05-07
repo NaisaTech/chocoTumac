@@ -1,8 +1,23 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
+/**
+ * Modelo Cliente
+ * Representa a un cliente con sus atributos y métodos para CRUD.
+ * Atributos:
+ * - id: Identificador único del cliente.
+ * - nombre: Nombre del cliente (obligatorio, mínimo 2 caracteres).
+ * - tipo_doc: Tipo de documento (NIT, CC, CE, Pasaporte).
+ * - num_doc: Número de documento (obligatorio, solo números y guiones).
+ * - digito_ver: Dígito de verificación (solo para NIT).
+ * - telefono: Teléfono de contacto (opcional, formato válido).
+ * - email: Correo electrónico (opcional, formato válido).
+ * - direccion: Dirección del cliente.
+ * - ciudad: Ciudad del cliente.
+ * - departamento: Departamento del cliente.
+ */
 class Cliente {
-
+    /** Constructor: Establece la conexión a la base de datos. */
     private $conn;
 
     public function __construct() {
@@ -10,7 +25,10 @@ class Cliente {
     }
 
     // ── Validaciones ───────────────────────────────────────────
-
+    /* 
+    *Método privado para verificar si ya existe un cliente con el mismo tipo y número de documento. Si se proporciona un ID para excluir, se omite ese registro en la verificación (útil para actualizaciones). 
+    *Retorna el registro encontrado o false si no existe. 
+    */
     private function existeDoc($tipo_doc, $num_doc, $excluir_id = null) {
         if ($excluir_id) {
             $stmt = $this->conn->prepare(
@@ -26,6 +44,9 @@ class Cliente {
         return $stmt->fetch();
     }
 
+    /* 
+    * Método privado para validar los campos del cliente antes de crear o actualizar. Retorna true si los datos son válidos o un mensaje de error si no lo son. 
+    */
     private function validarCampos($data) {
         $tipos_validos = ['NIT', 'CC', 'CE', 'Pasaporte'];
 
@@ -59,7 +80,9 @@ class Cliente {
     }
 
     // ── CRUD ───────────────────────────────────────────────────
-
+    /* 
+    * Método para crear un nuevo cliente. Valida los datos y verifica que no exista otro cliente con el mismo tipo y número de documento antes de insertar en la base de datos. Retorna true si se creó correctamente o un mensaje de error si no. 
+    */
     public function crear($data) {
         $data = array_map('trim', $data);
 
@@ -89,16 +112,19 @@ class Cliente {
         return true;
     }
 
+    /* Método para obtener todos los clientes ordenados por nombre. Retorna un array de clientes. */
     public function obtener() {
         return $this->conn->query("SELECT * FROM clientes ORDER BY nombre ASC");
     }
 
+    /* Método para obtener un cliente por su ID. Retorna un array asociativo con los datos del cliente o false si no se encuentra. */
     public function obtenerPorId($id) {
         $stmt = $this->conn->prepare("SELECT * FROM clientes WHERE id = ?");
         $stmt->execute([(int)$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /* Método para actualizar un cliente existente. Valida los datos y verifica que no exista otro cliente con el mismo tipo y número de documento (excepto el actual). Retorna true si se actualizó correctamente o un mensaje de error si no. */
     public function actualizar($id, $data) {
         $data = array_map('trim', $data);
 
@@ -130,6 +156,7 @@ class Cliente {
         return true;
     }
 
+    /* Método para eliminar un cliente. Retorna true si se eliminó correctamente o false si no. */
     public function eliminar($id) {
         $stmt = $this->conn->prepare("DELETE FROM clientes WHERE id = ?");
         return $stmt->execute([(int)$id]);

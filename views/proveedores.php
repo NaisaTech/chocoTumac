@@ -1,19 +1,19 @@
 <?php
-// Bloquear acceso directo a esta vista por URL
+/*Bloquear acceso directo a esta vista por URL*/
 if (!defined('CHOCOTUMAC_APP')) {
-    header("Location: /choco_tumac/index.php");
+    header("Location: /chocoTumac/index.php");
     exit();
 }
 session_start();
 
-// Prevenir caché del navegador
+/* Prevenir caché del navegador */
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
 
-// Protección de ruta — redirigir si no hay sesión activa
+/*Protección de ruta — redirigir si no hay sesión activa*/
 if (!isset($_SESSION['user'])) {
-    header("Location: /choco_tumac/index.php?view=login&error=" . urlencode("Tu sesión ha expirado. Inicia sesión nuevamente."));
+    header("Location: /chocoTumac/index.php?view=login&error=" . urlencode("Tu sesión ha expirado. Inicia sesión nuevamente."));
     exit();
 }
 
@@ -22,6 +22,7 @@ $model       = new Proveedor();
 $proveedores = $model->obtener();
 $rol         = $_SESSION['user']['rol_id'];
 ?>
+<!-- Este código es la plantilla para la página de proveedores en la aplicación Chocolate Tumaco. Muestra una lista de proveedores registrados en el sistema, con opciones para registrar nuevos proveedores, editar o eliminar los existentes, dependiendo del rol del usuario. El diseño está basado en Bootstrap para una apariencia moderna y responsiva. El código también maneja mensajes de error y éxito para informar al usuario sobre el resultado de sus acciones, proporcionando una experiencia de usuario clara y amigable al gestionar los proveedores en la aplicación. -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,11 +30,12 @@ $rol         = $_SESSION['user']['rol_id'];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Proveedores – Chocolate Tumaco</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/choco_tumac/public/css/styles.css">
+    <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
 <?php require 'views/layout/navbar.php'; ?>
 
+<!-- La sección de encabezado de la página muestra el título "Proveedores de Cacao" y, si el usuario tiene un rol de solo lectura (rol_id = 2), se muestra una etiqueta indicando "Solo lectura". Esto proporciona una navegación clara para el usuario, indicando la sección actual de la aplicación y cualquier restricción de acceso que pueda tener según su rol. El título indica claramente el contenido de la página, mientras que la etiqueta de solo lectura informa al usuario sobre las limitaciones en sus acciones dentro de esta sección. -->
 <div class="container mt-4">
 
     <div class="page-header">
@@ -43,6 +45,7 @@ $rol         = $_SESSION['user']['rol_id'];
         <?php endif; ?>
     </div>
 
+    <!-- El bloque de código PHP maneja la visualización de mensajes de error o éxito para informar al usuario sobre las acciones realizadas. Si hay un mensaje de error (indicado por la variable 'error' en la URL), se muestra una alerta de Bootstrap con el mensaje correspondiente. Si hay un mensaje de éxito (indicado por la variable 'msg' en la URL), se muestra una alerta con el tipo y texto correspondiente según el valor de 'msg'. Esto proporciona retroalimentación visual al usuario sobre el resultado de sus acciones, como crear, actualizar o eliminar proveedores. La alerta es automática y se puede cerrar manualmente por el usuario. -->
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger alert-auto alert-dismissible" role="alert">
             <strong>Error:</strong> <?= htmlspecialchars($_GET['error']) ?>
@@ -68,10 +71,11 @@ $rol         = $_SESSION['user']['rol_id'];
     <?php endif; ?>
 
     <!-- FORMULARIO REGISTRAR -->
+    <!-- Este bloque de código muestra un formulario para registrar nuevos proveedores, pero solo si el usuario tiene un rol que lo permita (rol_id 1 o 3). El formulario incluye campos para el nombre, tipo y número de documento, tipo de proveedor, persona de contacto, teléfono, correo electrónico, dirección, ciudad y departamento del proveedor. Al enviar el formulario, se envía una solicitud POST al ProveedorController para crear un nuevo proveedor en la base de datos. Además, se manejan mensajes de error y éxito para informar al usuario sobre el resultado de la acción realizada. En general, este código proporciona una interfaz clara y funcional para agregar nuevos proveedores al sistema. -->
     <?php if (in_array($rol, [1, 3])): ?>
     <div class="card p-4 mb-4">
         <h5 class="mb-3 fw-bold" style="color:#5C3317;">Registrar Proveedor</h5>
-        <form method="POST" action="/choco_tumac/controllers/ProveedorController.php?action=crear" data-validate>
+        <form method="POST" action="/chocoTumac/controllers/ProveedorController.php?action=crear" data-validate>
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
             <div class="row g-2 mb-2">
@@ -155,6 +159,7 @@ $rol         = $_SESSION['user']['rol_id'];
     <?php endif; ?>
 
     <!-- TABLA -->
+    <!-- Este bloque de código muestra una tabla con la lista de proveedores registrados en el sistema. La tabla incluye columnas para el nombre, identificación, tipo de proveedor, persona de contacto, teléfono, correo electrónico, dirección, ciudad y departamento de cada proveedor. Si el usuario tiene un rol que lo permita (rol_id 1 o 3), también se muestran acciones para editar o eliminar cada proveedor. La tabla es responsiva y utiliza Bootstrap para un diseño limpio y funcional. Si no hay proveedores registrados, se muestra un mensaje indicando que la lista está vacía. En general, este código proporciona una vista clara y organizada de los proveedores en el sistema, facilitando su gestión por parte del usuario. -->
     <div class="card p-4">
         <h5 class="mb-3 fw-bold" style="color:#5C3317;">Proveedores Registrados</h5>
         <div class="table-responsive">
@@ -188,6 +193,7 @@ $rol         = $_SESSION['user']['rol_id'];
                 ];
                 if (empty($lista)):
                 ?>
+                <!-- Si no hay proveedores registrados, se muestra una fila que indica que la lista está vacía. Esto proporciona una retroalimentación visual al usuario, informándole que aún no se han agregado proveedores al sistema. La fila ocupa todas las columnas de la tabla y utiliza un estilo de texto atenuado para diferenciarla de las filas con datos reales. -->
                 <tr>
                     <td colspan="11" class="text-center text-muted py-4">
                         No hay proveedores registrados aún.
@@ -218,12 +224,13 @@ $rol         = $_SESSION['user']['rol_id'];
                     <?php if (in_array($rol, [1, 3])): ?>
                     <td class="text-center">
                         <a class="btn btn-warning btn-sm"
-                           href="/choco_tumac/controllers/ProveedorController.php?action=editar&id=<?= $p['id'] ?>">
+                           href="/chocoTumac/controllers/ProveedorController.php?action=editar&id=<?= $p['id'] ?>">
                             Editar
                         </a>
+                        <!-- Solo los usuarios con rol_id 1 pueden eliminar proveedores. El botón de eliminación incluye atributos de datos para manejar la confirmación de eliminación mediante un modal. Esto proporciona una capa adicional de seguridad, evitando eliminaciones accidentales al requerir una confirmación explícita por parte del usuario antes de proceder con la acción de eliminación. -->
                         <?php if ($rol == 1): ?>
                         <button class="btn btn-danger btn-sm btn-confirmar-eliminar"
-                                data-url="/choco_tumac/controllers/ProveedorController.php?action=eliminar&id=<?= $p['id'] ?>"
+                                data-url="/chocoTumac/controllers/ProveedorController.php?action=eliminar&id=<?= $p['id'] ?>"
                                 data-nombre="<?= htmlspecialchars($p['nombre']) ?>">
                              Eliminar
                         </button>
@@ -239,6 +246,7 @@ $rol         = $_SESSION['user']['rol_id'];
 </div>
 
 <!-- Modal confirmar eliminación -->
+<!-- Este código define un modal de Bootstrap que se utiliza para confirmar la eliminación de un proveedor. Cuando un usuario hace clic en el botón de eliminar, se muestra este modal con un mensaje que solicita confirmación para eliminar el proveedor específico. El modal incluye un botón para cancelar la acción y otro para confirmar la eliminación, que redirige a la URL correspondiente para realizar la acción de eliminación en el servidor. Esto proporciona una experiencia de usuario segura y clara, evitando eliminaciones accidentales al requerir una confirmación explícita antes de proceder. -->
 <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -255,8 +263,9 @@ $rol         = $_SESSION['user']['rol_id'];
     </div>
 </div>
 
+<!-- El código JavaScript al final del documento incluye la biblioteca de Bootstrap para manejar componentes interactivos como modales y alertas, así como un archivo personalizado app.js para funcionalidades específicas de la aplicación. Esto asegura que los componentes de la interfaz funcionen correctamente y que cualquier funcionalidad personalizada esté disponible para mejorar la experiencia del usuario al gestionar los proveedores en la aplicación. -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/choco_tumac/public/js/app.js"></script>
+<script src="/chocoTumac/public/js/app.js"></script>
 <script>
 document.getElementById('tipo_doc_prov')?.addEventListener('change', function () {
     document.getElementById('div_digito_prov').style.display =

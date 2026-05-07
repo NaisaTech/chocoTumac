@@ -4,20 +4,42 @@ session_start();
 
 require_once __DIR__ . '/../models/Usuario.php';
 
-define("BASE_URL", "/choco_tumac/");
+/**
+ * URL base del proyecto
+ */
+define("BASE_URL", "/chocoTumac/");
 
+/**
+ * Controlador de usuarios
+ * 
+ * Maneja:
+ * - Autenticación (login/logout)
+ * - CRUD de usuarios
+ * - Gestión de perfil
+ * - Seguridad (CSRF, sesiones, permisos)
+ */
 class UsuarioController {
 
+    /** @var Usuario Modelo de usuario */
     private $model;
 
+    /**
+     * Constructor: inicializa el modelo
+     */
     public function __construct() {
         $this->model = new Usuario();
     }
 
+    /**
+     * Verifica si el usuario actual es administrador
+     */
     private function esAdmin() {
         return isset($_SESSION['user']) && $_SESSION['user']['rol_id'] == 1;
     }
 
+    /**
+     * Protección CSRF
+     */
     private function verificarCSRF() {
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
             header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("Petición no válida. Recarga la página."));
@@ -25,10 +47,14 @@ class UsuarioController {
         }
     }
 
+    /**
+     * Método principal que ejecuta las acciones
+     */
     public function ejecutar() {
 
         $accion = $_GET['action'] ?? '';
 
+        // Si la acción no es login o logout, verificar que el usuario esté autenticado
         if ($accion !== 'login' && !isset($_SESSION['user'])) {
             header("Location: " . BASE_URL . "index.php?view=login&error=" . urlencode("Tu sesión ha expirado."));
             exit();
@@ -36,6 +62,10 @@ class UsuarioController {
 
         switch ($accion) {
 
+
+            /*
+             * Crear usuario
+             */
             case 'crear':
                 if (!$this->esAdmin()) { header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("No tienes permisos.")); exit(); }
                 $this->verificarCSRF();
@@ -52,7 +82,9 @@ class UsuarioController {
                     header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode($res));
                 }
                 break;
-
+            /**
+             * EDITAR USUARIO (vista)
+             */
             case 'editar':
                 if (!$this->esAdmin()) { header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("No tienes permisos.")); exit(); }
                 $usuario = $this->model->obtenerPorId($_GET['id'] ?? 0);
@@ -60,11 +92,15 @@ class UsuarioController {
                 require __DIR__ . '/../views/editar_usuario.php';
                 break;
 
+            /*
+             * Actualizar usuario
+             */
             case 'actualizar':
                 if (!$this->esAdmin()) { header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("No tienes permisos.")); exit(); }
                 $this->verificarCSRF();
                 $usuario = $this->model->obtenerPorId($_POST['id'] ?? 0);
                 if (!$usuario) { header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("Usuario no encontrado.")); exit(); }
+                // Si el usuario a actualizar es un admin diferente al actual, no permitirlo
                 if ($usuario['rol_id'] == 1 && $usuario['id'] != $_SESSION['user']['id']) {
                     header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("No puedes modificar la cuenta de otro administrador.")); exit();
                 }
@@ -76,6 +112,9 @@ class UsuarioController {
                 }
                 break;
 
+            /*
+             * Eliminar usuario
+             */
             case 'eliminar':
                 if (!$this->esAdmin()) { header("Location: " . BASE_URL . "index.php?view=dashboard&error=" . urlencode("No tienes permisos.")); exit(); }
                 $usuario = $this->model->obtenerPorId($_GET['id'] ?? 0);
@@ -89,7 +128,9 @@ class UsuarioController {
                 $this->model->eliminar($_GET['id']);
                 header("Location: " . BASE_URL . "index.php?view=dashboard&msg=eliminado");
                 break;
-
+            /*
+             * Login
+             */
             case 'login':
                 $user = $this->model->login($_POST['email'] ?? '', $_POST['password'] ?? '');
                 if ($user) {
@@ -101,12 +142,18 @@ class UsuarioController {
                 }
                 break;
 
+            /*
+             * Logout
+             */
             case 'logout':
                 session_unset();
                 session_destroy();
                 header("Location: " . BASE_URL . "index.php");
                 break;
 
+            /*
+             * Actualizar perfil (usuario común)
+             */
             case 'actualizarPerfil':
                 $this->verificarCSRF();
                 if ((int)$_POST['id'] !== (int)$_SESSION['user']['id']) {
@@ -114,6 +161,7 @@ class UsuarioController {
                 }
                 $res = $this->model->actualizar($_POST['id'], $_POST['nombre'] ?? '', $_POST['email'] ?? '', $_SESSION['user']['rol_id'], $_POST['telefono'] ?? '');
                 if ($res === true) {
+                    // Actualizar datos en sesión
                     $_SESSION['user']['nombre']   = trim($_POST['nombre']);
                     $_SESSION['user']['email']    = strtolower(trim($_POST['email']));
                     $_SESSION['user']['telefono'] = trim($_POST['telefono']);
@@ -122,7 +170,9 @@ class UsuarioController {
                     header("Location: " . BASE_URL . "index.php?view=perfil&error=" . urlencode($res));
                 }
                 break;
-
+            /*
+             * Cambiar contraseña (usuario común)
+             */
             case 'cambiarPassword':
                 $this->verificarCSRF();
                 if ((int)$_POST['id'] !== (int)$_SESSION['user']['id']) {

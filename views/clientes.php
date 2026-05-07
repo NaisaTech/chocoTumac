@@ -1,48 +1,62 @@
 <?php
 // Bloquear acceso directo a esta vista por URL
+/* El bloque de código al inicio del archivo es una medida de seguridad para evitar que los usuarios accedan directamente a esta vista sin pasar por el controlador correspondiente. Verifica si la constante 'CHOCOTUMAC_APP' está definida, 
+*lo que indica que la aplicación se ha inicializado correctamente. Si esta constante no está definida, se redirige al usuario a la página principal de la aplicación (index.php) y se detiene la ejecución del script. Esto ayuda a proteger la aplicación 
+*contra accesos no autorizados y asegura que las vistas solo se carguen a través de los controladores adecuados. 
+*/
 if (!defined('CHOCOTUMAC_APP')) {
-    header("Location: /choco_tumac/index.php");
+    header("Location: /chocoTumac/index.php");
     exit();
 }
 session_start();
 
 // Prevenir caché del navegador
+/* Estas cabeceras HTTP se utilizan para prevenir que el navegador almacene en caché esta página. Esto es importante para garantizar que los usuarios siempre vean la información más actualizada,
+* especialmente después de realizar acciones como crear, editar o eliminar clientes. Al establecer estas cabeceras, se indica al navegador que no guarde una copia de la página y que siempre solicite 
+*una nueva versión al servidor cada vez que se acceda a ella. Esto ayuda a evitar problemas de visualización de datos obsoletos y mejora la experiencia del usuario al interactuar con la aplicación. 
+*/
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
 header("Expires: Thu, 01 Jan 1970 00:00:00 GMT");
 
 // Protección de ruta — redirigir si no hay sesión activa
+/* Este bloque de código verifica si el usuario ha iniciado sesión antes de permitir el acceso a esta vista. Si no hay una sesión activa (es decir, si la variable de sesión 'user' no está establecida), se redirige al usuario a la página de inicio de sesión con un mensaje de error indicando que la sesión ha expirado. Esto es una medida de seguridad para proteger las rutas que requieren autenticación y garantizar que solo los usuarios autorizados puedan acceder a esta sección de la aplicación. */
 if (!isset($_SESSION['user'])) {
-    header("Location: /choco_tumac/index.php?view=login&error=" . urlencode("Tu sesión ha expirado. Inicia sesión nuevamente."));
+    header("Location: /chocoTumac/index.php?view=login&error=" . urlencode("Tu sesión ha expirado. Inicia sesión nuevamente."));
     exit();
 }
 
+/* Se incluye el modelo de Cliente para poder interactuar con la base de datos y obtener la lista de clientes registrados. Luego, se crea una instancia del modelo y se llama al método obtener() para recuperar los datos de los clientes. Además, se obtiene el rol del usuario desde la sesión para controlar la visibilidad de ciertas funcionalidades en la vista. */
 require_once 'models/Cliente.php';
 $model    = new Cliente();
 $clientes = $model->obtener();
 $rol      = $_SESSION['user']['rol_id'];
 ?>
+
+<!-- El bloque de código HTML a continuación es la estructura de la página de clientes. Se utiliza Bootstrap para el diseño y estilo de la página. La página incluye una barra de navegación, un formulario para registrar nuevos clientes (visible solo para ciertos roles) y una tabla que muestra la lista de clientes registrados. También se manejan mensajes de error y éxito para informar al usuario sobre las acciones realizadas. Además, se incluye un modal para confirmar la eliminación de un cliente. La página es responsive, lo que significa que se adapta a diferentes tamaños de pantalla para una mejor experiencia de usuario en dispositivos móviles. -->
 <!DOCTYPE html>
 <html lang="es">
+<!-- El bloque de código al inicio del archivo es una medida de seguridad para evitar que los usuarios accedan directamente a esta vista sin pasar por el controlador correspondiente. Verifica si la constante 'CHOCOTUMAC_APP' está definida, lo que indica que la aplicación se ha inicializado correctamente. Si esta constante no está definida, se redirige al usuario a la página principal de la aplicación (index.php) y se detiene la ejecución del script. Esto ayuda a proteger la aplicación contra accesos no autorizados y asegura que las vistas solo se carguen a través de los controladores adecuados. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clientes – Chocolate Tumaco</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/choco_tumac/public/css/styles.css">
+    <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
 <?php require 'views/layout/navbar.php'; ?>
 
 <div class="container mt-4">
-
+    <!-- La sección de encabezado de la página muestra el título "Clientes" y, si el rol del usuario es 2 (Gerente), se muestra una etiqueta que indica que tiene acceso de solo lectura. Esto ayuda a los usuarios a identificar rápidamente su nivel de acceso y las funcionalidades disponibles en esta sección. -->
     <div class="page-header">
         <h2>Clientes</h2>
         <?php if ($rol == 2): ?>
             <span class="badge bg-info fs-6">Solo lectura</span>
         <?php endif; ?>
     </div>
-
+    <!-- Mensajes de error o éxito -->
+     <!-- Este bloque de código maneja la visualización de mensajes de error o éxito para informar al usuario sobre las acciones realizadas. Si hay un mensaje de error (indicado por la variable 'error' en la URL), se muestra una alerta de Bootstrap con el mensaje correspondiente. Si hay un mensaje de éxito (indicado por la variable 'msg' en la URL), se muestra una alerta con el tipo y texto correspondiente según el valor de 'msg'. Esto proporciona retroalimentación visual al usuario sobre el resultado de sus acciones, como crear, actualizar o eliminar clientes. -->
     <?php if (isset($_GET['error'])): ?>
         <div class="alert alert-danger alert-auto alert-dismissible" role="alert">
             <strong>Error:</strong> <?= htmlspecialchars($_GET['error']) ?>
@@ -50,6 +64,7 @@ $rol      = $_SESSION['user']['rol_id'];
         </div>
     <?php endif; ?>
 
+    <!-- Este bloque de código maneja la visualización de mensajes de éxito para informar al usuario sobre las acciones realizadas. Si hay un mensaje de éxito (indicado por la variable 'msg' en la URL), se muestra una alerta con el tipo y texto correspondiente según el valor de 'msg'. Esto proporciona retroalimentación visual al usuario sobre el resultado de sus acciones, como crear, actualizar o eliminar clientes. -->
     <?php if (isset($_GET['msg'])): ?>
         <?php
         $msgs = [
@@ -68,10 +83,14 @@ $rol      = $_SESSION['user']['rol_id'];
     <?php endif; ?>
 
     <!-- FORMULARIO REGISTRAR -->
+     <!-- formulario para registrar nuevos clientes. Este formulario solo se muestra para usuarios con rol de Administrador (1) o Empleado (3). 
+     El formulario incluye campos para el nombre del cliente, tipo de documento, número de documento, dígito de verificación (solo para NIT), teléfono, correo electrónico, dirección, ciudad y departamento. Al enviar el formulario, 
+     se envía una solicitud POST al ClienteController para crear un nuevo cliente en la base de datos. El formulario también incluye validaciones HTML5 para garantizar que los datos ingresados sean correctos antes de enviarlos al servidor. 
+     Esto ayuda a mejorar la experiencia del usuario y a mantener la integridad de los datos en la aplicación. -->
     <?php if (in_array($rol, [1, 3])): ?>
     <div class="card p-4 mb-4">
         <h5 class="mb-3 fw-bold" style="color:#5C3317;">Registrar Cliente</h5>
-        <form method="POST" action="/choco_tumac/controllers/ClienteController.php?action=crear" data-validate>
+        <form method="POST" action="/chocoTumac/controllers/ClienteController.php?action=crear" data-validate>
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
             <div class="row g-2 mb-2">
@@ -141,6 +160,9 @@ $rol      = $_SESSION['user']['rol_id'];
     <?php endif; ?>
 
     <!-- TABLA -->
+     <!-- La tabla muestra la lista de clientes registrados en el sistema. Cada fila de la tabla representa un cliente y muestra información como el nombre, tipo y número de documento, teléfono, correo electrónico, dirección, ciudad y departamento. Para usuarios con rol de Administrador (1) o Empleado (3), se muestran acciones adicionales para editar o eliminar clientes.
+     El botón de editar redirige al usuario a un formulario prellenado con los datos del cliente para realizar modificaciones, mientras que el botón de eliminar muestra un modal de confirmación antes de proceder con la eliminación del cliente. Esta tabla proporciona una vista clara y organizada de los clientes registrados, facilitando su gestión por parte de los usuarios autorizados.
+    -->
     <div class="card p-4">
         <h5 class="mb-3 fw-bold" style="color:#5C3317;">Clientes Registrados</h5>
         <div class="table-responsive">
@@ -190,12 +212,12 @@ $rol      = $_SESSION['user']['rol_id'];
                     <?php if (in_array($rol, [1, 3])): ?>
                     <td class="text-center">
                         <a class="btn btn-warning btn-sm"
-                           href="/choco_tumac/controllers/ClienteController.php?action=editar&id=<?= $c['id'] ?>">
+                           href="/chocoTumac/controllers/ClienteController.php?action=editar&id=<?= $c['id'] ?>">
                             Editar
                         </a>
                         <?php if ($rol == 1): ?>
                         <button class="btn btn-danger btn-sm btn-confirmar-eliminar"
-                                data-url="/choco_tumac/controllers/ClienteController.php?action=eliminar&id=<?= $c['id'] ?>"
+                                data-url="/chocoTumac/controllers/ClienteController.php?action=eliminar&id=<?= $c['id'] ?>"
                                 data-nombre="<?= htmlspecialchars($c['nombre']) ?>">
                              Eliminar
                         </button>
@@ -211,6 +233,9 @@ $rol      = $_SESSION['user']['rol_id'];
 </div>
 
 <!-- Modal confirmar eliminación -->
+ <!-- El modal de confirmación de eliminación se utiliza para evitar eliminaciones accidentales de clientes. Cuando un usuario con permisos para eliminar hace clic en el botón de eliminar, se muestra este modal que solicita al usuario que confirme su acción. El modal muestra el nombre del cliente que se va a eliminar para que el usuario pueda verificar que está eliminando el cliente correcto. 
+  Si el usuario confirma la eliminación, se redirige a la URL especificada en el atributo 'data-url' del botón, donde se ejecuta la acción de eliminación en el controlador correspondiente. Si el usuario cancela, simplemente se cierra el modal sin realizar ninguna acción. Esta es una práctica común para mejorar la usabilidad y seguridad de las aplicaciones web al prevenir acciones irreversibles sin confirmación previa.
+  -->
 <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -226,11 +251,14 @@ $rol      = $_SESSION['user']['rol_id'];
         </div>
     </div>
 </div>
-
+<!-- El modal de confirmación de eliminación se utiliza para evitar eliminaciones accidentales de clientes. Cuando un usuario con permisos para eliminar hace clic en el botón de eliminar, se muestra este modal que solicita al usuario que confirme su acción. El modal muestra el nombre del cliente que se va a eliminar para que el usuario pueda verificar que está eliminando el cliente correcto. 
+ Si el usuario confirma la eliminación, se redirige a la URL especificada en el atributo 'data-url' del botón, donde se ejecuta la acción de eliminación en el controlador correspondiente. Si el usuario cancela, simplemente se cierra el modal sin realizar ninguna acción. Esta es una práctica común para mejorar la usabilidad y seguridad de las aplicaciones web al prevenir acciones irreversibles sin confirmación previa.
+ -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/choco_tumac/public/js/app.js"></script>
+<script src="/chocoTumac/public/js/app.js"></script>
 <script>
 // Mostrar/ocultar campo dígito verificación según tipo doc
+<!-- Este bloque de código JavaScript se encarga de mostrar u ocultar el campo de dígito de verificación en el formulario de registro de clientes según el tipo de documento seleccionado. Si el usuario selecciona "NIT" como tipo de documento, se muestra el campo para ingresar el dígito de verificación. Si se selecciona cualquier otro tipo de documento, este campo se oculta. Esto mejora la usabilidad del formulario al mostrar solo los campos relevantes según la selección del usuario, evitando confusiones y simplificando la interfaz. -->
 document.getElementById('tipo_doc_cli')?.addEventListener('change', function () {
     document.getElementById('div_digito_cli').style.display =
         this.value === 'NIT' ? '' : 'none';

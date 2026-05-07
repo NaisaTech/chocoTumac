@@ -1,22 +1,44 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
+/**
+ * Clase Usuario
+ * 
+ * Maneja toda la lógica relacionada con los usuarios:
+ * - CRUD (crear, leer, actualizar, eliminar)
+ * - Autenticación (login)
+ * - Validaciones de datos
+ */
 class Usuario {
 
+    /** @var PDO Conexión a la base de datos */
     private $conn;
 
+    /**
+     * Constructor: inicializa la conexión a la base de datos
+     */
     public function __construct() {
         $this->conn = (new Database())->connect();
     }
 
+     /**
+     * Valida si una contraseña cumple criterios de seguridad
+     * 
+     * @param string $password
+     * @return bool
+     */
     private function passwordSegura($password) {
         return preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/', $password);
     }
 
+    /**
+     * Crear un nuevo usuario
+     */
     public function crear($nombre, $email, $password, $rol_id, $telefono = null) {
         $nombre = trim($nombre);
         $email  = strtolower(trim($email));
 
+        //VALIDACIONES BÁSICAS
         if (empty($nombre)) return "El nombre es obligatorio.";
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return "El formato del correo no es válido.";
         if (!$this->passwordSegura($password)) {
@@ -27,18 +49,25 @@ class Usuario {
             return "El formato del teléfono no es válido.";
         }
 
+        //VERIFICAR SI EL CORREO YA EXISTE
         $check = $this->conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $check->execute([$email]);
         if ($check->fetch()) return "Ya existe un usuario registrado con ese correo.";
 
+        //HASH DE LA CONTRASEÑA
         $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+        //INSERTAR USUARIO
         $stmt = $this->conn->prepare(
             "INSERT INTO usuarios (nombre, email, password, telefono, rol_id) VALUES (?, ?, ?, ?, ?)"
         );
+        // Si el teléfono está vacío, se inserta como NULL
         $stmt->execute([$nombre, $email, $hash, trim($telefono) ?: null, (int)$rol_id]);
         return true;
     }
 
+     /**
+     * Obtener todos los usuarios con su rol
+     */
     public function obtener() {
         return $this->conn->query(
             "SELECT u.*, r.nombre AS rol
@@ -47,13 +76,18 @@ class Usuario {
              ORDER BY u.nombre ASC"
         );
     }
-
+    /**
+     * Obtener usuario por ID
+     */
     public function obtenerPorId($id) {
         $stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE id = ?");
         $stmt->execute([(int)$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+     /**
+     * Actualizar usuario
+     */
     public function actualizar($id, $nombre, $email, $rol_id, $telefono = null) {
         $nombre = trim($nombre);
         $email  = strtolower(trim($email));
@@ -64,6 +98,7 @@ class Usuario {
             return "El formato del teléfono no es válido.";
         }
 
+        //VERIFICAR SI EL CORREO YA EXISTE EN OTRO USUARIO
         $check = $this->conn->prepare("SELECT id FROM usuarios WHERE email = ? AND id != ?");
         $check->execute([$email, (int)$id]);
         if ($check->fetch()) return "Ese correo ya está en uso por otro usuario.";
@@ -75,11 +110,16 @@ class Usuario {
         return true;
     }
 
+    /**
+     * Eliminar usuario
+    */
     public function eliminar($id) {
         $stmt = $this->conn->prepare("DELETE FROM usuarios WHERE id = ?");
         return $stmt->execute([(int)$id]);
     }
-
+    /**
+    * Autenticar usuario
+    */
     public function login($email, $password) {
         $stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE email = ?");
         $stmt->execute([strtolower(trim($email))]);
@@ -96,11 +136,17 @@ class Usuario {
         return false;
     }
 
+    /**
+     * Actualizar contraseña de un usuario
+     */
     public function actualizarPassword($id, $hash) {
         $stmt = $this->conn->prepare("UPDATE usuarios SET password = ? WHERE id = ?");
         return $stmt->execute([$hash, (int)$id]);
     }
 
+    /**
+     * Obtener usuario incluyendo contraseña (uso interno)
+     */
     public function obtenerConPassword($id) {
         $stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE id = ?");
         $stmt->execute([(int)$id]);
