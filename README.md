@@ -133,10 +133,6 @@ chocoTumac/
    http://localhost/chocoTumac/
    ```
 
-> **Si ya tienes la BD del Sprint 1 instalada**, ejecuta únicamente:
-> ```
-> database/migracion_sprint2_fix.sql
-> ```
 
 ---
 
