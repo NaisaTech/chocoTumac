@@ -129,8 +129,7 @@ chocoTumac/
 |        ├── inventario.js
 |        └── ventas.js
 ├── database/
-│   ├── chocolatetumaco.sql         # Script completo Sprint 1 + 2 + 3
-│   └── migracion_sprint2_fix.sql   # Migración para BD existentes del Sprint 1
+│   └── chocolatetumaco.sql         # Script completo Sprint 1 + 2 + 3
 └── index.php                       # Enrutador principal
 ```
 
