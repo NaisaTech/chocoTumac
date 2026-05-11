@@ -40,16 +40,6 @@ CREATE TABLE `clientes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `clientes`
---
-
-LOCK TABLES `clientes` WRITE;
-/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'Comercializadora El Cacao','NIT','800123456',NULL,'3001234567',NULL,NULL,'Bogota','Cundinamarca','2026-04-30 21:27:30'),(2,'Chocolates del Pacifico','NIT','900654321',NULL,'3117654321',NULL,NULL,'Tumaco','Narino','2026-04-30 21:27:36'),(3,'Distribuidora San Pablo','CC','12345678',NULL,'3205559900',NULL,NULL,'encano','Narino','2026-04-30 21:27:47'),(4,'Fundación colors','NIT','900123456','7','3182422375',NULL,NULL,NULL,NULL,'2026-04-30 22:09:31');
-/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `compras`
 --
 
@@ -81,16 +71,6 @@ CREATE TABLE `compras` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `compras`
---
-
-LOCK TABLES `compras` WRITE;
-/*!40000 ALTER TABLE `compras` DISABLE KEYS */;
-INSERT INTO `compras` VALUES (1,'CMP-2026-0001',3,1,'2026-05-04',10.00,'kg',10000.00,100000.00,NULL,1,'2026-05-03 23:31:11'),(2,'CMP-2026-0002',2,1,'2026-05-04',5.00,'kg',12000.00,60000.00,NULL,1,'2026-05-03 23:34:09'),(3,'CMP-2026-0003',4,1,'2026-05-04',3.00,'kg',7500.00,22500.00,NULL,1,'2026-05-04 10:08:08'),(4,'CMP-2026-0004',3,1,'2026-05-04',2.00,'kg',3000.00,6000.00,NULL,1,'2026-05-04 10:20:01'),(5,'CMP-2026-0005',1,1,'2026-05-04',5.00,'kg',4000.00,20000.00,NULL,1,'2026-05-04 10:34:02'),(6,'CMP-2026-0006',2,1,'2026-05-04',0.91,'kg',6000.00,5460.00,NULL,1,'2026-05-04 10:36:09');
-/*!40000 ALTER TABLE `compras` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `movimientos_inventario`
 --
 
@@ -117,16 +97,6 @@ CREATE TABLE `movimientos_inventario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `movimientos_inventario`
---
-
-LOCK TABLES `movimientos_inventario` WRITE;
-/*!40000 ALTER TABLE `movimientos_inventario` DISABLE KEYS */;
-INSERT INTO `movimientos_inventario` VALUES (1,1,'ajuste_inicial',0.06,0.00,0.06,'inicial',NULL,1,'2026-05-03 22:05:12'),(2,1,'ajuste_inicial',9.94,0.06,10.00,'inicial',NULL,1,'2026-05-03 22:46:22'),(3,4,'ajuste_inicial',10.00,0.00,10.00,'inicial',NULL,1,'2026-05-03 22:46:43'),(4,2,'ajuste_inicial',10.00,0.00,10.00,'inicial',NULL,1,'2026-05-03 22:46:51'),(5,5,'ajuste_inicial',10.00,0.00,10.00,'inicial',NULL,1,'2026-05-03 22:47:00'),(6,3,'ajuste_inicial',10.00,0.00,10.00,'inicial',NULL,1,'2026-05-03 22:47:07'),(7,4,'salida',1.00,10.00,9.00,'venta',1,1,'2026-05-03 23:13:09'),(8,4,'salida',2.00,9.00,7.00,'venta',2,3,'2026-05-03 23:15:43'),(9,1,'entrada',10.00,10.00,20.00,'compra',1,1,'2026-05-03 23:31:11'),(10,1,'entrada',5.00,20.00,25.00,'compra',2,1,'2026-05-03 23:34:09'),(11,1,'entrada',3.00,25.00,28.00,'compra',3,1,'2026-05-04 10:08:08'),(12,1,'entrada',2.00,28.00,30.00,'compra',4,1,'2026-05-04 10:20:01'),(13,1,'entrada',5.00,30.00,35.00,'compra',5,1,'2026-05-04 10:34:02'),(14,1,'entrada',0.91,35.00,35.91,'compra',6,1,'2026-05-04 10:36:09'),(15,1,'entrada',10.00,35.91,45.91,'compra',7,1,'2026-05-06 06:51:26'),(16,1,'salida',10.00,45.91,35.91,'compra',7,1,'2026-05-06 07:01:28'),(17,4,'salida',2.00,7.00,5.00,'venta',3,1,'2026-05-06 07:03:44'),(18,5,'salida',1.00,10.00,9.00,'venta',4,1,'2026-05-06 07:05:06'),(19,7,'ajuste_inicial',20.00,0.00,20.00,'inicial',NULL,1,'2026-05-06 07:11:52'),(20,4,'salida',1.00,5.00,4.00,'venta',5,1,'2026-05-06 16:00:21'),(21,4,'ajuste_inicial',1.00,4.00,3.00,'inicial',NULL,1,'2026-05-06 16:02:29'),(22,6,'ajuste_inicial',20.00,0.00,20.00,'inicial',NULL,1,'2026-05-07 11:58:27');
-/*!40000 ALTER TABLE `movimientos_inventario` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `productos`
 --
 
@@ -149,14 +119,13 @@ CREATE TABLE `productos` (
   CONSTRAINT `fk_producto_tipo` FOREIGN KEY (`tipo_id`) REFERENCES `tipos_producto` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `productos`
 --
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'Cacao en Grano Seco',1,NULL,'kg',35.91,50.00,4000.00,1,'2026-05-03 17:04:57'),(2,'Chocolate de Mesa 250g',2,'250g','und',10.00,20.00,4500.00,1,'2026-05-03 17:04:57'),(3,'Chocolate de Mesa 500g',2,'500g','und',10.00,20.00,8500.00,1,'2026-05-03 17:04:57'),(4,'Chocolate de Mesa 1000g',2,'1000g','und',3.00,10.00,16000.00,1,'2026-05-03 17:04:57'),(5,'Chocolate de Mesa 25g',2,'25g','und',9.00,10.00,2000.00,1,'2026-05-03 22:45:04'),(6,'chocolate de mesa 2000g',2,'2000g','und',20.00,20.00,30000.00,1,'2026-05-06 07:10:15'),(7,'chocolate de mesa 1500g',2,'1500g','und',20.00,50.00,25000.00,1,'2026-05-06 07:11:52');
+INSERT INTO `productos` VALUES (1,'Cacao en Grano Seco',1,NULL,'kg',35.91,50.00,3500.00,1,'2026-05-03 17:04:57'),(2,'Chocolate de Mesa 250g',2,'250g','und',10.00,20.00,4500.00,1,'2026-05-03 17:04:57'),(3,'Chocolate de Mesa 500g',2,'500g','und',10.00,20.00,8500.00,1,'2026-05-03 17:04:57'),(4,'Chocolate de Mesa 1000g',2,'1000g','und',7.00,10.00,16000.00,1,'2026-05-03 17:04:57'),(5,'Chocolate de Mesa 25g',2,'25g','und',10.00,10.00,2000.00,1,'2026-05-03 22:45:04');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,16 +156,6 @@ CREATE TABLE `proveedores` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `proveedores`
---
-
-LOCK TABLES `proveedores` WRITE;
-/*!40000 ALTER TABLE `proveedores` DISABLE KEYS */;
-INSERT INTO `proveedores` VALUES (1,'Finca La Esperanza','CC','87654321',NULL,'Agricultor',NULL,'3141112233',NULL,NULL,'Tumaco','Narino','2026-04-30 21:28:02'),(2,'Cacao del Sur SAS','NIT','900111222',NULL,'Empresa',NULL,'3004445566',NULL,NULL,'Barbacoas','Narino','2026-04-30 21:28:12'),(3,'Agroexport Narino','NIT','800999888',NULL,'Cooperativa',NULL,'3167778899',NULL,NULL,'Ipiales','Narino','2026-04-30 21:28:19'),(4,'sofia alarcon','CC','1087781140',NULL,'Agricultor','sofia A.','3154491214',NULL,NULL,NULL,NULL,'2026-04-30 22:10:38');
-/*!40000 ALTER TABLE `proveedores` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `roles`
 --
 
@@ -213,7 +172,6 @@ CREATE TABLE `roles` (
 --
 -- Dumping data for table `roles`
 --
-
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` VALUES (1,'Administrador'),(2,'Gerente'),(3,'Empleado');
@@ -243,16 +201,6 @@ CREATE TABLE `tipos_producto` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tipos_producto`
---
-
-LOCK TABLES `tipos_producto` WRITE;
-/*!40000 ALTER TABLE `tipos_producto` DISABLE KEYS */;
-INSERT INTO `tipos_producto` VALUES (1,'Cacao en grano seco','cacao_grano','kg','kg',0,'Cacao en grano seco fermentado y secado',1,'2026-05-03 17:00:00'),(2,'Chocolate de mesa','chocolate_mesa','und','und',1,'Chocolate de mesa en distintas presentaciones empacadas',1,'2026-05-03 17:00:00');
-/*!40000 ALTER TABLE `tipos_producto` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `usuarios`
 --
 
@@ -274,14 +222,13 @@ CREATE TABLE `usuarios` (
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `usuarios`
 --
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Administrador','admin@chocotumac.com','$2y$12$zjXB5m3lAgnGCzw6rQuxme/fE6VJguWESJTxlTPbJ0hPZukhkkeG2','3209876546',1,'2026-05-07 11:57:46','2026-04-30 21:24:36'),(2,'Nathalia Mejia','nathmejia@chocotumac.com','$2y$12$J2igzaiyojeFfyLtBALnW.THGCRErMn8pBAqA7pdOHIRlm.Mfuynq','3158539049',1,'2026-04-30 22:12:09','2026-04-30 21:44:39'),(3,'David Gomes','davidg@chocotumac.com','$2y$12$7hLToR6elqeG6OclmRC3W.VjuU9kMLnGriMy/zp64VMxNYyIy7Coi','3154491214',3,'2026-05-06 18:15:59','2026-04-30 21:50:12'),(5,'isaura Ruiz','isaura2022@chocotumac.com','$2y$12$YcQIdxkxI9GhHKBEIb/HCOddPesr5CZInUYYBxa5ZkA63.rLFLQRm','3116789043',1,'2026-04-30 22:22:19','2026-04-30 21:53:06'),(9,'Elkin Buitrago','elkin12@chocotumac.com','$2y$12$z08Wdeo4waKXmjRCnq8Oa.CfsXJqu4rXYMpLnxg3WBrzPUthKzCgO',NULL,2,'2026-05-03 23:20:45','2026-05-03 23:20:13');
+INSERT INTO `usuarios` VALUES (1,'Administrador','admin@chocotumac.com','$2y$10$wH0nL4j0s4QvFqvX7Q8Y0u9mL9lW8M8M7s7P1r9m6A0V2gN6R5s2K');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,16 +270,6 @@ CREATE TABLE `ventas` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ventas`
---
-
-LOCK TABLES `ventas` WRITE;
-/*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
-INSERT INTO `ventas` VALUES (1,'FAC-2026-0001',NULL,'Cliente general',NULL,NULL,4,'2026-05-04',1.00,16000.00,16000.00,0.00,0.00,16000.00,'contado',NULL,1,'2026-05-03 23:13:09'),(2,'FAC-2026-0002',4,NULL,NULL,NULL,4,'2026-05-04',2.00,16000.00,32000.00,0.00,0.00,32000.00,'contado',NULL,3,'2026-05-03 23:15:43'),(3,'FAC-2026-0003',2,NULL,NULL,NULL,4,'2026-05-06',2.00,16000.00,32000.00,0.00,0.00,32000.00,'contado',NULL,1,'2026-05-06 07:03:44'),(4,'FAC-2026-0004',NULL,'luis perez','CC',NULL,5,'2026-05-06',1.00,2000.00,2000.00,0.00,0.00,2000.00,'contado',NULL,1,'2026-05-06 07:05:06'),(5,'FAC-2026-0005',2,NULL,NULL,NULL,4,'2026-05-06',1.00,16000.00,16000.00,0.00,0.00,16000.00,'contado',NULL,1,'2026-05-06 16:00:21');
-/*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping routines for database 'chocolatetumaco'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -345,4 +282,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-07 16:16:55
+-- Dump completed on 2026-05-10 21:41:58
