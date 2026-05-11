@@ -132,7 +132,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     </div>
 
     <!-- ── Tabs ── -->
-    <ul class="nav rep-tabs mb-0 no-print" id="repTabs">
+    <ul class="nav rep-tabs mb-0 no-print" id="repTabs" role="tablist" aria-label="Secciones del reporte">
         <?php foreach ([
             'ventas'    => '📋 Ventas',
             'compras'   => '🛒 Compras',
@@ -141,7 +141,9 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         ] as $key => $label): ?>
         <li class="nav-item">
             <a class="nav-link <?= $tab === $key ? 'active' : '' ?>"
-               href="?view=reportes&tab=<?= h($key) ?>&desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&busqueda=<?= urlencode($busqueda) ?>">
+               href="?view=reportes&tab=<?= h($key) ?>&desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&busqueda=<?= urlencode($busqueda) ?>"
+               aria-label="Ver reporte de <?= h(strip_tags($label)) ?>"
+               <?= $tab === $key ? 'aria-current="page"' : '' ?>>
                 <?= h($label) ?>
             </a>
         </li>
@@ -211,8 +213,9 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     Filtrar
                 </button>
                 <?php if ($hay_filtros): ?>
-                <a href="?view=reportes&tab=<?= h($tab) ?>" class="btn btn-sm btn-outline-secondary ms-1">
-                    Limpiar
+                <a href="?view=reportes&tab=<?= h($tab) ?>" class="btn btn-sm btn-outline-secondary ms-1"
+                   aria-label="Limpiar filtros del reporte">
+                    ✕ Limpiar
                 </a>
                 <?php endif; ?>
             </div>
