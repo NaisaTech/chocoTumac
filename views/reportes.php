@@ -27,12 +27,28 @@ require_once 'models/Reporte.php';
 
 $reporte = new Reporte();
 
-// ── Filtros activos ────────────────────────────────────────────────
-$tab        = $_GET['tab']         ?? 'ventas';
-$desde      = $_GET['desde']       ?? '';
-$hasta      = $_GET['hasta']       ?? '';
-$busqueda   = trim($_GET['busqueda']   ?? '');
-$cliente_id = (int)($_GET['cliente_id'] ?? 0) ?: null;
+/**
+ * Escapa una cadena para salida HTML segura.
+ * Previene XSS (Cross-Site Scripting) en todas las vistas.
+ *
+ * @param  mixed  $val  Valor a escapar.
+ * @return string       Cadena segura para insertar en HTML.
+ */
+function h($val): string {
+    return htmlspecialchars((string)$val, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+// ── Filtros activos (sanitizados contra XSS) ──────────────────────
+$tabs_validos  = ['ventas', 'compras', 'inventario', 'top'];
+$tab_raw       = $_GET['tab'] ?? 'ventas';
+$tab           = in_array($tab_raw, $tabs_validos, true) ? $tab_raw : 'ventas';
+
+$desde        = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['desde'] ?? '')
+                    ? $_GET['desde'] : '';
+$hasta        = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['hasta'] ?? '')
+                    ? $_GET['hasta'] : '';
+$busqueda     = trim($_GET['busqueda'] ?? '');
+$cliente_id   = (int)($_GET['cliente_id']   ?? 0) ?: null;
 $proveedor_id = (int)($_GET['proveedor_id'] ?? 0) ?: null;
 
 // ── Datos ─────────────────────────────────────────────────────────
@@ -125,8 +141,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         ] as $key => $label): ?>
         <li class="nav-item">
             <a class="nav-link <?= $tab === $key ? 'active' : '' ?>"
-               href="?view=reportes&tab=<?= $key ?>&desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&busqueda=<?= urlencode($busqueda) ?>">
-                <?= $label ?>
+               href="?view=reportes&tab=<?= h($key) ?>&desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&busqueda=<?= urlencode($busqueda) ?>">
+                <?= h($label) ?>
             </a>
         </li>
         <?php endforeach; ?>
@@ -140,7 +156,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
 
             <!-- Búsqueda general -->
             <div class="col-md-3">
-                <label class="form-label small fw-semibold mb-1">Búsqueda rápida</label>
+                <label class="form-label small fw-semibold mb-1">🔍 Búsqueda rápida</label>
                 <input class="form-control form-control-sm" name="busqueda"
                        placeholder="Código, cliente, proveedor, producto..."
                        value="<?= htmlspecialchars($busqueda) ?>">
@@ -195,7 +211,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     Filtrar
                 </button>
                 <?php if ($hay_filtros): ?>
-                <a href="?view=reportes&tab=<?= $tab ?>" class="btn btn-sm btn-outline-secondary ms-1">
+                <a href="?view=reportes&tab=<?= h($tab) ?>" class="btn btn-sm btn-outline-secondary ms-1">
                     Limpiar
                 </a>
                 <?php endif; ?>
@@ -283,7 +299,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     <td class="text-end fw-bold text-success">$<?= number_format($v['total'], 0, ',', '.') ?></td>
                     <td>
                         <span class="badge <?= $v['forma_pago'] === 'contado' ? 'bg-success' : 'bg-warning text-dark' ?>">
-                            <?= ucfirst($v['forma_pago']) ?>
+                            <?= h(ucfirst($v['forma_pago'])) ?>
                         </span>
                     </td>
                     <td class="text-muted"><?= htmlspecialchars($v['registrado_por']) ?></td>
@@ -420,8 +436,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     <td class="fw-semibold"><?= htmlspecialchars($p['nombre']) ?></td>
                     <td><?= htmlspecialchars($p['tipo']) ?></td>
                     <td class="text-muted"><?= htmlspecialchars($p['presentacion'] ?? '—') ?></td>
-                    <td><span class="badge bg-secondary"><?= $p['unidad'] ?></span></td>
-                    <td><span class="badge bg-info text-dark"><?= $p['unidad_venta'] ?></span></td>
+                    <td><span class="badge bg-secondary"><?= h($p['unidad']) ?></span></td>
+                    <td><span class="badge bg-info text-dark"><?= h($p['unidad_venta']) ?></span></td>
                     <td class="text-end fw-bold"><?= number_format($p['stock_actual'], 2) ?></td>
                     <td class="text-end text-muted"><?= number_format($p['stock_minimo'], 2) ?></td>
                     <td class="text-end">$<?= number_format($p['precio_venta'], 0, ',', '.') ?></td>
@@ -458,7 +474,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <div class="col-lg-7">
             <div class="rep-card h-100">
                 <h6 class="fw-bold mb-3" style="color:var(--ct-brand);">
-                    🏆 Top 10 Productos Más Vendidos
+                    Top 10 Productos Más Vendidos
                     <small class="text-muted fw-normal" style="font-size:.78rem;">
                         — por cantidad total
                         <?= $desde || $hasta ? '· ' . ($desde ? date('d/m/Y', strtotime($desde)) : '') . ($hasta ? ' a ' . date('d/m/Y', strtotime($hasta)) : '') : '' ?>
