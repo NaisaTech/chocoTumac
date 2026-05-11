@@ -24,11 +24,14 @@ ini_set('display_errors', 0);
 session_start();
 
 require_once __DIR__ . '/../models/Producto.php';
+require_once __DIR__ . '/Redirectable.php';
 
 /** URL base del sistema para redirecciones */
 define("BASE_URL", "/chocoTumac/");
 
 class ProductoController {
+    use Redirectable;
+
 
     /** @var Producto Instancia del modelo de productos */
     private $model;
@@ -55,9 +58,7 @@ class ProductoController {
      */
     private function verificarCSRF() {
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
-            header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                . urlencode("Petición no válida. Recarga la página."));
-            exit();
+            $this->redirectError('inventario', 'Petición no válida. Recarga la página.');
         }
     }
 
@@ -67,9 +68,7 @@ class ProductoController {
      */
     private function verificarSesion() {
         if (!isset($_SESSION['user'])) {
-            header("Location: " . BASE_URL . "index.php?view=login&error="
-                . urlencode("Tu sesión ha expirado."));
-            exit();
+            $this->redirectError('login', 'Tu sesión ha expirado.');
         }
     }
 
@@ -92,9 +91,7 @@ class ProductoController {
              */
             case 'crear':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                        . urlencode("Solo el administrador puede crear productos."));
-                    exit();
+                    $this->redirectError('inventario', 'Solo el administrador puede crear productos.');
                 }
                 $this->verificarCSRF();
 
@@ -108,10 +105,8 @@ class ProductoController {
                 ]);
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&msg=producto_creado");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error=" . urlencode($res));
-                }
+                    $this->redirectOk('inventario', 'producto_creado');} else {
+                    $this->redirectError('inventario', $res);}
                 break;
 
             /**
@@ -120,9 +115,7 @@ class ProductoController {
              */
             case 'crearTipo':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                        . urlencode("Solo el administrador puede crear tipos de producto."));
-                    exit();
+                    $this->redirectError('inventario', 'Solo el administrador puede crear tipos de producto.');
                 }
                 $this->verificarCSRF();
 
@@ -135,10 +128,8 @@ class ProductoController {
                 ]);
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&msg=tipo_creado");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error=" . urlencode($res));
-                }
+                    $this->redirectOk('inventario', 'tipo_creado');} else {
+                    $this->redirectError('inventario', $res);}
                 break;
 
             /**
@@ -148,20 +139,16 @@ class ProductoController {
              */
             case 'editar':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                        . urlencode("Solo el administrador puede editar productos."));
-                    exit();
+                    $this->redirectError('inventario', 'Solo el administrador puede editar productos.');
                 }
 
                 $producto = $this->model->obtenerPorId($_GET['id'] ?? 0);
                 if (!$producto) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                        . urlencode("Producto no encontrado."));
-                    exit();
+                    $this->redirectError('inventario', 'Producto no encontrado.');
                 }
 
                 // Redirigir a index.php para que tenga el contexto completo (sesión, navbar, variables)
-                header("Location: " . BASE_URL . "index.php?view=editar_producto&id=" . (int)($_GET['id'] ?? 0));
+                $this->redirect("index.php?view=editar_producto&id=" . (int)($_GET['id'] ?? 0));
                 exit();
 
             /**
@@ -171,9 +158,7 @@ class ProductoController {
              */
             case 'actualizar':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                        . urlencode("Solo el administrador puede editar productos."));
-                    exit();
+                    $this->redirectError('inventario', 'Solo el administrador puede editar productos.');
                 }
                 $this->verificarCSRF();
 
@@ -187,10 +172,8 @@ class ProductoController {
                 ]);
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&msg=producto_actualizado");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error=" . urlencode($res));
-                }
+                    $this->redirectOk('inventario', 'producto_actualizado');} else {
+                    $this->redirectError('inventario', $res);}
                 break;
 
             /**
@@ -201,9 +184,7 @@ class ProductoController {
              */
             case 'ajuste':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error="
-                        . urlencode("Solo el administrador puede ajustar el stock."));
-                    exit();
+                    $this->redirectError('inventario', 'Solo el administrador puede ajustar el stock.');
                 }
                 $this->verificarCSRF();
 
@@ -214,10 +195,8 @@ class ProductoController {
                 );
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&msg=ajuste_ok");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=inventario&error=" . urlencode($res));
-                }
+                    $this->redirectOk('inventario', 'ajuste_ok');} else {
+                    $this->redirectError('inventario', $res);}
                 break;
         }
     }

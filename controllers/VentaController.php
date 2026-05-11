@@ -29,11 +29,14 @@ ini_set('display_errors', 0);
 session_start();
 
 require_once __DIR__ . '/../models/Venta.php';
+require_once __DIR__ . '/Redirectable.php';
 
 /** URL base del sistema para redirecciones */
 define("BASE_URL", "/chocoTumac/");
 
 class VentaController {
+    use Redirectable;
+
 
     /** @var Venta Instancia del modelo de ventas */
     private $model;
@@ -70,9 +73,7 @@ class VentaController {
      */
     private function verificarCSRF() {
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
-            header("Location: " . BASE_URL . "index.php?view=ventas&error="
-                . urlencode("Petición no válida. Recarga la página."));
-            exit();
+            $this->redirectError('ventas', 'Petición no válida. Recarga la página.');
         }
     }
 
@@ -82,9 +83,7 @@ class VentaController {
      */
     private function verificarSesion() {
         if (!isset($_SESSION['user'])) {
-            header("Location: " . BASE_URL . "index.php?view=login&error="
-                . urlencode("Tu sesión ha expirado."));
-            exit();
+            $this->redirectError('login', 'Tu sesión ha expirado.');
         }
     }
 
@@ -109,9 +108,7 @@ class VentaController {
              */
             case 'crear':
                 if (!$this->puedeGestionar()) {
-                    header("Location: " . BASE_URL . "index.php?view=ventas&error="
-                        . urlencode("No tienes permisos para registrar ventas."));
-                    exit();
+                    $this->redirectError('ventas', 'No tienes permisos para registrar ventas.');
                 }
                 $this->verificarCSRF();
 
@@ -132,10 +129,9 @@ class VentaController {
 
                 if (is_int($res)) {
                     // Redirigir directo a la factura imprimible
-                    header("Location: " . BASE_URL . "index.php?view=factura&id=" . $res);
+                    $this->redirect("index.php?view=factura&id=" . $res);
                 } else {
-                    header("Location: " . BASE_URL . "index.php?view=ventas&error=" . urlencode($res));
-                }
+                    $this->redirectError('ventas', $res);}
                 break;
 
             /**
@@ -145,9 +141,7 @@ class VentaController {
              */
             case 'eliminar':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=ventas&error="
-                        . urlencode("Solo el administrador puede eliminar ventas."));
-                    exit();
+                    $this->redirectError('ventas', 'Solo el administrador puede eliminar ventas.');
                 }
 
                 $res = $this->model->eliminar(
@@ -156,10 +150,8 @@ class VentaController {
                 );
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=ventas&msg=eliminado");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=ventas&error=" . urlencode($res));
-                }
+                    $this->redirectOk('ventas', 'eliminado');} else {
+                    $this->redirectError('ventas', $res);}
                 break;
         }
     }
