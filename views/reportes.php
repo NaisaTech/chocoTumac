@@ -38,6 +38,9 @@ function h($val): string {
     return htmlspecialchars((string)$val, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
+/** Formato estándar de fecha y hora para todos los reportes impresos. */
+define('FMT_DATETIME', 'd/m/Y H:i');
+
 // ── Filtros activos (sanitizados contra XSS) ──────────────────────
 $tabs_validos  = ['ventas', 'compras', 'inventario', 'top'];
 $tab_raw       = $_GET['tab'] ?? 'ventas';
@@ -255,11 +258,11 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <!-- Encabezado visible solo al imprimir -->
         <div class="rep-print-header" style="display:none;">
             <h2>Chocolate Tumaco &mdash; Reporte de Ventas</h2>
-            <p>Generado el <?= date('d/m/Y H:i') ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
+            <p>Generado el <?= date(FMT_DATETIME) ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
         </div>
         <div class="rep-print-footer" style="display:none;">
             <span>ChocoTumac &copy; <?= date('Y') ?></span>
-            <span>Reporte de Ventas &mdash; <?= date('d/m/Y H:i') ?></span>
+            <span>Reporte de Ventas &mdash; <?= date(FMT_DATETIME) ?></span>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle rep-table tbl-ventas mb-0">
@@ -346,11 +349,11 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <!-- Encabezado visible solo al imprimir -->
         <div class="rep-print-header" style="display:none;">
             <h2>Chocolate Tumaco &mdash; Reporte de Compras</h2>
-            <p>Generado el <?= date('d/m/Y H:i') ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
+            <p>Generado el <?= date(FMT_DATETIME) ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
         </div>
         <div class="rep-print-footer" style="display:none;">
             <span>ChocoTumac &copy; <?= date('Y') ?></span>
-            <span>Reporte de Compras &mdash; <?= date('d/m/Y H:i') ?></span>
+            <span>Reporte de Compras &mdash; <?= date(FMT_DATETIME) ?></span>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle rep-table tbl-compras mb-0">
@@ -411,11 +414,11 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <!-- Encabezado visible solo al imprimir -->
         <div class="rep-print-header" style="display:none;">
             <h2>Chocolate Tumaco &mdash; Inventario Actualizado</h2>
-            <p>Generado el <?= date('d/m/Y H:i') ?></p>
+            <p>Generado el <?= date(FMT_DATETIME) ?></p>
         </div>
         <div class="rep-print-footer" style="display:none;">
             <span>ChocoTumac &copy; <?= date('Y') ?></span>
-            <span>Inventario &mdash; <?= date('d/m/Y H:i') ?></span>
+            <span>Inventario &mdash; <?= date(FMT_DATETIME) ?></span>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle rep-table tbl-inventario mb-0">
@@ -464,7 +467,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
             </table>
         </div>
         <p class="text-muted text-end mt-2 mb-0" style="font-size:.78rem;">
-            <?= count($inventario) ?> producto(s) · Actualizado: <?= date('d/m/Y H:i') ?>
+            <?= count($inventario) ?> producto(s) · Actualizado: <?= date(FMT_DATETIME) ?>
         </p>
         <?php endif; ?>
     </div>
