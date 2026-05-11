@@ -153,7 +153,10 @@ class VentaController {
                     $this->redirectOk('ventas', 'eliminado');} else {
                     $this->redirectError('ventas', $res);}
                 break;
-        }
+                    default:
+                $this->redirectError('ventas', 'Acción no reconocida.');
+                break;
+}
     }
 }
 

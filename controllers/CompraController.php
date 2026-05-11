@@ -144,7 +144,10 @@ class CompraController {
                     $this->redirectOk('compras', 'eliminado');} else {
                     $this->redirectError('compras', $res);}
                 break;
-        }
+                    default:
+                $this->redirectError('compras', 'Acción no reconocida.');
+                break;
+}
     }
 }
 
