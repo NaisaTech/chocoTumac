@@ -18,40 +18,124 @@
 
 require_once __DIR__ . '/../config/database.php';
 
-class Reporte {
+/**
+ * Alias de columna fecha para ventas — evita duplicar el literal (php:S1192).
+ * Usado en filtroFecha(), ventas(), totalesVentas() y productosMasVendidos().
+ */
+define('SQL_ALIAS_FECHA_VENTA',  'v.fecha');
 
+/**
+ * Alias de columna fecha para compras — evita duplicar el literal (php:S1192).
+ * Usado en filtroFecha(), compras() y totalesCompras().
+ */
+define('SQL_ALIAS_FECHA_COMPRA', 'c.fecha');
+
+class Reporte
+{
     /** @var PDO */
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = (new Database())->connect();
     }
 
     // ── Helpers de filtro ─────────────────────────────────────────────
 
     /**
-     * Construye cláusula WHERE + parámetros para filtros de fecha.
+     * Construye condiciones WHERE y parámetros para filtros de fecha.
+     * Centraliza los literales "alias >= ?" y "alias <= ?" (php:S1192).
      *
-     * @param string      $alias_fecha  Alias de la columna fecha en la query
-     * @param string|null $desde        Fecha inicio (Y-m-d)
-     * @param string|null $hasta        Fecha fin    (Y-m-d)
-     * @return array [string $where, array $params]
+     * @param string      $alias  Alias de la columna fecha (ej. "v.fecha")
+     * @param string|null $desde  Fecha inicio (Y-m-d)
+     * @param string|null $hasta  Fecha fin    (Y-m-d)
+     * @return array{ where: string[], params: array }
      */
-    private function filtroFecha($alias_fecha, $desde, $hasta) {
+    private function filtroFecha(string $alias, ?string $desde, ?string $hasta): array
+    {
         $where  = [];
         $params = [];
 
         if (!empty($desde)) {
-            $where[]  = "$alias_fecha >= ?";
+            $where[]  = "$alias >= ?";
             $params[] = $desde;
         }
         if (!empty($hasta)) {
-            $where[]  = "$alias_fecha <= ?";
+            $where[]  = "$alias <= ?";
             $params[] = $hasta;
         }
 
-        $sql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
-        return [$sql, $params];
+        return ['where' => $where, 'params' => $params];
+    }
+
+    /**
+     * Construye filtros completos para ventas: fecha + cliente + búsqueda.
+     * Elimina la duplicación del bloque de 8 líneas en ventas() y totalesVentas().
+     *
+     * @param string|null $desde
+     * @param string|null $hasta
+     * @param int|null    $cliente_id
+     * @param string|null $busqueda
+     * @return array{ cond: string, params: array }
+     */
+    private function filtrosVentas(
+        ?string $desde,
+        ?string $hasta,
+        ?int    $cliente_id,
+        ?string $busqueda
+    ): array {
+        $fecha  = $this->filtroFecha(SQL_ALIAS_FECHA_VENTA, $desde, $hasta);
+        $where  = array_merge(['1=1'], $fecha['where']);
+        $params = $fecha['params'];
+
+        if (!empty($cliente_id)) {
+            $where[]  = 'v.cliente_id = ?';
+            $params[] = (int)$cliente_id;
+        }
+        if (!empty($busqueda)) {
+            $like     = '%' . $busqueda . '%';
+            $where[]  = '(v.codigo LIKE ? OR p.nombre LIKE ? OR COALESCE(c.nombre, v.cliente_ocasional) LIKE ?)';
+            $params[] = $like;
+            $params[] = $like;
+            $params[] = $like;
+        }
+
+        return ['cond' => implode(' AND ', $where), 'params' => $params];
+    }
+
+    /**
+     * Construye filtros completos para compras: fecha + proveedor + búsqueda.
+     * Elimina la duplicación del bloque de 8 líneas en compras() y totalesCompras().
+     *
+     * @param string|null $desde
+     * @param string|null $hasta
+     * @param int|null    $proveedor_id
+     * @param string|null $busqueda
+     * @return array{ cond: string, params: array }
+     */
+    private function filtrosCompras(
+        ?string $desde,
+        ?string $hasta,
+        ?int    $proveedor_id,
+        ?string $busqueda
+    ): array {
+        $fecha  = $this->filtroFecha(SQL_ALIAS_FECHA_COMPRA, $desde, $hasta);
+        $where  = array_merge(['1=1'], $fecha['where']);
+        $params = $fecha['params'];
+
+        if (!empty($proveedor_id)) {
+            $where[]  = 'c.proveedor_id = ?';
+            $params[] = (int)$proveedor_id;
+        }
+        if (!empty($busqueda)) {
+            $like     = '%' . $busqueda . '%';
+            $where[]  = '(c.codigo LIKE ? OR p.nombre LIKE ? OR pr.nombre LIKE ?)';
+            $params[] = $like;
+            $params[] = $like;
+            $params[] = $like;
+        }
+
+        return ['cond' => implode(' AND ', $where), 'params' => $params];
     }
 
     // ── Reporte de Ventas ─────────────────────────────────────────────
@@ -62,23 +146,18 @@ class Reporte {
      * @param string|null $desde       Fecha inicio
      * @param string|null $hasta       Fecha fin
      * @param int|null    $cliente_id  Filtrar por cliente registrado
-     * @param string|null $busqueda    Palabra clave (nombre cliente, producto, código)
+     * @param string|null $busqueda    Palabra clave (código, cliente, producto)
      * @return array
      */
-    public function ventas($desde = null, $hasta = null, $cliente_id = null, $busqueda = null) {
-        $where  = ["1=1"];
-        $params = [];
+    public function ventas(
+        ?string $desde      = null,
+        ?string $hasta      = null,
+        ?int    $cliente_id = null,
+        ?string $busqueda   = null
+    ): array {
+        ['cond' => $cond, 'params' => $params] =
+            $this->filtrosVentas($desde, $hasta, $cliente_id, $busqueda);
 
-        if (!empty($desde))      { $where[] = "v.fecha >= ?";          $params[] = $desde; }
-        if (!empty($hasta))      { $where[] = "v.fecha <= ?";          $params[] = $hasta; }
-        if (!empty($cliente_id)) { $where[] = "v.cliente_id = ?";      $params[] = (int)$cliente_id; }
-        if (!empty($busqueda)) {
-            $like     = '%' . $busqueda . '%';
-            $where[]  = "(v.codigo LIKE ? OR p.nombre LIKE ? OR COALESCE(c.nombre, v.cliente_ocasional) LIKE ?)";
-            $params[] = $like; $params[] = $like; $params[] = $like;
-        }
-
-        $cond = implode(' AND ', $where);
         $stmt = $this->conn->prepare("
             SELECT
                 v.id,
@@ -112,20 +191,15 @@ class Reporte {
     /**
      * Totales del reporte de ventas (suma, promedio, conteo).
      */
-    public function totalesVentas($desde = null, $hasta = null, $cliente_id = null, $busqueda = null) {
-        $where  = ["1=1"];
-        $params = [];
+    public function totalesVentas(
+        ?string $desde      = null,
+        ?string $hasta      = null,
+        ?int    $cliente_id = null,
+        ?string $busqueda   = null
+    ): array {
+        ['cond' => $cond, 'params' => $params] =
+            $this->filtrosVentas($desde, $hasta, $cliente_id, $busqueda);
 
-        if (!empty($desde))      { $where[] = "v.fecha >= ?";     $params[] = $desde; }
-        if (!empty($hasta))      { $where[] = "v.fecha <= ?";     $params[] = $hasta; }
-        if (!empty($cliente_id)) { $where[] = "v.cliente_id = ?"; $params[] = (int)$cliente_id; }
-        if (!empty($busqueda)) {
-            $like     = '%' . $busqueda . '%';
-            $where[]  = "(v.codigo LIKE ? OR p.nombre LIKE ? OR COALESCE(c.nombre, v.cliente_ocasional) LIKE ?)";
-            $params[] = $like; $params[] = $like; $params[] = $like;
-        }
-
-        $cond = implode(' AND ', $where);
         $stmt = $this->conn->prepare("
             SELECT
                 COUNT(v.id)       AS total_transacciones,
@@ -149,20 +223,15 @@ class Reporte {
     /**
      * Retorna el listado de compras con filtros opcionales.
      */
-    public function compras($desde = null, $hasta = null, $proveedor_id = null, $busqueda = null) {
-        $where  = ["1=1"];
-        $params = [];
+    public function compras(
+        ?string $desde        = null,
+        ?string $hasta        = null,
+        ?int    $proveedor_id = null,
+        ?string $busqueda     = null
+    ): array {
+        ['cond' => $cond, 'params' => $params] =
+            $this->filtrosCompras($desde, $hasta, $proveedor_id, $busqueda);
 
-        if (!empty($desde))        { $where[] = "c.fecha >= ?";         $params[] = $desde; }
-        if (!empty($hasta))        { $where[] = "c.fecha <= ?";         $params[] = $hasta; }
-        if (!empty($proveedor_id)) { $where[] = "c.proveedor_id = ?";   $params[] = (int)$proveedor_id; }
-        if (!empty($busqueda)) {
-            $like     = '%' . $busqueda . '%';
-            $where[]  = "(c.codigo LIKE ? OR p.nombre LIKE ? OR pr.nombre LIKE ?)";
-            $params[] = $like; $params[] = $like; $params[] = $like;
-        }
-
-        $cond = implode(' AND ', $where);
         $stmt = $this->conn->prepare("
             SELECT
                 c.id,
@@ -191,20 +260,15 @@ class Reporte {
     /**
      * Totales del reporte de compras.
      */
-    public function totalesCompras($desde = null, $hasta = null, $proveedor_id = null, $busqueda = null) {
-        $where  = ["1=1"];
-        $params = [];
+    public function totalesCompras(
+        ?string $desde        = null,
+        ?string $hasta        = null,
+        ?int    $proveedor_id = null,
+        ?string $busqueda     = null
+    ): array {
+        ['cond' => $cond, 'params' => $params] =
+            $this->filtrosCompras($desde, $hasta, $proveedor_id, $busqueda);
 
-        if (!empty($desde))        { $where[] = "c.fecha >= ?";       $params[] = $desde; }
-        if (!empty($hasta))        { $where[] = "c.fecha <= ?";       $params[] = $hasta; }
-        if (!empty($proveedor_id)) { $where[] = "c.proveedor_id = ?"; $params[] = (int)$proveedor_id; }
-        if (!empty($busqueda)) {
-            $like     = '%' . $busqueda . '%';
-            $where[]  = "(c.codigo LIKE ? OR p.nombre LIKE ? OR pr.nombre LIKE ?)";
-            $params[] = $like; $params[] = $like; $params[] = $like;
-        }
-
-        $cond = implode(' AND ', $where);
         $stmt = $this->conn->prepare("
             SELECT
                 COUNT(c.id)   AS total_transacciones,
@@ -226,14 +290,16 @@ class Reporte {
     /**
      * Retorna el inventario completo actualizado con estado de stock.
      */
-    public function inventario($busqueda = null) {
-        $where  = ["1=1"];
+    public function inventario(?string $busqueda = null): array
+    {
+        $where  = ['1=1'];
         $params = [];
 
         if (!empty($busqueda)) {
             $like     = '%' . $busqueda . '%';
-            $where[]  = "(p.nombre LIKE ? OR t.nombre LIKE ?)";
-            $params[] = $like; $params[] = $like;
+            $where[]  = '(p.nombre LIKE ? OR t.nombre LIKE ?)';
+            $params[] = $like;
+            $params[] = $like;
         }
 
         $cond = implode(' AND ', $where);
@@ -250,11 +316,12 @@ class Reporte {
                 p.precio_venta,
                 p.activo,
                 CASE
-                    WHEN p.stock_actual = 0                     THEN 'sin_stock'
-                    WHEN p.stock_actual <= p.stock_minimo       THEN 'stock_bajo'
-                    ELSE                                             'ok'
+                    WHEN p.stock_actual = 0               THEN 'sin_stock'
+                    WHEN p.stock_actual <= p.stock_minimo THEN 'stock_bajo'
+                    ELSE                                       'ok'
                 END AS estado_stock,
-                (SELECT COUNT(*) FROM movimientos_inventario m WHERE m.producto_id = p.id) AS total_movimientos
+                (SELECT COUNT(*) FROM movimientos_inventario m
+                 WHERE m.producto_id = p.id) AS total_movimientos
             FROM productos      p
             JOIN tipos_producto t ON p.tipo_id = t.id
             WHERE $cond
@@ -273,23 +340,22 @@ class Reporte {
      * @param string|null $hasta  Fecha fin del período
      * @return array
      */
-    public function productosMasVendidos($desde = null, $hasta = null) {
-        $where  = ["1=1"];
-        $params = [];
+    public function productosMasVendidos(?string $desde = null, ?string $hasta = null): array
+    {
+        $fecha  = $this->filtroFecha(SQL_ALIAS_FECHA_VENTA, $desde, $hasta);
+        $where  = array_merge(['1=1'], $fecha['where']);
+        $params = $fecha['params'];
+        $cond   = implode(' AND ', $where);
 
-        if (!empty($desde)) { $where[] = "v.fecha >= ?"; $params[] = $desde; }
-        if (!empty($hasta)) { $where[] = "v.fecha <= ?"; $params[] = $hasta; }
-
-        $cond = implode(' AND ', $where);
         $stmt = $this->conn->prepare("
             SELECT
-                p.nombre                  AS producto,
-                t.nombre                  AS tipo,
-                t.unidad_venta            AS unidad,
-                COUNT(v.id)               AS num_ventas,
-                SUM(v.cantidad)           AS cantidad_total,
-                SUM(v.total)              AS ingresos_total,
-                AVG(v.precio_unitario)    AS precio_promedio
+                p.nombre               AS producto,
+                t.nombre               AS tipo,
+                t.unidad_venta         AS unidad,
+                COUNT(v.id)            AS num_ventas,
+                SUM(v.cantidad)        AS cantidad_total,
+                SUM(v.total)           AS ingresos_total,
+                AVG(v.precio_unitario) AS precio_promedio
             FROM ventas v
             JOIN productos      p ON v.producto_id = p.id
             JOIN tipos_producto t ON p.tipo_id     = t.id
@@ -304,13 +370,17 @@ class Reporte {
 
     // ── Listas para selectores ────────────────────────────────────────
 
-    public function listaClientes() {
+    /** Retorna clientes ordenados por nombre para el selector de filtros. */
+    public function listaClientes(): array
+    {
         return $this->conn->query("
             SELECT id, nombre FROM clientes ORDER BY nombre ASC
         ")->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function listaProveedores() {
+    /** Retorna proveedores ordenados por nombre para el selector de filtros. */
+    public function listaProveedores(): array
+    {
         return $this->conn->query("
             SELECT id, nombre FROM proveedores ORDER BY nombre ASC
         ")->fetchAll(PDO::FETCH_ASSOC);
@@ -321,16 +391,17 @@ class Reporte {
     /**
      * Retorna métricas generales del sistema para el dashboard del gerente.
      */
-    public function resumenGeneral() {
+    public function resumenGeneral(): array
+    {
         return [
-            'total_ventas'    => $this->conn->query("SELECT COUNT(*) FROM ventas")->fetchColumn(),
-            'total_compras'   => $this->conn->query("SELECT COUNT(*) FROM compras")->fetchColumn(),
-            'ingresos_total'  => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM ventas")->fetchColumn(),
-            'egresos_total'   => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM compras")->fetchColumn(),
-            'clientes_activos'=> $this->conn->query("SELECT COUNT(*) FROM clientes")->fetchColumn(),
+            'total_ventas'     => $this->conn->query("SELECT COUNT(*) FROM ventas")->fetchColumn(),
+            'total_compras'    => $this->conn->query("SELECT COUNT(*) FROM compras")->fetchColumn(),
+            'ingresos_total'   => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM ventas")->fetchColumn(),
+            'egresos_total'    => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM compras")->fetchColumn(),
+            'clientes_activos' => $this->conn->query("SELECT COUNT(*) FROM clientes")->fetchColumn(),
             'productos_activos'=> $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1")->fetchColumn(),
-            'stock_bajo'      => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual <= stock_minimo")->fetchColumn(),
-            'sin_stock'       => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual = 0")->fetchColumn(),
+            'stock_bajo'       => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual <= stock_minimo")->fetchColumn(),
+            'sin_stock'        => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual = 0")->fetchColumn(),
         ];
     }
 }
