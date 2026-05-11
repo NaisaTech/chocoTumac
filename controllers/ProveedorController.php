@@ -1,45 +1,75 @@
 <?php
+/**
+ * Controlador: Proveedor – ChocoTumac
+ *
+ * Gestiona las acciones CRUD sobre proveedores:
+ * crear, editar, actualizar y eliminar.
+ * Verifica permisos por rol y protege mutaciones con token CSRF.
+ *
+ * @package ChocoTumac
+ */
+
 ini_set('display_errors', 0);
 session_start();
 
 require_once __DIR__ . '/../models/Proveedor.php';
 require_once __DIR__ . '/Redirectable.php';
 
-define("BASE_URL", "/chocoTumac/");
-/* 
- * Controlador ProveedorController
- * Maneja las acciones relacionadas con los proveedores, como crear, editar, actualizar y eliminar.
- * Verifica los permisos del usuario para cada acción y redirige con mensajes de éxito o error según corresponda. 
- */
-class ProveedorController {
+define('BASE_URL', '/chocoTumac/');
+
+class ProveedorController
+{
     use Redirectable;
 
+    /** @var Proveedor Instancia del modelo de proveedores */
+    private Proveedor $model;
 
-    private $model;
-    // Constructor que inicializa el modelo de proveedor
-    public function __construct() {
+    /** Inicializa el modelo de Proveedor. */
+    public function __construct()
+    {
         $this->model = new Proveedor();
     }
-    /*
-    * Método para verificar si el usuario tiene permisos para gestionar proveedores (crear o editar).
-    * Retorna true si el usuario tiene rol de administrador o editor, false en caso contrario.
-    */
-    private function puedeGestionar() {
-        return isset($_SESSION['user']) && in_array($_SESSION['user']['rol_id'], [1, 3]);
+
+    // ── Helpers de seguridad ─────────────────────────────────────────
+
+    /**
+     * Verifica si el usuario puede gestionar proveedores (crear/editar).
+     * Roles permitidos: Administrador (1) y Empleado (3).
+     */
+    private function puedeGestionar(): bool
+    {
+        return isset($_SESSION['user'])
+            && in_array($_SESSION['user']['rol_id'], [1, 3], true);
     }
-    /* Método para verificar si el usuario es administrador. Retorna true si el usuario tiene rol de administrador, false en caso contrario.    
-    */ 
-    private function esAdmin() {
-        return isset($_SESSION['user']) && $_SESSION['user']['rol_id'] == 1;
+
+    /**
+     * Verifica si el usuario es Administrador (rol_id = 1).
+     * Solo el admin puede eliminar registros.
+     */
+    private function esAdmin(): bool
+    {
+        return isset($_SESSION['user'])
+            && $_SESSION['user']['rol_id'] == 1;
     }
-    /* Método para verificar el token CSRF. Si el token no es válido, redirige a la página de proveedores con un mensaje de error. */
-    private function verificarCSRF() {
+
+    /**
+     * Valida el token CSRF enviado en el formulario.
+     * Redirige con error si no coincide.
+     */
+    private function verificarCSRF(): void
+    {
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
             $this->redirectError('proveedores', 'Petición no válida. Recarga la página.');
         }
     }
-    /* Método para validar los campos del formulario de proveedor. Retorna true si los datos son válidos o un mensaje de error si no lo son. */
-    private function camposDesdePost() {
+
+    /**
+     * Extrae y devuelve los campos del proveedor desde $_POST.
+     *
+     * @return array<string, string>
+     */
+    private function camposDesdePost(): array
+    {
         return [
             'nombre'           => $_POST['nombre']           ?? '',
             'tipo_doc'         => $_POST['tipo_doc']         ?? 'CC',
@@ -54,82 +84,116 @@ class ProveedorController {
             'departamento'     => $_POST['departamento']     ?? '',
         ];
     }
-    
-    
-    public function ejecutar() { // Método principal que maneja las acciones según la URL y los permisos del usuario
-        // Obtener la acción a realizar desde la URL
-        $accion = $_GET['action'] ?? '';
 
+    /**
+     * Verifica que el usuario pueda gestionar; redirige si no tiene permisos.
+     *
+     * @param string $msg Mensaje de error a mostrar.
+     */
+    private function requerirGestion(string $msg): void
+    {
+        if (!$this->puedeGestionar()) {
+            $this->redirectError('proveedores', $msg);
+        }
+    }
+
+    /**
+     * Verifica que el usuario sea administrador; redirige si no lo es.
+     *
+     * @param string $msg Mensaje de error a mostrar.
+     */
+    private function requerirAdmin(string $msg): void
+    {
+        if (!$this->esAdmin()) {
+            $this->redirectError('proveedores', $msg);
+        }
+    }
+
+    // ── Punto de entrada ─────────────────────────────────────────────
+
+    /**
+     * Lee 'action' de la URL y delega a cada método privado.
+     * Complejidad cognitiva: 2 (switch + default).
+     */
+    public function ejecutar(): void
+    {
         if (!isset($_SESSION['user'])) {
             $this->redirectError('login', 'Tu sesión ha expirado.');
         }
 
-        switch ($accion) {
-
-            /* 
-            *Acción para crear un nuevo proveedor. Verifica los permisos, valida el token CSRF y llama al método crear del modelo. Redirige con un mensaje de éxito o error según corresponda. 
-            */
-            case 'crear':
-                if (!$this->puedeGestionar()) {
-                    $this->redirectError('proveedores', 'No tienes permisos para crear proveedores.');
-                }
-                // Verificar token CSRF antes de procesar el formulario
-                $this->verificarCSRF();
-                $res = $this->model->crear($this->camposDesdePost());
-                if ($res === true) {
-                    $this->redirectOk('proveedores', 'creado');} else {
-                    $this->redirectError('proveedores', $res);}
-                break;
-
-            /* 
-            *Acción para mostrar el formulario de edición de un proveedor. Verifica los permisos y obtiene los datos del proveedor por su ID. Si el proveedor no existe, redirige con un mensaje de error. 
-            */
-            case 'editar':
-                if (!$this->puedeGestionar()) {
-                    $this->redirectError('proveedores', 'No tienes permisos para editar proveedores.');
-                }
-                // Obtener datos del proveedor a editar
-                $proveedor = $this->model->obtenerPorId($_GET['id'] ?? 0);
-                if (!$proveedor) {
-                    $this->redirectError('proveedores', 'Proveedor no encontrado.');
-                }
-                require_once __DIR__ . '/../views/editar_proveedor.php';
-                break;
-
-            /* 
-            *Acción para actualizar un proveedor existente. Verifica los permisos, valida el token CSRF y llama al método actualizar del modelo. Redirige con un mensaje de éxito o error según corresponda. 
-            */ 
-            case 'actualizar':
-                if (!$this->puedeGestionar()) {
-                    $this->redirectError('proveedores', 'No tienes permisos para editar proveedores.');
-                }
-                $this->verificarCSRF();
-                $res = $this->model->actualizar($_POST['id'] ?? 0, $this->camposDesdePost());
-                if ($res === true) {
-                    $this->redirectOk('proveedores', 'actualizado');} else {
-                    $this->redirectError('proveedores', $res);}
-                break;
-
-            /* 
-            *Acción para eliminar un proveedor. Verifica que el usuario sea administrador, obtiene los datos del proveedor por su ID y llama al método eliminar del modelo. Redirige con un mensaje de éxito o error según corresponda. 
-            */
-            case 'eliminar':
-                if (!$this->esAdmin()) {
-                    $this->redirectError('proveedores', 'Solo el administrador puede eliminar proveedores.');
-                }
-                // Obtener datos del proveedor a eliminar
-                $proveedor = $this->model->obtenerPorId($_GET['id'] ?? 0);
-                if (!$proveedor) {
-                    $this->redirectError('proveedores', 'Proveedor no encontrado.');
-                }
-                // Eliminar proveedor
-                $this->model->eliminar($_GET['id']);
-                $this->redirectOk('proveedores', 'eliminado');break;
-                    default:
+        switch ($_GET['action'] ?? '') {
+            case 'crear':      $this->crear();      break;
+            case 'editar':     $this->editar();     break;
+            case 'actualizar': $this->actualizar(); break;
+            case 'eliminar':   $this->eliminar();   break;
+            default:
                 $this->redirectError('proveedores', 'Acción no reconocida.');
                 break;
-}
+        }
+    }
+
+    // ── Acciones ─────────────────────────────────────────────────────
+
+    /**
+     * Crea un nuevo proveedor tras validar permisos y token CSRF.
+     */
+    private function crear(): void
+    {
+        $this->requerirGestion('No tienes permisos para crear proveedores.');
+        $this->verificarCSRF();
+
+        $res = $this->model->crear($this->camposDesdePost());
+
+        $res === true
+            ? $this->redirectOk('proveedores', 'creado')
+            : $this->redirectError('proveedores', $res);
+    }
+
+    /**
+     * Carga la vista de edición del proveedor indicado en $_GET['id'].
+     */
+    private function editar(): void
+    {
+        $this->requerirGestion('No tienes permisos para editar proveedores.');
+
+        $proveedor = $this->model->obtenerPorId((int)($_GET['id'] ?? 0));
+        if (!$proveedor) {
+            $this->redirectError('proveedores', 'Proveedor no encontrado.');
+        }
+
+        require_once __DIR__ . '/../views/editar_proveedor.php';
+    }
+
+    /**
+     * Actualiza los datos de un proveedor existente.
+     */
+    private function actualizar(): void
+    {
+        $this->requerirGestion('No tienes permisos para editar proveedores.');
+        $this->verificarCSRF();
+
+        $res = $this->model->actualizar((int)($_POST['id'] ?? 0), $this->camposDesdePost());
+
+        $res === true
+            ? $this->redirectOk('proveedores', 'actualizado')
+            : $this->redirectError('proveedores', $res);
+    }
+
+    /**
+     * Elimina un proveedor. Solo accesible para Administradores.
+     */
+    private function eliminar(): void
+    {
+        $this->requerirAdmin('Solo el administrador puede eliminar proveedores.');
+
+        $proveedor = $this->model->obtenerPorId((int)($_GET['id'] ?? 0));
+        if (!$proveedor) {
+            $this->redirectError('proveedores', 'Proveedor no encontrado.');
+        }
+
+        $this->model->eliminar((int)$_GET['id']);
+        $this->redirectOk('proveedores', 'eliminado');
     }
 }
-// Crear una instancia del controlador y ejecutar la acción correspondiente
+
 (new ProveedorController())->ejecutar();
