@@ -180,7 +180,10 @@ class UsuarioController {
                 }
                 $this->model->actualizarPassword($_POST['id'], password_hash($nueva, PASSWORD_BCRYPT, ['cost' => 12]));
                 $this->redirectOk('perfil', 'pass');break;
-        }
+                    default:
+                $this->redirectError('dashboard', 'Acción no reconocida.');
+                break;
+}
     }
 }
 

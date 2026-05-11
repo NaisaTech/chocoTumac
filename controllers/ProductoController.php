@@ -198,7 +198,10 @@ class ProductoController {
                     $this->redirectOk('inventario', 'ajuste_ok');} else {
                     $this->redirectError('inventario', $res);}
                 break;
-        }
+                    default:
+                $this->redirectError('inventario', 'Acción no reconocida.');
+                break;
+}
     }
 }
 
