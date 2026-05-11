@@ -7,6 +7,7 @@
  *
  * Acciones disponibles:
  *   - crear:      Registra un nuevo producto (solo admin)
+ *   - crearTipo:  Registra un nuevo tipo de producto (solo admin)
  *   - editar:     Carga la vista de edición (solo admin)
  *   - actualizar: Guarda cambios de un producto (solo admin)
  *   - ajuste:     Ajusta el stock inicial de un producto (solo admin)
@@ -27,36 +28,38 @@ require_once __DIR__ . '/../models/Producto.php';
 require_once __DIR__ . '/Redirectable.php';
 
 /** URL base del sistema para redirecciones */
-define("BASE_URL", "/chocoTumac/");
+define('BASE_URL', '/chocoTumac/');
 
-class ProductoController {
+class ProductoController
+{
     use Redirectable;
 
-
     /** @var Producto Instancia del modelo de productos */
-    private $model;
+    private Producto $model;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->model = new Producto();
     }
 
-    // ── Helpers de seguridad ──────────────────────────────────────────────
+    // ── Helpers de seguridad ─────────────────────────────────────────
 
     /**
      * Verifica que el usuario autenticado tenga rol de Administrador.
      *
-     * @return bool true si es admin, false si no
+     * @return bool true si es admin, false si no.
      */
-    private function esAdmin() {
+    private function esAdmin(): bool
+    {
         return isset($_SESSION['user']) && $_SESSION['user']['rol_id'] == 1;
     }
 
     /**
-     * Verifica que el token CSRF del formulario coincida con el de la sesión.
+     * Verifica que el token CSRF del formulario coincida con el de sesión.
      * Redirige con error si el token no es válido.
-     * Previene ataques de falsificación de petición entre sitios.
      */
-    private function verificarCSRF() {
+    private function verificarCSRF(): void
+    {
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
             $this->redirectError('inventario', 'Petición no válida. Recarga la página.');
         }
@@ -66,142 +69,154 @@ class ProductoController {
      * Verifica que exista una sesión activa.
      * Redirige al login si no hay sesión.
      */
-    private function verificarSesion() {
+    private function verificarSesion(): void
+    {
         if (!isset($_SESSION['user'])) {
             $this->redirectError('login', 'Tu sesión ha expirado.');
         }
     }
 
-    // ── Acciones ──────────────────────────────────────────────────────────
+    /**
+     * Verifica que el usuario sea administrador.
+     * Redirige con el mensaje indicado si no tiene permisos.
+     *
+     * @param string $msg Mensaje de error a mostrar.
+     */
+    private function requerirAdmin(string $msg): void
+    {
+        if (!$this->esAdmin()) {
+            $this->redirectError('inventario', $msg);
+        }
+    }
+
+    // ── Punto de entrada ─────────────────────────────────────────────
 
     /**
-     * Punto de entrada del controlador.
-     * Lee el parámetro 'action' de la URL y ejecuta la acción correspondiente.
+     * Lee el parámetro 'action' de la URL y delega a cada método privado.
+     * Complejidad cognitiva: 2 (solo el switch + default).
      */
-    public function ejecutar() {
-        $accion = $_GET['action'] ?? '';
+    public function ejecutar(): void
+    {
         $this->verificarSesion();
 
-        switch ($accion) {
-
-            /**
-             * Acción: crear
-             * Registra un nuevo producto en el catálogo.
-             * Solo administradores. Requiere token CSRF válido.
-             */
-            case 'crear':
-                if (!$this->esAdmin()) {
-                    $this->redirectError('inventario', 'Solo el administrador puede crear productos.');
-                }
-                $this->verificarCSRF();
-
-                $res = $this->model->crear([
-                    'nombre'        => $_POST['nombre']        ?? '',
-                    'tipo_id'       => $_POST['tipo_id']       ?? '',
-                    'presentacion'  => $_POST['presentacion']  ?? '',
-                    'stock_inicial' => $_POST['stock_inicial'] ?? 0,
-                    'stock_minimo'  => $_POST['stock_minimo']  ?? 0,
-                    'precio_venta'  => $_POST['precio_venta']  ?? 0,
-                ]);
-
-                if ($res === true) {
-                    $this->redirectOk('inventario', 'producto_creado');} else {
-                    $this->redirectError('inventario', $res);}
-                break;
-
-            /**
-             * Acción: crearTipo
-             * Registra un nuevo tipo de producto (solo admin).
-             */
-            case 'crearTipo':
-                if (!$this->esAdmin()) {
-                    $this->redirectError('inventario', 'Solo el administrador puede crear tipos de producto.');
-                }
-                $this->verificarCSRF();
-
-                $res = $this->model->crearTipo([
-                    'nombre'                => $_POST['nombre']                ?? '',
-                    'unidad'                => $_POST['unidad']                ?? 'kg',
-                    'unidad_venta'          => $_POST['unidad_venta']          ?? 'und',
-                    'requiere_presentacion' => $_POST['requiere_presentacion'] ?? null,
-                    'descripcion'           => $_POST['descripcion']           ?? '',
-                ]);
-
-                if ($res === true) {
-                    $this->redirectOk('inventario', 'tipo_creado');} else {
-                    $this->redirectError('inventario', $res);}
-                break;
-
-            /**
-             * Acción: editar
-             * Carga la vista de edición de un producto.
-             * Solo administradores. Recibe el ID por GET.
-             */
-            case 'editar':
-                if (!$this->esAdmin()) {
-                    $this->redirectError('inventario', 'Solo el administrador puede editar productos.');
-                }
-
-                $producto = $this->model->obtenerPorId($_GET['id'] ?? 0);
-                if (!$producto) {
-                    $this->redirectError('inventario', 'Producto no encontrado.');
-                }
-
-                // Redirigir a index.php para que tenga el contexto completo (sesión, navbar, variables)
-                $this->redirect("index.php?view=editar_producto&id=" . (int)($_GET['id'] ?? 0));
-                exit();
-
-            /**
-             * Acción: actualizar
-             * Guarda los cambios de un producto editado.
-             * Solo administradores. Requiere token CSRF válido.
-             */
-            case 'actualizar':
-                if (!$this->esAdmin()) {
-                    $this->redirectError('inventario', 'Solo el administrador puede editar productos.');
-                }
-                $this->verificarCSRF();
-
-                $res = $this->model->actualizar($_POST['id'] ?? 0, [
-                    'nombre'        => $_POST['nombre']        ?? '',
-                    'tipo_id'       => $_POST['tipo_id']       ?? '',
-                    'presentacion'  => $_POST['presentacion']  ?? '',
-                    'stock_minimo'  => $_POST['stock_minimo']  ?? 0,
-                    'precio_venta'  => $_POST['precio_venta']  ?? 0,
-                    'activo'        => isset($_POST['activo']) ? 1 : 0,
-                ]);
-
-                if ($res === true) {
-                    $this->redirectOk('inventario', 'producto_actualizado');} else {
-                    $this->redirectError('inventario', $res);}
-                break;
-
-            /**
-             * Acción: ajuste
-             * Establece el stock de un producto a una cantidad específica.
-             * Usado para carga inicial o corrección manual.
-             * Solo administradores. Requiere token CSRF válido.
-             */
-            case 'ajuste':
-                if (!$this->esAdmin()) {
-                    $this->redirectError('inventario', 'Solo el administrador puede ajustar el stock.');
-                }
-                $this->verificarCSRF();
-
-                $res = $this->model->ajusteInicial(
-                    $_POST['producto_id'] ?? 0,
-                    $_POST['cantidad']    ?? 0,
-                    $_SESSION['user']['id']
-                );
-
-                if ($res === true) {
-                    $this->redirectOk('inventario', 'ajuste_ok');} else {
-                    $this->redirectError('inventario', $res);}
-                break;
-                    default:
+        switch ($_GET['action'] ?? '') {
+            case 'crear':      $this->crear();      break;
+            case 'crearTipo':  $this->crearTipo();  break;
+            case 'editar':     $this->editar();      break;
+            case 'actualizar': $this->actualizar(); break;
+            case 'ajuste':     $this->ajuste();     break;
+            default:
                 $this->redirectError('inventario', 'Acción no reconocida.');
                 break;
-}
+        }
+    }
+
+    // ── Acciones ─────────────────────────────────────────────────────
+
+    /**
+     * Registra un nuevo producto en el catálogo.
+     * Solo administradores. Requiere token CSRF válido.
+     */
+    private function crear(): void
+    {
+        $this->requerirAdmin('Solo el administrador puede crear productos.');
+        $this->verificarCSRF();
+
+        $res = $this->model->crear([
+            'nombre'        => $_POST['nombre']        ?? '',
+            'tipo_id'       => $_POST['tipo_id']       ?? '',
+            'presentacion'  => $_POST['presentacion']  ?? '',
+            'stock_inicial' => $_POST['stock_inicial'] ?? 0,
+            'stock_minimo'  => $_POST['stock_minimo']  ?? 0,
+            'precio_venta'  => $_POST['precio_venta']  ?? 0,
+        ]);
+
+        $res === true
+            ? $this->redirectOk('inventario', 'producto_creado')
+            : $this->redirectError('inventario', $res);
+    }
+
+    /**
+     * Registra un nuevo tipo de producto en el catálogo.
+     * Solo administradores. Requiere token CSRF válido.
+     */
+    private function crearTipo(): void
+    {
+        $this->requerirAdmin('Solo el administrador puede crear tipos de producto.');
+        $this->verificarCSRF();
+
+        $res = $this->model->crearTipo([
+            'nombre'                => $_POST['nombre']                ?? '',
+            'unidad'                => $_POST['unidad']                ?? 'kg',
+            'unidad_venta'          => $_POST['unidad_venta']          ?? 'und',
+            'requiere_presentacion' => $_POST['requiere_presentacion'] ?? null,
+            'descripcion'           => $_POST['descripcion']           ?? '',
+        ]);
+
+        $res === true
+            ? $this->redirectOk('inventario', 'tipo_creado')
+            : $this->redirectError('inventario', $res);
+    }
+
+    /**
+     * Carga la vista de edición de un producto existente.
+     * Solo administradores. Recibe el ID del producto por GET.
+     */
+    private function editar(): void
+    {
+        $this->requerirAdmin('Solo el administrador puede editar productos.');
+
+        $producto = $this->model->obtenerPorId((int)($_GET['id'] ?? 0));
+        if (!$producto) {
+            $this->redirectError('inventario', 'Producto no encontrado.');
+        }
+
+        // Redirige a index.php para tener contexto completo (sesión, navbar, variables)
+        $this->redirect('index.php?view=editar_producto&id=' . (int)($_GET['id'] ?? 0));
+    }
+
+    /**
+     * Guarda los cambios de un producto editado.
+     * Solo administradores. Requiere token CSRF válido.
+     */
+    private function actualizar(): void
+    {
+        $this->requerirAdmin('Solo el administrador puede editar productos.');
+        $this->verificarCSRF();
+
+        $res = $this->model->actualizar((int)($_POST['id'] ?? 0), [
+            'nombre'        => $_POST['nombre']        ?? '',
+            'tipo_id'       => $_POST['tipo_id']       ?? '',
+            'presentacion'  => $_POST['presentacion']  ?? '',
+            'stock_minimo'  => $_POST['stock_minimo']  ?? 0,
+            'precio_venta'  => $_POST['precio_venta']  ?? 0,
+            'activo'        => isset($_POST['activo']) ? 1 : 0,
+        ]);
+
+        $res === true
+            ? $this->redirectOk('inventario', 'producto_actualizado')
+            : $this->redirectError('inventario', $res);
+    }
+
+    /**
+     * Establece el stock de un producto a una cantidad específica.
+     * Usado para carga inicial o corrección manual de stock.
+     * Solo administradores. Requiere token CSRF válido.
+     */
+    private function ajuste(): void
+    {
+        $this->requerirAdmin('Solo el administrador puede ajustar el stock.');
+        $this->verificarCSRF();
+
+        $res = $this->model->ajusteInicial(
+            (int)($_POST['producto_id'] ?? 0),
+            (float)($_POST['cantidad']  ?? 0),
+            (int)$_SESSION['user']['id']
+        );
+
+        $res === true
+            ? $this->redirectOk('inventario', 'ajuste_ok')
+            : $this->redirectError('inventario', $res);
     }
 }
 
