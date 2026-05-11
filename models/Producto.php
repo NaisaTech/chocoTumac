@@ -44,10 +44,15 @@ class Producto {
      * Genera el slug automáticamente desde el nombre.
      */
     public function crearTipo($data) {
-        if (empty(trim($data['nombre']))) return "El nombre del tipo es obligatorio.";
-        if (!in_array($data['unidad'], ['kg','g','lb','und'])) return "Unidad de inventario no válida.";
-        if (!in_array($data['unidad_venta'], ['kg','g','lb','und'])) return "Unidad de venta no válida.";
-
+        if (empty(trim($data['nombre']))) {
+            return "El nombre del tipo es obligatorio.";
+        }
+        if (!in_array($data['unidad'], ['kg','g','lb','und'])) {
+            return "Unidad de inventario no válida.";
+        }
+        if (!in_array($data['unidad_venta'], ['kg','g','lb','und'])) {
+            return "Unidad de venta no válida.";
+        }
         $slug = strtolower(trim($data['nombre']));
         $slug = preg_replace('/\s+/', '_', $slug);
         $slug = preg_replace('/[^a-z0-9_]/', '', $slug);
@@ -55,8 +60,9 @@ class Producto {
 
         $check = $this->conn->prepare("SELECT id FROM tipos_producto WHERE slug = ?");
         $check->execute([$slug]);
-        if ($check->fetch()) return "Ya existe un tipo con ese nombre. Usa uno diferente.";
-
+        if ($check->fetch()) {
+            return "Ya existe un tipo con ese nombre. Usa uno diferente.";
+        }
         $this->conn->prepare("
             INSERT INTO tipos_producto
                 (nombre, slug, unidad, unidad_venta, requiere_presentacion, descripcion)
@@ -71,10 +77,15 @@ class Producto {
     }
 
     public function actualizarTipo($id, $data) {
-        if (empty(trim($data['nombre']))) return "El nombre del tipo es obligatorio.";
-        if (!in_array($data['unidad'], ['kg','g','lb','und'])) return "Unidad de inventario no válida.";
-        if (!in_array($data['unidad_venta'], ['kg','g','lb','und'])) return "Unidad de venta no válida.";
-
+        if (empty(trim($data['nombre']))) {
+            return "El nombre del tipo es obligatorio.";
+        }
+        if (!in_array($data['unidad'], ['kg','g','lb','und'])) {
+            return "Unidad de inventario no válida.";
+        }
+        if (!in_array($data['unidad_venta'], ['kg','g','lb','und'])) {
+            return "Unidad de venta no válida.";
+        }
         $this->conn->prepare("
             UPDATE tipos_producto
             SET nombre=?, unidad=?, unidad_venta=?, requiere_presentacion=?, descripcion=?, activo=?
@@ -93,13 +104,22 @@ class Producto {
 
     private function validarCampos($data) {
         if (empty(trim($data['nombre'])))    return "El nombre del producto es obligatorio.";
-        if (strlen(trim($data['nombre'])) < 2) return "El nombre debe tener al menos 2 caracteres.";
-        if (empty($data['tipo_id']) || !is_numeric($data['tipo_id'])) return "Selecciona un tipo de producto.";
-        if (!is_numeric($data['stock_minimo']) || (float)$data['stock_minimo'] < 0) return "El stock mínimo debe ser ≥ 0.";
-        if (!is_numeric($data['precio_venta']) || (float)$data['precio_venta'] < 0) return "El precio de venta debe ser ≥ 0.";
-
+        if (strlen(trim($data['nombre'])) < 2) {
+            return "El nombre debe tener al menos 2 caracteres.";
+        }
+        if (empty($data['tipo_id']) || !is_numeric($data['tipo_id'])) {
+            return "Selecciona un tipo de producto.";
+        }
+        if (!is_numeric($data['stock_minimo']) || (float)$data['stock_minimo'] < 0) {
+            return "El stock mínimo debe ser ≥ 0.";
+        }
+        if (!is_numeric($data['precio_venta']) || (float)$data['precio_venta'] < 0) {
+            return "El precio de venta debe ser ≥ 0.";
+        }
         $tipo = $this->obtenerTipoPorId($data['tipo_id']);
-        if (!$tipo) return "El tipo de producto no existe.";
+        if (!$tipo) {
+            return "El tipo de producto no existe.";
+        }
         if ($tipo['requiere_presentacion'] && empty(trim($data['presentacion'] ?? ''))) {
             return "La presentación es obligatoria para el tipo '{$tipo['nombre']}'.";
         }
@@ -154,14 +174,17 @@ class Producto {
     public function crear($data) {
         $data = array_map('trim', $data);
         $val  = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         $tipo   = $this->obtenerTipoPorId($data['tipo_id']);
         $unidad = $tipo['unidad'];
 
         // Validar stock inicial según unidad
         $stock_inicial = (float)($data['stock_inicial'] ?? 0);
-        if ($stock_inicial < 0) return "El stock inicial no puede ser negativo.";
+        if ($stock_inicial < 0) {
+            return "El stock inicial no puede ser negativo.";
+        }
         if ($unidad === 'und' && floor($stock_inicial) != $stock_inicial) {
             return "El stock inicial debe ser un número entero para productos por unidad.";
         }
@@ -196,8 +219,9 @@ class Producto {
     public function actualizar($id, $data) {
         $data = array_map('trim', $data);
         $val  = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         $tipo = $this->obtenerTipoPorId($data['tipo_id']);
         $this->conn->prepare("
             UPDATE productos
@@ -218,10 +242,13 @@ class Producto {
     // ── Control de inventario ─────────────────────────────────────────────
 
     public function ajusteInicial($id, $cantidad, $usuario_id) {
-        if (!is_numeric($cantidad) || (float)$cantidad < 0) return "La cantidad debe ser ≥ 0.";
+        if (!is_numeric($cantidad) || (float)$cantidad < 0) {
+            return "La cantidad debe ser ≥ 0.";
+        }
         $producto = $this->obtenerPorId($id);
-        if (!$producto) return "Producto no encontrado.";
-
+        if (!$producto) {
+            return "Producto no encontrado.";
+        }
         $stock_antes   = (float)$producto['stock_actual'];
         $stock_despues = (float)$cantidad;
 
@@ -234,8 +261,9 @@ class Producto {
 
     public function incrementarStock($id, $cantidad, $unidad, $compra_id, $usuario_id) {
         $producto = $this->obtenerPorId($id);
-        if (!$producto) return false;
-
+        if (!$producto) {
+            return false;
+        }
         $stock_antes   = (float)$producto['stock_actual'];
         $stock_despues = $stock_antes + (float)$cantidad;
 
@@ -248,8 +276,9 @@ class Producto {
 
     public function decrementarStock($id, $cantidad, $venta_id, $usuario_id) {
         $producto = $this->obtenerPorId($id);
-        if (!$producto) return "Producto no encontrado.";
-
+        if (!$producto) {
+            return "Producto no encontrado.";
+        }
         $stock_antes = (float)$producto['stock_actual'];
         if ($stock_antes < (float)$cantidad) {
             return "Stock insuficiente. Disponible: {$stock_antes} {$producto['unidad']}. "
