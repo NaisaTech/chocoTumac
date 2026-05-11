@@ -107,12 +107,14 @@ class Compra {
      */
     public function crear($data, $usuario_id) {
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         // Verificar que el producto existe
         $producto = $this->modelProducto->obtenerPorId($data['producto_id']);
-        if (!$producto) return "Producto no encontrado.";
-
+        if (!$producto) {
+            return "Producto no encontrado.";
+        }
         $cantidad        = (float)$data['cantidad'];
         $precio_unitario = (float)$data['precio_unitario'];
         $total           = round($cantidad * $precio_unitario, 2);
@@ -206,8 +208,9 @@ class Compra {
      */
     public function eliminar($id, $usuario_id) {
         $compra = $this->obtenerPorId($id);
-        if (!$compra) return "Compra no encontrada.";
-
+        if (!$compra) {
+            return "Compra no encontrada.";
+        }
         // Revertir el stock: descontar la cantidad que había entrado
         $producto      = $this->modelProducto->obtenerPorId($compra['producto_id']);
         $stock_antes   = (float)$producto['stock_actual'];

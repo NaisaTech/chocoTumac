@@ -87,8 +87,9 @@ class Cliente {
         $data = array_map('trim', $data);
 
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         if ($this->existeDoc($data['tipo_doc'], $data['num_doc'])) {
             return "Ya existe un cliente con ese tipo y número de documento.";
         }
@@ -129,8 +130,9 @@ class Cliente {
         $data = array_map('trim', $data);
 
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         if ($this->existeDoc($data['tipo_doc'], $data['num_doc'], $id)) {
             return "Ya existe otro cliente con ese tipo y número de documento.";
         }
