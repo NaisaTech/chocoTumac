@@ -122,16 +122,18 @@ class Venta {
      */
     public function crear($data, $usuario_id) {
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         $cantidad        = (float)$data['cantidad'];
         $precio_unitario = (float)$data['precio_unitario'];
         $total           = round($cantidad * $precio_unitario, 2);
 
         // Verificar stock ANTES de insertar
         $producto = $this->modelProducto->obtenerPorId($data['producto_id']);
-        if (!$producto) return "Producto no encontrado.";
-
+        if (!$producto) {
+            return "Producto no encontrado.";
+        }
         if ((float)$producto['stock_actual'] < $cantidad) {
             return "Stock insuficiente. Stock disponible: "
                  . number_format($producto['stock_actual'], 2) . " " . $producto['unidad']
@@ -281,8 +283,9 @@ class Venta {
      */
     public function eliminar($id, $usuario_id) {
         $venta = $this->obtenerPorId($id);
-        if (!$venta) return "Venta no encontrada.";
-
+        if (!$venta) {
+            return "Venta no encontrada.";
+        }
         // Restaurar stock
         $producto      = $this->modelProducto->obtenerPorId($venta['producto_id']);
         $stock_antes   = (float)$producto['stock_actual'];
