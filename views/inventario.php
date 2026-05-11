@@ -79,7 +79,7 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require 'views/layout/navbar.php'; ?>
+<?php require_once 'views/layout/navbar.php'; ?>
 
 <div class="container mt-4">
 
@@ -128,15 +128,15 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
             <div class="row g-2 mb-2">
                 <!-- Nombre -->
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Nombre <span class="text-danger">*</span></label>
-                    <input class="form-control" name="nombre"
+                    <label for="fld-nombre" class="form-label small fw-semibold">Nombre <span class="text-danger">*</span></label>
+                    <input id="fld-nombre" class="form-control" name="nombre"
                            placeholder="Ej: Chocolate de Mesa 750g" required minlength="2">
                     <div class="invalid-feedback">El nombre es obligatorio.</div>
                 </div>
                 <!-- Tipo (dinámico desde BD) -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Tipo <span class="text-danger">*</span></label>
-                    <select class="form-select" name="tipo_id" id="sel-tipo" required>
+                    <label for="fld-tipo_id" class="form-label small fw-semibold">Tipo <span class="text-danger">*</span></label>
+                    <select id="fld-tipo_id" class="form-select" name="tipo_id" id="sel-tipo" required>
                         <option value="">— Selecciona tipo —</option>
                         <?php foreach ($tipos_activos as $t): ?>
                         <option value="<?= $t['id'] ?>"
@@ -149,8 +149,8 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
                 </div>
                 <!-- Presentación (condicional según el tipo) -->
                 <div class="col-md-2" id="div-presentacion" style="display:none;">
-                    <label class="form-label small fw-semibold">Presentación</label>
-                    <input class="form-control" name="presentacion" id="inp-presentacion"
+                    <label for="fld-presentacion" class="form-label small fw-semibold">Presentación</label>
+                    <input id="fld-presentacion" class="form-control" name="presentacion" id="inp-presentacion"
                            placeholder="Ej: 750g">
                     <div class="form-text text-muted" style="font-size:.7rem;">
                         Peso o tamaño del empaque
@@ -158,7 +158,7 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
                 </div>
                 <!-- Unidad (automática según tipo, solo lectura) -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Unidad</label>
+                    <label for="fld-unidad-aj" class="form-label small fw-semibold">Unidad</label>
                     <input class="form-control text-center fw-bold" type="text"
                            id="txt-unidad-inv" readonly value="—"
                            style="background:#f8f3ec; color:#5C3317;"
@@ -169,21 +169,21 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
                 </div>
                 <!-- Stock mínimo -->
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">Stock mín.</label>
-                    <input class="form-control" name="stock_minimo" type="number"
+                    <label for="fld-stock_minimo" class="form-label small fw-semibold">Stock mín.</label>
+                    <input id="fld-stock_minimo" class="form-control" name="stock_minimo" type="number"
                            min="0" step="0.01" value="0" placeholder="0">
                 </div>
                 <!-- Stock inicial -->
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">Stock inicial</label>
-                    <input class="form-control" name="stock_inicial" id="inp-stock-inicial"
+                    <label for="fld-stock_inicial" class="form-label small fw-semibold">Stock inicial</label>
+                    <input id="fld-stock_inicial" class="form-control" name="stock_inicial" id="inp-stock-inicial"
                            type="number" min="0" step="0.01" value="0" placeholder="0">
                     <div class="form-text text-muted" style="font-size:.7rem;">Opcional</div>
                 </div>
                 <!-- Precio venta -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Precio venta ($)</label>
-                    <input class="form-control" name="precio_venta" type="number"
+                    <label for="fld-precio_venta" class="form-label small fw-semibold">Precio venta ($)</label>
+                    <input id="fld-precio_venta" class="form-control" name="precio_venta" type="number"
                            min="0" step="0.01" value="0" placeholder="0.00">
                 </div>
             </div>
@@ -207,12 +207,12 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <div class="row g-2 align-items-end">
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Nombre del tipo <span class="text-danger">*</span></label>
-                    <input class="form-control" name="nombre" placeholder="Ej: Cacao en pasta" required>
+                    <label for="fld-nombre" class="form-label small fw-semibold">Nombre del tipo <span class="text-danger">*</span></label>
+                    <input id="fld-nombre" class="form-control" name="nombre" placeholder="Ej: Cacao en pasta" required>
                 </div>
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">Unidad inv.</label>
-                    <select class="form-select" name="unidad">
+                    <label for="fld-unidad" class="form-label small fw-semibold">Unidad inv.</label>
+                    <select id="fld-unidad" class="form-select" name="unidad">
                         <option value="kg">kg – Kilogramos</option>
                         <option value="g">g – Gramos</option>
                         <option value="und">und – Unidades</option>
@@ -220,8 +220,8 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
                     </select>
                 </div>
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">Unidad venta</label>
-                    <select class="form-select" name="unidad_venta">
+                    <label for="fld-unidad_venta" class="form-label small fw-semibold">Unidad venta</label>
+                    <select id="fld-unidad_venta" class="form-select" name="unidad_venta">
                         <option value="und">und – Unidades</option>
                         <option value="kg">kg – Kilogramos</option>
                         <option value="g">g – Gramos</option>
@@ -229,8 +229,8 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Descripción</label>
-                    <input class="form-control" name="descripcion" placeholder="Opcional">
+                    <label for="fld-descripcion" class="form-label small fw-semibold">Descripción</label>
+                    <input id="fld-descripcion" class="form-control" name="descripcion" placeholder="Opcional">
                 </div>
                 <div class="col-md-2 d-flex align-items-center gap-2 pt-3">
                     <div class="form-check mb-0">
@@ -300,8 +300,8 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
 
             <div class="row g-2 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Producto <span class="text-danger">*</span></label>
-                    <select class="form-select" name="producto_id" required>
+                    <label for="fld-producto_id" class="form-label small fw-semibold">Producto <span class="text-danger">*</span></label>
+                    <select id="fld-producto_id" class="form-select" name="producto_id" required>
                         <option value="">— Selecciona un producto —</option>
                         <?php foreach ($productos as $prod): ?>
                         <option value="<?= $prod['id'] ?>">
@@ -312,8 +312,8 @@ $tipos_activos = array_filter($tipos_producto, fn($t) => $t['activo']);
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Nuevo stock <span class="text-danger">*</span></label>
-                    <input class="form-control" name="cantidad" type="number"
+                    <label for="fld-cantidad" class="form-label small fw-semibold">Nuevo stock <span class="text-danger">*</span></label>
+                    <input id="fld-cantidad" class="form-control" name="cantidad" type="number"
                            min="0" step="0.01" placeholder="0.00" required>
                 </div>
                 <div class="col-md-auto">

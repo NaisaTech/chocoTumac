@@ -33,7 +33,7 @@ $rol         = $_SESSION['user']['rol_id'];
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require 'views/layout/navbar.php'; ?>
+<?php require_once 'views/layout/navbar.php'; ?>
 
 <!-- La sección de encabezado de la página muestra el título "Proveedores de Cacao" y, si el usuario tiene un rol de solo lectura (rol_id = 2), se muestra una etiqueta indicando "Solo lectura". Esto proporciona una navegación clara para el usuario, indicando la sección actual de la aplicación y cualquier restricción de acceso que pueda tener según su rol. El título indica claramente el contenido de la página, mientras que la etiqueta de solo lectura informa al usuario sobre las limitaciones en sus acciones dentro de esta sección. -->
 <div class="container mt-4">
@@ -81,14 +81,14 @@ $rol         = $_SESSION['user']['rol_id'];
             <div class="row g-2 mb-2">
                 <!-- Nombre -->
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Nombre / Razón social <span class="text-danger">*</span></label>
-                    <input class="form-control" name="nombre" placeholder="Nombre o empresa" required minlength="2">
+                    <label for="fld-nombre" class="form-label small fw-semibold">Nombre / Razón social <span class="text-danger">*</span></label>
+                    <input id="fld-nombre" class="form-control" name="nombre" placeholder="Nombre o empresa" required minlength="2">
                     <div class="invalid-feedback">El nombre es obligatorio.</div>
                 </div>
                 <!-- Tipo doc -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Tipo doc. <span class="text-danger">*</span></label>
-                    <select class="form-select" name="tipo_doc" id="tipo_doc_prov" required>
+                    <label for="fld-tipo_doc" class="form-label small fw-semibold">Tipo doc. <span class="text-danger">*</span></label>
+                    <select id="fld-tipo_doc" class="form-select" name="tipo_doc" id="tipo_doc_prov" required>
                         <option value="CC">CC</option>
                         <option value="NIT">NIT</option>
                         <option value="CE">CE</option>
@@ -97,20 +97,20 @@ $rol         = $_SESSION['user']['rol_id'];
                 </div>
                 <!-- Número doc -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">N° documento <span class="text-danger">*</span></label>
-                    <input class="form-control" name="num_doc" placeholder="Ej: 12345678" required
+                    <label for="fld-num_doc" class="form-label small fw-semibold">N° documento <span class="text-danger">*</span></label>
+                    <input id="fld-num_doc" class="form-control" name="num_doc" placeholder="Ej: 12345678" required
                            pattern="[0-9\-]+" title="Solo números y guiones">
                     <div class="invalid-feedback">Ingresa el número de documento.</div>
                 </div>
                 <!-- DV NIT -->
                 <div class="col-md-1" id="div_digito_prov" style="display:none;">
-                    <label class="form-label small fw-semibold">DV</label>
-                    <input class="form-control" name="digito_ver" placeholder="0" maxlength="1" pattern="[0-9]">
+                    <label for="fld-digito_ver" class="form-label small fw-semibold">DV</label>
+                    <input id="fld-digito_ver" class="form-control" name="digito_ver" placeholder="0" maxlength="1" pattern="[0-9]">
                 </div>
                 <!-- Tipo proveedor -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Tipo proveedor <span class="text-danger">*</span></label>
-                    <select class="form-select" name="tipo_proveedor" required>
+                    <label for="fld-tipo_proveedor" class="form-label small fw-semibold">Tipo proveedor <span class="text-danger">*</span></label>
+                    <select id="fld-tipo_proveedor" class="form-select" name="tipo_proveedor" required>
                         <option value="Agricultor">Agricultor</option>
                         <option value="Intermediario">Intermediario</option>
                         <option value="Cooperativa">Cooperativa</option>
@@ -119,36 +119,36 @@ $rol         = $_SESSION['user']['rol_id'];
                 </div>
                 <!-- Persona de contacto -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Persona de contacto</label>
-                    <input class="form-control" name="persona_contacto" placeholder="Nombre contacto">
+                    <label for="fld-persona_contacto" class="form-label small fw-semibold">Persona de contacto</label>
+                    <input id="fld-persona_contacto" class="form-control" name="persona_contacto" placeholder="Nombre contacto">
                 </div>
             </div>
 
             <div class="row g-2 mb-3">
                 <!-- Teléfono -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Teléfono</label>
-                    <input class="form-control" name="telefono" placeholder="3001234567">
+                    <label for="fld-telefono" class="form-label small fw-semibold">Teléfono</label>
+                    <input id="fld-telefono" class="form-control" name="telefono" placeholder="3001234567">
                 </div>
                 <!-- Email -->
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Correo electrónico</label>
-                    <input class="form-control" type="email" name="email" placeholder="correo@ejemplo.com">
+                    <label for="fld-email" class="form-label small fw-semibold">Correo electrónico</label>
+                    <input id="fld-email" class="form-control" type="email" name="email" placeholder="correo@ejemplo.com">
                 </div>
                 <!-- Dirección -->
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Dirección</label>
-                    <input class="form-control" name="direccion" placeholder="Dirección">
+                    <label for="fld-direccion" class="form-label small fw-semibold">Dirección</label>
+                    <input id="fld-direccion" class="form-control" name="direccion" placeholder="Dirección">
                 </div>
                 <!-- Ciudad -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Ciudad</label>
-                    <input class="form-control" name="ciudad" placeholder="Ej: Tumaco">
+                    <label for="fld-ciudad" class="form-label small fw-semibold">Ciudad</label>
+                    <input id="fld-ciudad" class="form-control" name="ciudad" placeholder="Ej: Tumaco">
                 </div>
                 <!-- Departamento -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Departamento</label>
-                    <input class="form-control" name="departamento" placeholder="Ej: Nariño">
+                    <label for="fld-departamento" class="form-label small fw-semibold">Departamento</label>
+                    <input id="fld-departamento" class="form-control" name="departamento" placeholder="Ej: Nariño">
                 </div>
                 <div class="col-md-auto d-flex align-items-end">
                     <button class="btn btn-ct-primary px-4">Registrar</button>

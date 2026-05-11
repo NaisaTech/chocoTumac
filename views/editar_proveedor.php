@@ -23,7 +23,7 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3]))
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require __DIR__ . '/layout/navbar.php'; ?>
+<?php require_once __DIR__ . '/layout/navbar.php'; ?>
 <!-- La sección de encabezado de la página muestra el título "Editar Proveedor" y un botón para volver a la lista de proveedores. Esto proporciona una navegación clara para el usuario, permitiéndole regresar fácilmente a la vista principal de proveedores después de editar la información. El título indica claramente la acción que se está realizando, mientras que el botón de volver mejora la usabilidad al ofrecer una forma rápida de regresar sin necesidad de usar el navegador. -->
 <div class="container mt-4" style="max-width:800px;">
     <div class="page-header">
@@ -39,34 +39,34 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3]))
             <!-- Este bloque maneja los datos obligatorios para identificar al proveedor, como el nombre, tipo y número de documento, tipo de proveedor y dígito de verificación (si aplica). Estos campos son esenciales para la gestión de proveedores en la aplicación, ya que permiten identificar de manera única a cada proveedor y clasificarlo según su tipo. Al enviar el formulario, se envía una solicitud POST al ProveedorController para actualizar estos datos en la base de datos. Esto asegura que la información crítica del proveedor esté actualizada y sea precisa. -->
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Nombre / Razón social <span class="text-danger">*</span></label>
-                    <input class="form-control" name="nombre" value="<?= htmlspecialchars($proveedor['nombre']) ?>" required minlength="2">
+                    <label for="fld-nombre" class="form-label fw-semibold">Nombre / Razón social <span class="text-danger">*</span></label>
+                    <input id="fld-nombre" class="form-control" name="nombre" value="<?= htmlspecialchars($proveedor['nombre']) ?>" required minlength="2">
                     <div class="invalid-feedback">El nombre es obligatorio.</div>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label fw-semibold">Tipo doc. <span class="text-danger">*</span></label>
-                    <select class="form-select" name="tipo_doc" id="tipo_doc_prov_edit" required>
+                    <label for="fld-tipo_doc" class="form-label fw-semibold">Tipo doc. <span class="text-danger">*</span></label>
+                    <select id="fld-tipo_doc" class="form-select" name="tipo_doc" id="tipo_doc_prov_edit" required>
                         <?php foreach (['CC','NIT','CE','Pasaporte'] as $t): ?>
                         <option value="<?= $t ?>" <?= $proveedor['tipo_doc'] === $t ? 'selected' : '' ?>><?= $t ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label fw-semibold">N° documento <span class="text-danger">*</span></label>
-                    <input class="form-control" name="num_doc" value="<?= htmlspecialchars($proveedor['num_doc']) ?>"
+                    <label for="fld-num_doc" class="form-label fw-semibold">N° documento <span class="text-danger">*</span></label>
+                    <input id="fld-num_doc" class="form-control" name="num_doc" value="<?= htmlspecialchars($proveedor['num_doc']) ?>"
                            required pattern="[0-9\-]+" title="Solo números y guiones">
                     <div class="invalid-feedback">Obligatorio.</div>
                 </div>
                 <!-- El campo de dígito de verificación (DV) solo se muestra si el tipo de documento seleccionado es "NIT". Esto se maneja mediante JavaScript que muestra u oculta el campo según la selección del usuario. El DV es un número adicional utilizado para validar el NIT en Colombia, por lo que solo es relevante para proveedores que utilizan este tipo de documento. Al incluir esta lógica, se mejora la usabilidad del formulario al mostrar solo los campos relevantes según la selección del usuario. -->
                 <div class="col-md-1" id="div_dv_prov_edit" style="display:<?= $proveedor['tipo_doc'] === 'NIT' ? '' : 'none' ?>">
-                    <label class="form-label fw-semibold">DV</label>
-                    <input class="form-control" name="digito_ver" value="<?= htmlspecialchars($proveedor['digito_ver'] ?? '') ?>"
+                    <label for="fld-digito_ver" class="form-label fw-semibold">DV</label>
+                    <input id="fld-digito_ver" class="form-control" name="digito_ver" value="<?= htmlspecialchars($proveedor['digito_ver'] ?? '') ?>"
                            maxlength="1" pattern="[0-9]">
                 </div>
                 <!-- El campo de tipo de proveedor es obligatorio y permite clasificar al proveedor según su naturaleza, como agricultor, intermediario, cooperativa o empresa. Esta clasificación es importante para la gestión de proveedores en la aplicación, ya que puede influir en cómo se manejan las relaciones comerciales y los procesos asociados a cada tipo de proveedor. Al enviar el formulario, se envía una solicitud POST al ProveedorController para actualizar esta información en la base de datos, asegurando que la clasificación del proveedor esté actualizada y sea precisa. -->
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold">Tipo proveedor <span class="text-danger">*</span></label>
-                    <select class="form-select" name="tipo_proveedor" required>
+                    <label for="fld-tipo_proveedor" class="form-label fw-semibold">Tipo proveedor <span class="text-danger">*</span></label>
+                    <select id="fld-tipo_proveedor" class="form-select" name="tipo_proveedor" required>
                         <?php foreach (['Agricultor','Intermediario','Cooperativa','Empresa'] as $tp): ?>
                         <option value="<?= $tp ?>" <?= $proveedor['tipo_proveedor'] === $tp ? 'selected' : '' ?>><?= $tp ?></option>
                         <?php endforeach; ?>
@@ -77,31 +77,31 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3]))
             <!-- Este bloque muestra los campos adicionales para editar la información de contacto y ubicación del proveedor, como la persona de contacto, teléfono, correo electrónico, dirección, ciudad y departamento. Estos campos son opcionales pero proporcionan información valiosa para la gestión de proveedores. Al enviar el formulario, se envía una solicitud POST al ProveedorController para actualizar estos datos en la base de datos, asegurando que la información de contacto y ubicación del proveedor esté actualizada y sea precisa. Esto facilita la comunicación y coordinación con los proveedores en futuras interacciones comerciales. -->
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Persona de contacto</label>
-                    <input class="form-control" name="persona_contacto" value="<?= htmlspecialchars($proveedor['persona_contacto'] ?? '') ?>">
+                    <label for="fld-persona_contacto" class="form-label fw-semibold">Persona de contacto</label>
+                    <input id="fld-persona_contacto" class="form-control" name="persona_contacto" value="<?= htmlspecialchars($proveedor['persona_contacto'] ?? '') ?>">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold">Teléfono</label>
-                    <input class="form-control" name="telefono" value="<?= htmlspecialchars($proveedor['telefono'] ?? '') ?>">
+                    <label for="fld-telefono" class="form-label fw-semibold">Teléfono</label>
+                    <input id="fld-telefono" class="form-control" name="telefono" value="<?= htmlspecialchars($proveedor['telefono'] ?? '') ?>">
                 </div>
                 <div class="col-md-5">
-                    <label class="form-label fw-semibold">Correo electrónico</label>
-                    <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($proveedor['email'] ?? '') ?>">
+                    <label for="fld-email" class="form-label fw-semibold">Correo electrónico</label>
+                    <input id="fld-email" class="form-control" type="email" name="email" value="<?= htmlspecialchars($proveedor['email'] ?? '') ?>">
                 </div>
             </div>
 
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Dirección</label>
-                    <input class="form-control" name="direccion" value="<?= htmlspecialchars($proveedor['direccion'] ?? '') ?>">
+                    <label for="fld-direccion" class="form-label fw-semibold">Dirección</label>
+                    <input id="fld-direccion" class="form-control" name="direccion" value="<?= htmlspecialchars($proveedor['direccion'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Ciudad</label>
-                    <input class="form-control" name="ciudad" value="<?= htmlspecialchars($proveedor['ciudad'] ?? '') ?>" placeholder="Ej: Tumaco">
+                    <label for="fld-ciudad" class="form-label fw-semibold">Ciudad</label>
+                    <input id="fld-ciudad" class="form-control" name="ciudad" value="<?= htmlspecialchars($proveedor['ciudad'] ?? '') ?>" placeholder="Ej: Tumaco">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Departamento</label>
-                    <input class="form-control" name="departamento" value="<?= htmlspecialchars($proveedor['departamento'] ?? '') ?>" placeholder="Ej: Nariño">
+                    <label for="fld-departamento" class="form-label fw-semibold">Departamento</label>
+                    <input id="fld-departamento" class="form-control" name="departamento" value="<?= htmlspecialchars($proveedor['departamento'] ?? '') ?>" placeholder="Ej: Nariño">
                 </div>
             </div>
 

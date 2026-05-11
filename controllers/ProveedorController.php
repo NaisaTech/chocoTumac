@@ -93,7 +93,7 @@ class ProveedorController {
                 if (!$proveedor) {
                     $this->redirectError('proveedores', 'Proveedor no encontrado.');
                 }
-                require __DIR__ . '/../views/editar_proveedor.php';
+                require_once __DIR__ . '/../views/editar_proveedor.php';
                 break;
 
             /* 

@@ -88,7 +88,7 @@ class UsuarioController {
                 if (!$this->esAdmin()) { $this->redirectError('dashboard', 'No tienes permisos.'); }
                 $usuario = $this->model->obtenerPorId($_GET['id'] ?? 0);
                 if (!$usuario) { $this->redirectError('dashboard', 'Usuario no encontrado.'); }
-                require __DIR__ . '/../views/editar_usuario.php';
+                require_once __DIR__ . '/../views/editar_usuario.php';
                 break;
 
             /*

@@ -1,4 +1,4 @@
- <!-- Este bloque de código maneja la visualización de mensajes de error o éxito para informar al usuario sobre las acciones realizadas. Si hay un mensaje de error (indicado por la variable 'error' en la URL), se muestra una alerta de Bootstrap con el mensaje correspondiente. Si hay un mensaje de éxito (indicado por la variable 'msg' en la URL), se muestra una alerta con el tipo y texto correspondiente según el valor de 'msg'. Esto proporciona retroalimentación visual al usuario sobre el resultado de sus acciones, como crear, actualizar o eliminar clientes. */
+<!-- Este bloque de código maneja la visualización de mensajes de error o éxito para informar al usuario sobre las acciones realizadas. Si hay un mensaje de error (indicado por la variable 'error' en la URL), se muestra una alerta de Bootstrap con el mensaje correspondiente. Si hay un mensaje de éxito (indicado por la variable 'msg' en la URL), se muestra una alerta con el tipo y texto correspondiente según el valor de 'msg'. Esto proporciona retroalimentación visual al usuario sobre el resultado de sus acciones, como crear, actualizar o eliminar clientes. */
 <?php
 if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3])) {
     header("Location: /chocoTumac/index.php?view=clientes&error=" . urlencode("Acceso no permitido.")); exit();
@@ -23,7 +23,7 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3]))
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require __DIR__ . '/layout/navbar.php'; ?>
+<?php require_once __DIR__ . '/layout/navbar.php'; ?>
 <div class="container mt-4" style="max-width:760px;">
     <!-- La sección de encabezado de la página muestra el título "Editar Cliente" y un botón para volver a la lista de clientes. Esto proporciona una navegación clara para el usuario, permitiéndole regresar fácilmente a la vista principal de clientes después de editar la información. El título indica claramente la acción que se está realizando, mientras que el botón de volver mejora la usabilidad al ofrecer una forma rápida de regresar sin necesidad de usar el navegador. -->
     <div class="page-header">
@@ -38,27 +38,27 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3]))
             <!-- Este bloque de código maneja la visualización de mensajes de error o éxito para informar al usuario sobre las acciones realizadas. Si hay un mensaje de error (indicado por la variable 'error' en la URL), se muestra una alerta de Bootstrap con el mensaje correspondiente. Si hay un mensaje de éxito (indicado por la variable 'msg' en la URL), se muestra una alerta con el tipo y texto correspondiente según el valor de 'msg'. Esto proporciona retroalimentación visual al usuario sobre el resultado de sus acciones, como actualizar los datos del cliente. La alerta es automática y se puede cerrar manualmente por el usuario. -->
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Nombre / Razón social <span class="text-danger">*</span></label>
-                    <input class="form-control" name="nombre" value="<?= htmlspecialchars($cliente['nombre']) ?>" required minlength="2">
+                    <label for="fld-nombre" class="form-label fw-semibold">Nombre / Razón social <span class="text-danger">*</span></label>
+                    <input id="fld-nombre" class="form-control" name="nombre" value="<?= htmlspecialchars($cliente['nombre']) ?>" required minlength="2">
                     <div class="invalid-feedback">El nombre es obligatorio.</div>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label fw-semibold">Tipo doc. <span class="text-danger">*</span></label>
-                    <select class="form-select" name="tipo_doc" id="tipo_doc_edit" required>
+                    <label for="fld-tipo_doc" class="form-label fw-semibold">Tipo doc. <span class="text-danger">*</span></label>
+                    <select id="fld-tipo_doc" class="form-select" name="tipo_doc" id="tipo_doc_edit" required>
                         <?php foreach (['CC','NIT','CE','Pasaporte'] as $t): ?>
                         <option value="<?= $t ?>" <?= $cliente['tipo_doc'] === $t ? 'selected' : '' ?>><?= $t ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label fw-semibold">N° documento <span class="text-danger">*</span></label>
-                    <input class="form-control" name="num_doc" value="<?= htmlspecialchars($cliente['num_doc']) ?>"
+                    <label for="fld-num_doc" class="form-label fw-semibold">N° documento <span class="text-danger">*</span></label>
+                    <input id="fld-num_doc" class="form-control" name="num_doc" value="<?= htmlspecialchars($cliente['num_doc']) ?>"
                            required pattern="[0-9\-]+" title="Solo números y guiones">
                     <div class="invalid-feedback">Obligatorio.</div>
                 </div>
                 <div class="col-md-2" id="div_dv_edit" style="display:<?= $cliente['tipo_doc'] === 'NIT' ? '' : 'none' ?>">
-                    <label class="form-label fw-semibold">DV</label>
-                    <input class="form-control" name="digito_ver" value="<?= htmlspecialchars($cliente['digito_ver'] ?? '') ?>"
+                    <label for="fld-digito_ver" class="form-label fw-semibold">DV</label>
+                    <input id="fld-digito_ver" class="form-control" name="digito_ver" value="<?= htmlspecialchars($cliente['digito_ver'] ?? '') ?>"
                            maxlength="1" pattern="[0-9]">
                 </div>
             </div>
@@ -66,27 +66,27 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['rol_id'], [1, 3]))
             <!-- Este bloque de código muestra los campos adicionales para editar la información del cliente, como el teléfono, correo electrónico, dirección, ciudad y departamento. Estos campos son opcionales y permiten al usuario actualizar la información de contacto y ubicación del cliente. Al enviar el formulario, se envía una solicitud POST al ClienteController para actualizar los datos del cliente en la base de datos. Esto proporciona una interfaz completa para editar toda la información relevante del cliente en un solo lugar. -->
             <div class="row g-3 mb-3">
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold">Teléfono</label>
-                    <input class="form-control" name="telefono" value="<?= htmlspecialchars($cliente['telefono'] ?? '') ?>" placeholder="3001234567">
+                    <label for="fld-telefono" class="form-label fw-semibold">Teléfono</label>
+                    <input id="fld-telefono" class="form-control" name="telefono" value="<?= htmlspecialchars($cliente['telefono'] ?? '') ?>" placeholder="3001234567">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Correo electrónico</label>
-                    <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($cliente['email'] ?? '') ?>">
+                    <label for="fld-email" class="form-label fw-semibold">Correo electrónico</label>
+                    <input id="fld-email" class="form-control" type="email" name="email" value="<?= htmlspecialchars($cliente['email'] ?? '') ?>">
                 </div>
                 <div class="col-md-5">
-                    <label class="form-label fw-semibold">Dirección</label>
-                    <input class="form-control" name="direccion" value="<?= htmlspecialchars($cliente['direccion'] ?? '') ?>">
+                    <label for="fld-direccion" class="form-label fw-semibold">Dirección</label>
+                    <input id="fld-direccion" class="form-control" name="direccion" value="<?= htmlspecialchars($cliente['direccion'] ?? '') ?>">
                 </div>
             </div>
 
             <div class="row g-3 mb-4">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Ciudad</label>
-                    <input class="form-control" name="ciudad" value="<?= htmlspecialchars($cliente['ciudad'] ?? '') ?>" placeholder="Ej: Tumaco">
+                    <label for="fld-ciudad" class="form-label fw-semibold">Ciudad</label>
+                    <input id="fld-ciudad" class="form-control" name="ciudad" value="<?= htmlspecialchars($cliente['ciudad'] ?? '') ?>" placeholder="Ej: Tumaco">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Departamento</label>
-                    <input class="form-control" name="departamento" value="<?= htmlspecialchars($cliente['departamento'] ?? '') ?>" placeholder="Ej: Nariño">
+                    <label for="fld-departamento" class="form-label fw-semibold">Departamento</label>
+                    <input id="fld-departamento" class="form-control" name="departamento" value="<?= htmlspecialchars($cliente['departamento'] ?? '') ?>" placeholder="Ej: Nariño">
                 </div>
             </div>
 

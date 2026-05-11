@@ -20,7 +20,7 @@ if (!defined('CHOCOTUMAC_APP')) {
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require __DIR__ . '/layout/navbar.php'; ?>
+<?php require_once __DIR__ . '/layout/navbar.php'; ?>
 
 <div class="container mt-4" style="max-width:640px;">
     <div class="page-header">
@@ -37,16 +37,16 @@ if (!defined('CHOCOTUMAC_APP')) {
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
             <div class="mb-3">
-                <label class="form-label fw-semibold">Nombre <span class="text-danger">*</span></label>
-                <input class="form-control" name="nombre"
+                <label for="fld-nombre" class="form-label fw-semibold">Nombre <span class="text-danger">*</span></label>
+                <input id="fld-nombre" class="form-control" name="nombre"
                        value="<?= htmlspecialchars($producto['nombre']) ?>" required minlength="2">
             </div>
 
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Tipo <span class="text-danger">*</span></label>
+                    <label for="fld-tipo_id" class="form-label fw-semibold">Tipo <span class="text-danger">*</span></label>
                     <?php $tipos = $modelProducto->obtenerTipos(); ?>
-                    <select class="form-select" name="tipo_id" id="sel-tipo-edit" required>
+                    <select id="fld-tipo_id" class="form-select" name="tipo_id" id="sel-tipo-edit" required>
                         <?php foreach ($tipos as $t): ?>
                         <option value="<?= $t['id'] ?>"
                                 data-unidad="<?= $t['unidad'] ?>"
@@ -59,8 +59,8 @@ if (!defined('CHOCOTUMAC_APP')) {
                 </div>
                 <div class="col-md-6" id="div-pres-edit"
                      style="display:<?= $producto['requiere_presentacion'] ? '' : 'none' ?>">
-                    <label class="form-label fw-semibold">Presentación</label>
-                    <input class="form-control" name="presentacion" id="inp-pres-edit"
+                    <label for="fld-presentacion" class="form-label fw-semibold">Presentación</label>
+                    <input id="fld-presentacion" class="form-control" name="presentacion" id="inp-pres-edit"
                            value="<?= htmlspecialchars($producto['presentacion'] ?? '') ?>"
                            placeholder="Ej: 250g, 500g">
                 </div>
@@ -68,7 +68,7 @@ if (!defined('CHOCOTUMAC_APP')) {
 
             <div class="row g-3 mb-3">
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Unidad</label>
+                    <label for="txt-unidad-edit" class="form-label fw-semibold">Unidad</label>
                     <input class="form-control text-center fw-bold" type="text"
                            id="txt-unidad-edit" readonly
                            value="<?= htmlspecialchars($producto['unidad']) ?>"
@@ -77,16 +77,16 @@ if (!defined('CHOCOTUMAC_APP')) {
                     <div class="form-text text-muted" style="font-size:.7rem;">Automática por tipo</div>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Stock mínimo</label>
-                    <input class="form-control" type="number" name="stock_minimo"
+                    <label for="fld-stock_minimo" class="form-label fw-semibold">Stock mínimo</label>
+                    <input id="fld-stock_minimo" class="form-control" type="number" name="stock_minimo"
                            min="0" step="0.01"
                            value="<?= $producto['stock_minimo'] ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold text-success">
+                    <label for="fld-precio-venta" class="form-label fw-semibold text-success">
                         💲 Precio de venta ($)
                     </label>
-                    <input class="form-control border-success fw-bold" type="number"
+                    <input id="fld-precio-venta" class="form-control border-success fw-bold" type="number"
                            name="precio_venta" min="0" step="0.01"
                            value="<?= $producto['precio_venta'] ?>">
                     <div class="form-text text-muted" style="font-size:.7rem;">

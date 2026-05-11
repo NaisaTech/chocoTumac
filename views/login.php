@@ -48,15 +48,15 @@ if (isset($_SESSION['user'])) {
               novalidate>
 
             <div class="mb-3">
-                <label class="form-label fw-semibold">Correo electrónico</label>
-                <input class="form-control" type="email" name="email"
+                <label for="fld-email" class="form-label fw-semibold">Correo electrónico</label>
+                <input id="fld-email" class="form-control" type="email" name="email"
                        placeholder="usuario@ejemplo.com"
                        autocomplete="username" required>
             </div>
 
             <div class="mb-4">
-                <label class="form-label fw-semibold">Contraseña</label>
-                <input class="form-control" type="password" name="password"
+                <label for="fld-password" class="form-label fw-semibold">Contraseña</label>
+                <input id="fld-password" class="form-control" type="password" name="password"
                        placeholder="••••••••"
                        autocomplete="current-password" required>
             </div>

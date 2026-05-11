@@ -27,8 +27,8 @@ document.getElementById('sel-producto-compra')?.addEventListener('change', funct
  * multiplicando cantidad × precio unitario en tiempo real.
  */
 function calcularTotal() {
-    const cantidad = parseFloat(document.getElementById('inp-cantidad')?.value) || 0;
-    const precio = parseFloat(document.getElementById('inp-precio')?.value) || 0;
+    const cantidad = Number.parseFloat(document.getElementById('inp-cantidad')?.value) || 0;
+    const precio = Number.parseFloat(document.getElementById('inp-precio')?.value) || 0;
     const total = document.getElementById('inp-total');
     if (total) {
         total.value = (cantidad * precio).toLocaleString('es-CO', {
@@ -40,4 +40,3 @@ function calcularTotal() {
 
 document.getElementById('inp-cantidad')?.addEventListener('input', calcularTotal);
 document.getElementById('inp-precio')?.addEventListener('input', calcularTotal);
-

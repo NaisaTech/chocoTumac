@@ -220,6 +220,13 @@ $cufe_simulado = strtoupper(md5($venta['codigo'] . $venta['fecha'] . $total . '9
         <!-- ── Desglose tributario ─────────────────────────────────── -->
         <div class="factura-totales">
             <table class="factura-totales-tabla">
+                <thead class="visually-hidden">
+                    <tr>
+                        <th scope="col">Concepto</th>
+                        <th scope="col">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <tr>
                     <td class="fac-label">Subtotal (base gravable):</td>
                     <td class="text-end">$ <?= number_format($subtotal, 2, ',', '.') ?></td>

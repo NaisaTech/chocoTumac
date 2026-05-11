@@ -126,7 +126,7 @@ class ClienteController
         if (!$cliente) {
             $this->redirectError('clientes', 'Cliente no encontrado.');
         }
-        require __DIR__ . '/../views/editar_cliente.php';
+        require_once __DIR__ . '/../views/editar_cliente.php';
     }
 
     /**

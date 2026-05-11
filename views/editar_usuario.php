@@ -14,7 +14,7 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['rol_id'] != 1) {
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require __DIR__ . '/layout/navbar.php'; ?>
+<?php require_once __DIR__ . '/layout/navbar.php'; ?>
 
 <!-- La sección de encabezado de la página muestra el título "Editar Usuario" y un botón para volver a la lista de usuarios. Esto proporciona una navegación clara para el usuario, permitiéndole regresar fácilmente a la vista principal de usuarios después de editar la información. El título indica claramente la acción que se está realizando, mientras que el botón de volver mejora la usabilidad al ofrecer una forma rápida de regresar sin necesidad de usar el navegador. -->
 <div class="container mt-4" style="max-width:600px;">
@@ -31,22 +31,22 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['rol_id'] != 1) {
 
             <!-- Este bloque maneja los campos para editar la información del usuario, como el nombre completo, correo electrónico, teléfono y rol. Estos campos son esenciales para la gestión de usuarios en la aplicación, ya que permiten mantener actualizada la información de contacto y el rol de cada usuario. Al enviar el formulario, se envía una solicitud POST al UsuarioController para actualizar estos datos en la base de datos, asegurando que la información del usuario esté actualizada y sea precisa. Esto facilita la administración de usuarios y garantiza que los datos reflejen correctamente la información actual de cada usuario en la aplicación. -->
             <div class="mb-3">
-                <label class="form-label fw-semibold">Nombre completo</label>
-                <input class="form-control" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>" required minlength="2">
+                <label for="fld-nombre" class="form-label fw-semibold">Nombre completo</label>
+                <input id="fld-nombre" class="form-control" name="nombre" value="<?= htmlspecialchars($usuario['nombre']) ?>" required minlength="2">
                 <div class="invalid-feedback">El nombre es obligatorio.</div>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Correo electrónico</label>
-                <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($usuario['email']) ?>" required>
+                <label for="fld-email" class="form-label fw-semibold">Correo electrónico</label>
+                <input id="fld-email" class="form-control" type="email" name="email" value="<?= htmlspecialchars($usuario['email']) ?>" required>
                 <div class="invalid-feedback">Ingresa un correo válido.</div>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Teléfono</label>
-                <input class="form-control" name="telefono" value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>" placeholder="3001234567">
+                <label for="fld-telefono" class="form-label fw-semibold">Teléfono</label>
+                <input id="fld-telefono" class="form-control" name="telefono" value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>" placeholder="3001234567">
             </div>
             <div class="mb-4">
-                <label class="form-label fw-semibold">Rol</label>
-                <select class="form-select" name="rol_id" required>
+                <label for="fld-rol_id" class="form-label fw-semibold">Rol</label>
+                <select id="fld-rol_id" class="form-select" name="rol_id" required>
                     <option value="1" <?= $usuario['rol_id'] == 1 ? 'selected' : '' ?>>Administrador</option>
                     <option value="2" <?= $usuario['rol_id'] == 2 ? 'selected' : '' ?>>Gerente</option>
                     <option value="3" <?= $usuario['rol_id'] == 3 ? 'selected' : '' ?>>Empleado</option>

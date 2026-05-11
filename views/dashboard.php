@@ -24,7 +24,7 @@ if (!isset($_SESSION['user'])) {
 }
 
 /* Se incluye el archivo de la barra de navegación y se carga el modelo de Usuario para obtener la lista de usuarios registrados en el sistema. Luego, se obtiene el rol del usuario actual desde la sesión para determinar qué funcionalidades mostrar en el dashboard. Esto permite personalizar la experiencia del usuario según su rol, mostrando solo las opciones y acciones que están permitidas para ese rol específico. */
-require 'views/layout/navbar.php';
+require_once 'views/layout/navbar.php';
 require_once 'models/Usuario.php';
 $model    = new Usuario();
 $usuarios = $model->obtener();
@@ -95,27 +95,27 @@ $rol      = $_SESSION['user']['rol_id'];
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
             <div class="row g-2 mb-2">
                 <div class="col-md">
-                    <label class="form-label small fw-semibold">Nombre</label>
-                    <input class="form-control" name="nombre" placeholder="Nombre completo" required minlength="2">
+                    <label for="fld-nombre" class="form-label small fw-semibold">Nombre</label>
+                    <input id="fld-nombre" class="form-control" name="nombre" placeholder="Nombre completo" required minlength="2">
                     <div class="invalid-feedback">El nombre es obligatorio.</div>
                 </div>
                 <div class="col-md">
-                    <label class="form-label small fw-semibold">Correo electrónico</label>
-                    <input class="form-control" type="email" name="email" placeholder="correo@ejemplo.com" required>
+                    <label for="fld-email" class="form-label small fw-semibold">Correo electrónico</label>
+                    <input id="fld-email" class="form-control" type="email" name="email" placeholder="correo@ejemplo.com" required>
                     <div class="invalid-feedback">Ingresa un correo válido.</div>
                 </div>
                 <div class="col-md">
-                    <label class="form-label small fw-semibold">Teléfono</label>
-                    <input class="form-control" name="telefono" placeholder="3001234567">
+                    <label for="fld-telefono" class="form-label small fw-semibold">Teléfono</label>
+                    <input id="fld-telefono" class="form-control" name="telefono" placeholder="3001234567">
                 </div>
                 <div class="col-md">
-                    <label class="form-label small fw-semibold">Contraseña</label>
-                    <input class="form-control" type="password" name="password" id="input-password" placeholder="Mínimo 8 caracteres" required>
+                    <label for="fld-password" class="form-label small fw-semibold">Contraseña</label>
+                    <input id="fld-password" class="form-control" type="password" name="password" id="input-password" placeholder="Mínimo 8 caracteres" required>
                     <div id="feedback-password" class="form-text"></div>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Rol</label>
-                    <select class="form-select" name="rol_id" required>
+                    <label for="fld-rol_id" class="form-label small fw-semibold">Rol</label>
+                    <select id="fld-rol_id" class="form-select" name="rol_id" required>
                         <option value="1">Administrador</option>
                         <option value="2">Gerente</option>
                         <option value="3" selected>Empleado</option>

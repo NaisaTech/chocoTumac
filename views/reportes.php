@@ -79,19 +79,19 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
 </head>
 <body>
 
-<?php require __DIR__ . '/layout/navbar.php'; ?>
+<?php require_once __DIR__ . '/layout/navbar.php'; ?>
 
 <div class="container-fluid mt-4 px-4" style="max-width:1400px;">
 
     <!-- ── Encabezado ── -->
     <div class="d-flex justify-content-between align-items-center mb-3 no-print">
         <div>
-            <h4 class="fw-bold mb-0" style="color:var(--ct-brand);">Módulo de Reportes</h4>
+            <h4 class="fw-bold mb-0" style="color:var(--ct-brand);">📊 Módulo de Reportes</h4>
             <small class="text-muted">Solo visible para Gerentes · Datos en tiempo real</small>
         </div>
         <button onclick="window.print()" class="btn btn-sm text-white no-print"
                 style="background:var(--ct-brand);">
-            Imprimir reporte
+            🖨 Imprimir reporte
         </button>
     </div>
 
@@ -134,10 +134,10 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     <!-- ── Tabs ── -->
     <ul class="nav rep-tabs mb-0 no-print" id="repTabs">
         <?php foreach ([
-            'ventas'    => 'Ventas',
-            'compras'   => 'Compras',
-            'inventario'=> 'Inventario',
-            'top'       => 'Más vendidos',
+            'ventas'    => '📋 Ventas',
+            'compras'   => '🛒 Compras',
+            'inventario'=> '📦 Inventario',
+            'top'       => '🏆 Más vendidos',
         ] as $key => $label): ?>
         <li class="nav-item">
             <a class="nav-link <?= $tab === $key ? 'active' : '' ?>"
@@ -156,31 +156,31 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
 
             <!-- Búsqueda general -->
             <div class="col-md-3">
-                <label class="form-label small fw-semibold mb-1">🔍 Búsqueda rápida</label>
-                <input class="form-control form-control-sm" name="busqueda"
+                <label for="fld-busqueda" class="form-label small fw-semibold mb-1">🔍 Búsqueda rápida</label>
+                <input id="fld-busqueda" class="form-control form-control-sm" name="busqueda"
                        placeholder="Código, cliente, proveedor, producto..."
                        value="<?= htmlspecialchars($busqueda) ?>">
             </div>
 
             <!-- Desde -->
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Desde</label>
-                <input class="form-control form-control-sm" type="date" name="desde"
+                <label for="fld-desde" class="form-label small fw-semibold mb-1">Desde</label>
+                <input id="fld-desde" class="form-control form-control-sm" type="date" name="desde"
                        value="<?= htmlspecialchars($desde) ?>">
             </div>
 
             <!-- Hasta -->
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Hasta</label>
-                <input class="form-control form-control-sm" type="date" name="hasta"
+                <label for="fld-hasta" class="form-label small fw-semibold mb-1">Hasta</label>
+                <input id="fld-hasta" class="form-control form-control-sm" type="date" name="hasta"
                        value="<?= htmlspecialchars($hasta) ?>">
             </div>
 
             <!-- Cliente (solo tab ventas) -->
             <?php if ($tab === 'ventas'): ?>
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Cliente</label>
-                <select class="form-select form-select-sm" name="cliente_id">
+                <label for="fld-cliente_id" class="form-label small fw-semibold mb-1">Cliente</label>
+                <select id="fld-cliente_id" class="form-select form-select-sm" name="cliente_id">
                     <option value="">— Todos —</option>
                     <?php foreach ($clientes as $c): ?>
                     <option value="<?= $c['id'] ?>" <?= $cliente_id == $c['id'] ? 'selected' : '' ?>>
@@ -194,8 +194,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
             <!-- Proveedor (solo tab compras) -->
             <?php if ($tab === 'compras'): ?>
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Proveedor</label>
-                <select class="form-select form-select-sm" name="proveedor_id">
+                <label for="fld-proveedor_id" class="form-label small fw-semibold mb-1">Proveedor</label>
+                <select id="fld-proveedor_id" class="form-select form-select-sm" name="proveedor_id">
                     <option value="">— Todos —</option>
                     <?php foreach ($proveedores as $pv): ?>
                     <option value="<?= $pv['id'] ?>" <?= $proveedor_id == $pv['id'] ? 'selected' : '' ?>>
@@ -474,7 +474,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <div class="col-lg-7">
             <div class="rep-card h-100">
                 <h6 class="fw-bold mb-3" style="color:var(--ct-brand);">
-                    Top 10 Productos Más Vendidos
+                    🏆 Top 10 Productos Más Vendidos
                     <small class="text-muted fw-normal" style="font-size:.78rem;">
                         — por cantidad total
                         <?= $desde || $hasta ? '· ' . ($desde ? date('d/m/Y', strtotime($desde)) : '') . ($hasta ? ' a ' . date('d/m/Y', strtotime($hasta)) : '') : '' ?>
