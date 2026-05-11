@@ -499,3 +499,636 @@ body {
         max-width: 100% !important;
     }
 }
+
+/* =========================================================
+   Reportes – ChocoTumac Sprint 3
+   ========================================================= */
+/* ── Variables ── */
+.rep-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .07);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── KPI cards ── */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: .9rem;
+    margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .07);
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--ct-brand);
+}
+
+.kpi-card.accent {
+    border-left-color: var(--ct-accent);
+}
+
+.kpi-card.green {
+    border-left-color: #198754;
+}
+
+.kpi-card.red {
+    border-left-color: #dc3545;
+}
+
+.kpi-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ct-brand);
+    line-height: 1;
+}
+
+.kpi-label {
+    font-size: .78rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* ── Tabs ── */
+.rep-tabs .nav-link {
+    color: var(--ct-brand);
+    font-weight: 500;
+    border-radius: 8px 8px 0 0;
+    padding: .5rem 1.25rem;
+}
+
+.rep-tabs .nav-link.active {
+    background: var(--ct-brand);
+    color: #fff;
+}
+
+/* ── Tablas ── */
+.rep-table {
+    font-size: .84rem;
+}
+
+.rep-table thead th {
+    background: var(--ct-brand);
+    color: #fff;
+    font-weight: 500;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+.rep-table tbody tr:hover td {
+    background: #fdf6ec;
+}
+
+/* ── Totales ── */
+.totales-bar {
+    background: var(--ct-light);
+    border-radius: 8px;
+    padding: .75rem 1.25rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-size: .88rem;
+    margin-bottom: 1rem;
+}
+
+.totales-bar .t-item strong {
+    color: var(--ct-brand);
+    font-size: 1rem;
+}
+
+/* ── Barras top productos ── */
+.bar-wrap {
+    margin-bottom: .5rem;
+}
+
+.bar-label {
+    font-size: .82rem;
+    margin-bottom: 2px;
+}
+
+.bar-bg {
+    background: #f0ebe3;
+    border-radius: 20px;
+    height: 22px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ct-brand), var(--ct-accent));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+}
+
+.bar-val {
+    font-size: .75rem;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ── Badges stock ── */
+.badge-ok {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-stock_bajo {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-sin_stock {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ── Filtros ── */
+.filtros-bar {
+    background: #fff;
+    border-radius: 10px;
+    padding: .9rem 1.25rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+    margin-bottom: 1.25rem;
+}
+
+/* ── Print ── */
+@media print {
+
+    /* === PÁGINA === */
+    @page {
+        size: A4 landscape;
+        margin: 12mm 10mm 14mm 10mm;
+    }
+
+    /* === RESET GENERAL === */
+    *,
+    *::before,
+    *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        font-size: 9pt !important;
+        font-family: Arial, sans-serif !important;
+    }
+
+    /* === OCULTAR UI === */
+    .no-print,
+    .navbar,
+    .filtros-bar,
+    .rep-tabs,
+    .sidebar,
+    .totales-bar,
+    nav,
+    header {
+        display: none !important;
+    }
+
+    /* === CONTENEDOR === */
+    .container,
+    .container-fluid,
+    .container-lg {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* === ENCABEZADO DE REPORTE (visible al imprimir) === */
+    .rep-print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 6mm;
+        border-bottom: 2pt solid #3d2314;
+        padding-bottom: 3mm;
+    }
+
+    .rep-print-header h2 {
+        font-size: 13pt;
+        font-weight: 700;
+        color: #3d2314 !important;
+        margin: 0 0 1mm 0;
+    }
+
+    .rep-print-header p {
+        font-size: 8pt;
+        color: #555 !important;
+        margin: 0;
+    }
+
+    /* === CARDS === */
+    .rep-card {
+        box-shadow: none !important;
+        border: 1pt solid #ccc !important;
+        border-radius: 0 !important;
+        padding: 4mm 5mm !important;
+        margin-bottom: 4mm !important;
+        page-break-inside: avoid;
+    }
+
+    .rep-card h5,
+    .rep-card h6 {
+        font-size: 10pt !important;
+        margin-bottom: 3mm !important;
+    }
+
+    /* === KPI GRID (compacto) === */
+    .kpi-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 3mm !important;
+        margin-bottom: 4mm !important;
+    }
+
+    .kpi-card {
+        border-left: 3pt solid #3d2314 !important;
+        padding: 2mm 3mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        page-break-inside: avoid;
+    }
+
+    .kpi-num {
+        font-size: 11pt !important;
+    }
+
+    .kpi-label {
+        font-size: 7pt !important;
+    }
+
+    /* === TABLA CONTENEDOR === */
+    .table-responsive {
+        overflow: visible !important;
+        width: 100% !important;
+    }
+
+    /* === TABLAS === */
+    .rep-table {
+        width: 100% !important;
+        font-size: 7.5pt !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+    }
+
+    .rep-table thead th {
+        background: #3d2314 !important;
+        color: #fff !important;
+        font-size: 6.5pt !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: .2px !important;
+        padding: 2mm 1.5mm !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        border: 0.5pt solid #5a3020 !important;
+    }
+
+    .rep-table tbody td {
+        padding: 1.5mm 1.5mm !important;
+        border: 0.5pt solid #ddd !important;
+        vertical-align: top !important;
+        word-break: break-word !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Filas alternas para legibilidad */
+    .rep-table tbody tr:nth-child(even) td {
+        background: #f9f4ef !important;
+    }
+
+    .rep-table tbody tr:hover td {
+        background: inherit !important;
+    }
+
+    /* Evitar cortes de fila entre páginas */
+    .rep-table tbody tr {
+        page-break-inside: avoid !important;
+    }
+
+    /* Repetir cabecera en cada página */
+    .rep-table thead {
+        display: table-header-group !important;
+    }
+
+    /* === ANCHOS POR TABLA === */
+
+    /* VENTAS (14 cols en landscape) */
+    .rep-table.tbl-ventas th:nth-child(1),
+    .rep-table.tbl-ventas td:nth-child(1) {
+        width: 9%;
+    }
+
+    /* Código */
+    .rep-table.tbl-ventas th:nth-child(2),
+    .rep-table.tbl-ventas td:nth-child(2) {
+        width: 6%;
+    }
+
+    /* Fecha */
+    .rep-table.tbl-ventas th:nth-child(3),
+    .rep-table.tbl-ventas td:nth-child(3) {
+        width: 13%;
+    }
+
+    /* Cliente */
+    .rep-table.tbl-ventas th:nth-child(4),
+    .rep-table.tbl-ventas td:nth-child(4) {
+        width: 8%;
+    }
+
+    /* Documento */
+    .rep-table.tbl-ventas th:nth-child(5),
+    .rep-table.tbl-ventas td:nth-child(5) {
+        width: 12%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-ventas th:nth-child(6),
+    .rep-table.tbl-ventas td:nth-child(6) {
+        width: 6%;
+    }
+
+    /* Cantidad */
+    .rep-table.tbl-ventas th:nth-child(7),
+    .rep-table.tbl-ventas td:nth-child(7) {
+        width: 5%;
+    }
+
+    /* Unidad */
+    .rep-table.tbl-ventas th:nth-child(8),
+    .rep-table.tbl-ventas td:nth-child(8) {
+        width: 7%;
+    }
+
+    /* Precio unit */
+    .rep-table.tbl-ventas th:nth-child(9),
+    .rep-table.tbl-ventas td:nth-child(9) {
+        width: 7%;
+    }
+
+    /* Subtotal */
+    .rep-table.tbl-ventas th:nth-child(10),
+    .rep-table.tbl-ventas td:nth-child(10) {
+        width: 5%;
+    }
+
+    /* IVA % */
+    .rep-table.tbl-ventas th:nth-child(11),
+    .rep-table.tbl-ventas td:nth-child(11) {
+        width: 6%;
+    }
+
+    /* IVA $ */
+    .rep-table.tbl-ventas th:nth-child(12),
+    .rep-table.tbl-ventas td:nth-child(12) {
+        width: 8%;
+    }
+
+    /* Total */
+    .rep-table.tbl-ventas th:nth-child(13),
+    .rep-table.tbl-ventas td:nth-child(13) {
+        width: 5%;
+    }
+
+    /* Pago */
+    .rep-table.tbl-ventas th:nth-child(14),
+    .rep-table.tbl-ventas td:nth-child(14) {
+        width: 8%;
+    }
+
+    /* Registrado */
+
+    /* COMPRAS (11 cols) */
+    .rep-table.tbl-compras th:nth-child(1),
+    .rep-table.tbl-compras td:nth-child(1) {
+        width: 10%;
+    }
+
+    /* Código */
+    .rep-table.tbl-compras th:nth-child(2),
+    .rep-table.tbl-compras td:nth-child(2) {
+        width: 7%;
+    }
+
+    /* Fecha */
+    .rep-table.tbl-compras th:nth-child(3),
+    .rep-table.tbl-compras td:nth-child(3) {
+        width: 15%;
+    }
+
+    /* Proveedor */
+    .rep-table.tbl-compras th:nth-child(4),
+    .rep-table.tbl-compras td:nth-child(4) {
+        width: 9%;
+    }
+
+    /* Documento */
+    .rep-table.tbl-compras th:nth-child(5),
+    .rep-table.tbl-compras td:nth-child(5) {
+        width: 14%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-compras th:nth-child(6),
+    .rep-table.tbl-compras td:nth-child(6) {
+        width: 7%;
+    }
+
+    /* Cantidad */
+    .rep-table.tbl-compras th:nth-child(7),
+    .rep-table.tbl-compras td:nth-child(7) {
+        width: 6%;
+    }
+
+    /* Unidad */
+    .rep-table.tbl-compras th:nth-child(8),
+    .rep-table.tbl-compras td:nth-child(8) {
+        width: 9%;
+    }
+
+    /* Precio unit */
+    .rep-table.tbl-compras th:nth-child(9),
+    .rep-table.tbl-compras td:nth-child(9) {
+        width: 9%;
+    }
+
+    /* Total */
+    .rep-table.tbl-compras th:nth-child(10),
+    .rep-table.tbl-compras td:nth-child(10) {
+        width: 10%;
+    }
+
+    /* Observaciones */
+    .rep-table.tbl-compras th:nth-child(11),
+    .rep-table.tbl-compras td:nth-child(11) {
+        width: 9%;
+    }
+
+    /* Registrado */
+
+    /* INVENTARIO (11 cols) */
+    .rep-table.tbl-inventario th:nth-child(1),
+    .rep-table.tbl-inventario td:nth-child(1) {
+        width: 4%;
+    }
+
+    /* # */
+    .rep-table.tbl-inventario th:nth-child(2),
+    .rep-table.tbl-inventario td:nth-child(2) {
+        width: 18%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-inventario th:nth-child(3),
+    .rep-table.tbl-inventario td:nth-child(3) {
+        width: 10%;
+    }
+
+    /* Tipo */
+    .rep-table.tbl-inventario th:nth-child(4),
+    .rep-table.tbl-inventario td:nth-child(4) {
+        width: 10%;
+    }
+
+    /* Presentación */
+    .rep-table.tbl-inventario th:nth-child(5),
+    .rep-table.tbl-inventario td:nth-child(5) {
+        width: 8%;
+    }
+
+    /* Unidad inv */
+    .rep-table.tbl-inventario th:nth-child(6),
+    .rep-table.tbl-inventario td:nth-child(6) {
+        width: 8%;
+    }
+
+    /* Unidad venta */
+    .rep-table.tbl-inventario th:nth-child(7),
+    .rep-table.tbl-inventario td:nth-child(7) {
+        width: 9%;
+    }
+
+    /* Stock actual */
+    .rep-table.tbl-inventario th:nth-child(8),
+    .rep-table.tbl-inventario td:nth-child(8) {
+        width: 8%;
+    }
+
+    /* Stock mín */
+    .rep-table.tbl-inventario th:nth-child(9),
+    .rep-table.tbl-inventario td:nth-child(9) {
+        width: 10%;
+    }
+
+    /* Precio venta */
+    .rep-table.tbl-inventario th:nth-child(10),
+    .rep-table.tbl-inventario td:nth-child(10) {
+        width: 8%;
+    }
+
+    /* Estado */
+    .rep-table.tbl-inventario th:nth-child(11),
+    .rep-table.tbl-inventario td:nth-child(11) {
+        width: 7%;
+    }
+
+    /* Movimientos */
+
+    /* TOP VENDIDOS (7 cols) */
+    .rep-table.tbl-top th:nth-child(1),
+    .rep-table.tbl-top td:nth-child(1) {
+        width: 4%;
+    }
+
+    /* # */
+    .rep-table.tbl-top th:nth-child(2),
+    .rep-table.tbl-top td:nth-child(2) {
+        width: 28%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-top th:nth-child(3),
+    .rep-table.tbl-top td:nth-child(3) {
+        width: 15%;
+    }
+
+    /* Tipo */
+    .rep-table.tbl-top th:nth-child(4),
+    .rep-table.tbl-top td:nth-child(4) {
+        width: 10%;
+    }
+
+    /* Unidad */
+    .rep-table.tbl-top th:nth-child(5),
+    .rep-table.tbl-top td:nth-child(5) {
+        width: 12%;
+    }
+
+    /* N° ventas */
+    .rep-table.tbl-top th:nth-child(6),
+    .rep-table.tbl-top td:nth-child(6) {
+        width: 13%;
+    }
+
+    /* Cantidad total */
+    .rep-table.tbl-top th:nth-child(7),
+    .rep-table.tbl-top td:nth-child(7) {
+        width: 18%;
+    }
+
+    /* Ingresos */
+
+    /* === BADGES === */
+    .badge-ok {
+        background: #d4edda !important;
+        color: #155724 !important;
+        font-size: 7pt !important;
+        padding: 1mm 2mm !important;
+    }
+
+    .badge-stock_bajo {
+        background: #fff3cd !important;
+        color: #856404 !important;
+        font-size: 7pt !important;
+        padding: 1mm 2mm !important;
+    }
+
+    .badge-sin_stock {
+        background: #f8d7da !important;
+        color: #721c24 !important;
+        font-size: 7pt !important;
+        padding: 1mm 2mm !important;
+    }
+
+    /* === PIE DE PÁGINA === */
+    .rep-print-footer {
+        display: block !important;
+        position: fixed;
+        bottom: 6mm;
+        left: 10mm;
+        right: 10mm;
+        font-size: 7pt;
+        color: #888 !important;
+        border-top: 0.5pt solid #ccc;
+        padding-top: 2mm;
+        display: flex;
+        justify-content: space-between;
+    }
+}

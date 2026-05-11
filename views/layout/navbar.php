@@ -8,7 +8,7 @@
  *   - Gerente      (2): solo lectura en todos los módulos
  *
  * @package ChocoTumac
- * @sprint  1, 2
+ * @sprint  1, 2, 3
  */
 if (session_status() === PHP_SESSION_NONE) session_start();
 
@@ -65,6 +65,13 @@ $activo = fn($v) => $vista_actual === $v ? 'active fw-bold' : '';
             <li class="nav-item">
                 <a class="nav-link <?= $activo('ventas') ?>"
                    href="/chocoTumac/index.php?view=ventas">Ventas</a>
+            </li>
+            <?php endif; ?>
+
+            <?php if ($rol == 2): ?>
+            <li class="nav-item">
+                <a class="nav-link <?= $activo('reportes') ?>"
+                   href="/chocoTumac/index.php?view=reportes">Reportes</a>
             </li>
             <?php endif; ?>
 

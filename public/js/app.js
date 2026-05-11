@@ -64,6 +64,36 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // --- Validación login: solo bloquea envío si campos vacíos, sin colorear verde ---
+    /* El formulario de login usa novalidate para evitar que Bootstrap pinte los campos
+       en verde antes de que el servidor responda. Solo bloqueamos el envío si algún
+       campo está vacío, sin agregar was-validated (que causaba el flash verde). */
+    const loginForm = document.querySelector("form[action*='action=login']");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function (e) {
+            const email = loginForm.querySelector("[name='email']");
+            const pass = loginForm.querySelector("[name='password']");
+            let valid = true;
+            [email, pass].forEach(function (input) {
+                if (!input) return;
+                if (!input.value.trim()) {
+                    input.classList.add("is-invalid");
+                    valid = false;
+                } else {
+                    input.classList.remove("is-invalid");
+                }
+            });
+            if (!valid) e.preventDefault();
+            // NUNCA agrega is-valid ni was-validated en el login
+        });
+        // Limpiar borde rojo al empezar a escribir
+        loginForm.querySelectorAll("input").forEach(function (input) {
+            input.addEventListener("input", function () {
+                input.classList.remove("is-invalid");
+            });
+        });
+    }
+
     // --- Validación básica frontend en formularios marcados ---
     /* Se seleccionan todos los formularios que tienen el atributo "data-validate" y se les agrega un listener al evento "submit". Al enviar el formulario, se verifica si es válido utilizando el método checkValidity() del formulario. Si el formulario no es válido, se previene el envío y se detiene la propagación del evento. Luego, se agrega la clase "was-validated" al formulario para activar las clases de validación de Bootstrap, lo que permite mostrar los mensajes de error correspondientes. Esto proporciona una validación básica en el frontend antes de enviar los datos al servidor. */
     document.querySelectorAll("form[data-validate]").forEach(function (form) {

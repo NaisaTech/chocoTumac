@@ -38,7 +38,7 @@ $view = $_GET['view'] ?? 'login';
 
 // Vistas que requieren sesión activa
 $vistas_protegidas = ['dashboard', 'perfil', 'clientes', 'proveedores',
-                      'inventario', 'compras', 'ventas', 'factura', 'editar_producto'];
+                      'inventario', 'compras', 'ventas', 'factura', 'editar_producto', 'reportes'];
 
 if (in_array($view, $vistas_protegidas) && !isset($_SESSION['user'])) {
     header("Location: /chocoTumac/index.php?view=login&error="
@@ -86,6 +86,9 @@ switch ($view) {
         break;
     case 'factura':
         require_once 'views/factura.php';
+        break;
+    case 'reportes':
+        require_once 'views/reportes.php';
         break;
     default:
         require_once 'views/login.php';

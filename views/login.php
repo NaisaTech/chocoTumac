@@ -45,14 +45,13 @@ if (isset($_SESSION['user'])) {
          permite a los usuarios ingresar su correo electrónico y contraseña para acceder al sistema. El formulario está diseñado con Bootstrap para una apariencia moderna y responsiva. Al enviar el formulario, se envía una solicitud POST al UsuarioController para procesar el inicio de sesión. Además, se manejan mensajes de error para informar a los usuarios sobre problemas como credenciales incorrectas o expiración de sesión, proporcionando una experiencia de usuario clara y amigable durante el proceso de autenticación. -->
         <form method="POST"
               action="/chocoTumac/controllers/UsuarioController.php?action=login"
-              data-validate>
+              novalidate>
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">Correo electrónico</label>
                 <input class="form-control" type="email" name="email"
                        placeholder="usuario@ejemplo.com"
                        autocomplete="username" required>
-                <div class="invalid-feedback">Ingresa un correo válido.</div>
             </div>
 
             <div class="mb-4">
@@ -60,7 +59,6 @@ if (isset($_SESSION['user'])) {
                 <input class="form-control" type="password" name="password"
                        placeholder="••••••••"
                        autocomplete="current-password" required>
-                <div class="invalid-feedback">Ingresa tu contraseña.</div>
             </div>
 
             <button type="submit" class="btn btn-ct-primary w-100 py-2 fw-semibold">
