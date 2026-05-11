@@ -132,7 +132,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     </div>
 
     <!-- ── Tabs ── -->
-    <ul class="nav rep-tabs mb-0 no-print" id="repTabs" role="tablist" aria-label="Secciones del reporte">
+    <nav aria-label="Secciones del reporte" class="no-print">
+    <ul class="nav rep-tabs mb-0" id="repTabs">
         <?php foreach ([
             'ventas'    => '📋 Ventas',
             'compras'   => '🛒 Compras',
@@ -149,6 +150,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         </li>
         <?php endforeach; ?>
     </ul>
+    </nav>
 
     <!-- ── Filtros ── -->
     <form method="GET" action="index.php" class="filtros-bar no-print">
