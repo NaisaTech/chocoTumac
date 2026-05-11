@@ -96,6 +96,9 @@ class ClienteController
             case 'editar':    $this->editar();    break;
             case 'actualizar':$this->actualizar();break;
             case 'eliminar':  $this->eliminar();  break;
+            default:
+                $this->redirectError('clientes', 'Acción no reconocida.');
+                break;
         }
     }
 

@@ -125,7 +125,10 @@ class ProveedorController {
                 // Eliminar proveedor
                 $this->model->eliminar($_GET['id']);
                 $this->redirectOk('proveedores', 'eliminado');break;
-        }
+                    default:
+                $this->redirectError('proveedores', 'Acción no reconocida.');
+                break;
+}
     }
 }
 // Crear una instancia del controlador y ejecutar la acción correspondiente
