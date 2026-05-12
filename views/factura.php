@@ -99,8 +99,11 @@ function numeroALetras(float $n): string {
 
 $total_letras = numeroALetras($total);
 
-/* ── CUFE simulado (en producción se genera con WS DIAN) ────────────── */
-$cufe_simulado = strtoupper(md5($venta['codigo'] . $venta['fecha'] . $total . '900000000'));
+/* ── CUFE simulado (en producción se genera con WS DIAN) ────────────── *
+ * La DIAN especifica SHA-256 para el CUFE real (Resolución 000042/2020).  *
+ * md5() reemplazado por hash('sha256') para evitar algoritmos débiles     *
+ * (php:S4790). Este valor es solo referencial; no tiene validez fiscal.   */
+$cufe_simulado = strtoupper(hash('sha256', $venta['codigo'] . $venta['fecha'] . $total . '900000000'));
 ?>
 <!DOCTYPE html>
 <html lang="es">
