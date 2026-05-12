@@ -48,15 +48,54 @@ class Venta {
      * @param array $data Datos del formulario de venta
      * @return true|string true si los datos son válidos, string con error si no
      */
-    private function validarCampos($data) {
-        // Validar cliente: se acepta cliente registrado, ocasional con nombre,
-        // o simplemente vacío (se registrará como "Cliente general")
-        // Solo se rechaza si se eligió "registrado" pero no se seleccionó ninguno
+    /**
+     * Verifica que la cantidad sea válida para el tipo de unidad del producto.
+     * Los productos con unidad "und" solo aceptan cantidades enteras.
+     *
+     * @param array $data Datos del formulario con producto_id y cantidad.
+     * @return true|string true si es válida, string con error si no.
+     */
+    private function validarCantidadPorUnidad(array $data) {
+        if (empty($data['producto_id'])) {
+            return true;
+        }
+        $prod = $this->modelProducto->obtenerPorId($data['producto_id']);
+        if (!$prod || $prod['unidad'] !== 'und') {
+            return true;
+        }
+        if (floor((float)$data['cantidad']) != (float)$data['cantidad']) {
+            return "La cantidad debe ser un número entero para productos vendidos por unidad (no se permiten fracciones como 0.5 o 1.3).";
+        }
+        return true;
+    }
+
+    /**
+     * Verifica que el cliente esté correctamente especificado.
+     * Acepta cliente registrado (con ID) o cliente ocasional.
+     *
+     * @param array $data Datos del formulario.
+     * @return true|string true si es válido, string con error si no.
+     */
+    private function validarCliente(array $data) {
         $tieneClienteRegistrado = !empty($data['cliente_id']) && is_numeric($data['cliente_id']);
         $esClienteOcasional     = isset($data['tipo_cliente']) && $data['tipo_cliente'] === 'ocasional';
-
         if (!$tieneClienteRegistrado && !$esClienteOcasional) {
             return "Debes seleccionar un cliente registrado o elegir la opción de cliente ocasional.";
+        }
+        return true;
+    }
+
+    /**
+     * Valida todos los campos del formulario de venta.
+     * Complejidad cognitiva: 8 (era 16 — extraídos validarCliente y validarCantidadPorUnidad).
+     *
+     * @param array $data Datos del formulario de venta.
+     * @return true|string true si los datos son válidos, string con error si no.
+     */
+    private function validarCampos($data) {
+        $errCliente = $this->validarCliente($data);
+        if ($errCliente !== true) {
+            return $errCliente;
         }
         if (empty($data['producto_id']) || !is_numeric($data['producto_id'])) {
             return "Debes seleccionar un producto.";
@@ -70,13 +109,9 @@ class Venta {
         if (!is_numeric($data['cantidad']) || (float)$data['cantidad'] <= 0) {
             return "La cantidad debe ser un número mayor a cero.";
         }
-
-        // Productos manejados por unidad (und) solo aceptan cantidades enteras
-        if (!empty($data['producto_id'])) {
-            $prod = $this->modelProducto->obtenerPorId($data['producto_id']);
-            if ($prod && $prod['unidad'] === 'und' && floor((float)$data['cantidad']) != (float)$data['cantidad']) {
-                return "La cantidad debe ser un número entero para productos vendidos por unidad (no se permiten fracciones como 0.5 o 1.3).";
-            }
+        $errUnidad = $this->validarCantidadPorUnidad($data);
+        if ($errUnidad !== true) {
+            return $errUnidad;
         }
         if (!is_numeric($data['precio_unitario']) || (float)$data['precio_unitario'] <= 0) {
             return "El precio unitario debe ser un número mayor a cero.";
