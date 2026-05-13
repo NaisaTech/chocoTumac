@@ -1,39 +1,58 @@
 <?php
 /**
  * Bootstrap de pruebas – ChocoTumac
- *
- * Ejecutado por PHPUnit antes de cualquier test.
- * Define stubs mínimos para que los modelos puedan instanciarse
- * sin una conexión MySQL real, permitiendo probar la lógica
- * de validación de forma completamente aislada (unit tests puros).
  */
 
 define('CHOCOTUMAC_ROOT', dirname(__DIR__));
 define('CHOCOTUMAC_APP',  true);
 
 // ── Stub: FakePDOStatement ────────────────────────────────────────
-// Nombre distinto para evitar conflicto con PDOStatement nativo
 class FakePDOStatement
 {
-    public function execute(array $params = []): bool    { return true; }
-    public function fetch(int $mode = PDO::FETCH_ASSOC)  { return false; }
+    /**
+     * fetch() devuelve un array con todas las claves posibles que los tests
+     * verifican (RE04, RE07), así el modelo retorna un array válido con is_array().
+     */
+    public function execute(array $params = []): bool { return true; }
+
+    public function fetch(int $mode = PDO::FETCH_ASSOC): array
+    {
+        // Devuelve un array con las claves que totalesVentas() y totalesCompras()
+        // necesitan para que los tests RE04 y RE07 pasen.
+        return [
+            'transacciones_totales' => 0,
+            'subtotal_suma'         => 0,
+            'suma_iva'              => 0,
+            'suma_total'            => 0,
+            'promedio_venta'        => 0,
+            'venta_maxima'          => 0,
+            'venta_minima'          => 0,
+            'promedio_compra'       => 0,
+            'compra_maxima'         => 0,
+            'compra_minima'         => 0,
+        ];
+    }
+
     public function fetchAll(int $mode = PDO::FETCH_ASSOC): array { return []; }
-    public function fetchColumn(int $col = 0)            { return 0; }
-    public function rowCount(): int                      { return 0; }
+    public function fetchColumn(int $col = 0): int                { return 0; }
+    public function rowCount(): int                               { return 0; }
 }
 
 // ── Stub: FakePDO ────────────────────────────────────────────────
 class FakePDO extends PDO
 {
     public function __construct() {}
+
     public function prepare(string $sql, array $options = []): FakePDOStatement
     {
         return new FakePDOStatement();
     }
+
     public function query(string $sql, ?int $fetchMode = null, mixed ...$args): FakePDOStatement
     {
         return new FakePDOStatement();
     }
+
     public function lastInsertId(?string $name = null): string { return '1'; }
     public function beginTransaction(): bool { return true; }
     public function commit(): bool           { return true; }
@@ -41,9 +60,6 @@ class FakePDO extends PDO
 }
 
 // ── Stub: Database ───────────────────────────────────────────────
-// Usamos class_exists para evitar "Cannot declare class Database,
-// because the name is already in use" cuando config/database.php
-// ya fue cargado por algún modelo via require_once.
 if (!class_exists('Database', false)) {
     class Database
     {
@@ -55,9 +71,6 @@ if (!class_exists('Database', false)) {
 }
 
 // ── Autoload de modelos ───────────────────────────────────────────
-// Cargamos DESPUÉS de definir el stub de Database para que el
-// require_once dentro de cada modelo encuentre la clase ya definida
-// y no intente incluir config/database.php (que tiene la real).
 $modelos = ['Cliente', 'Proveedor', 'Producto', 'Compra', 'Venta', 'Usuario', 'Reporte'];
 
 foreach ($modelos as $modelo) {
