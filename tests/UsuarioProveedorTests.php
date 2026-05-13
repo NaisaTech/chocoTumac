@@ -9,7 +9,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
+
 
 require_once __DIR__ . '/TestHelper.php';
 
@@ -25,7 +25,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-01 · Nombre vacío
-    #[Test]
+    /** @test */
     public function US01_nombreVacio_retornaError(): void
     {
         // Arrange
@@ -40,7 +40,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-02 · Email inválido
-    #[Test]
+    /** @test */
     public function US02_emailInvalido_retornaError(): void
     {
         // Arrange
@@ -55,7 +55,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-03 · Contraseña débil (sin mayúscula)
-    #[Test]
+    /** @test */
     public function US03_contrasenaDebil_retornaError(): void
     {
         // Arrange
@@ -70,7 +70,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-04 · Contraseña muy corta (menos de 8 chars)
-    #[Test]
+    /** @test */
     public function US04_contrasenaMuyCorta_retornaError(): void
     {
         // Arrange
@@ -85,7 +85,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-05 · Rol inválido (no existe)
-    #[Test]
+    /** @test */
     public function US05_rolInvalido_retornaError(): void
     {
         // Arrange
@@ -100,7 +100,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-06 · Login con credenciales incorrectas
-    #[Test]
+    /** @test */
     public function US06_loginCreadencialesIncorrectas_retornaFalse(): void
     {
         // Arrange
@@ -114,7 +114,7 @@ class UsuarioTest extends TestCase
     }
 
     // US-07 · actualizarPassword — método existe y es callable
-    #[Test]
+    /** @test */
     public function US07_actualizarPassword_metodoExiste(): void
     {
         // Assert
@@ -144,7 +144,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-01 · Nombre vacío en validarCampos
-    #[Test]
+    /** @test */
     public function PR01_nombreVacio_retornaError(): void
     {
         // Arrange
@@ -165,7 +165,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-02 · Nombre de 1 carácter
-    #[Test]
+    /** @test */
     public function PR02_nombreUnCaracter_retornaError(): void
     {
         // Arrange
@@ -186,7 +186,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-03 · Sin tipo_id
-    #[Test]
+    /** @test */
     public function PR03_sinTipoId_retornaError(): void
     {
         // Arrange
@@ -207,7 +207,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-04 · Stock mínimo negativo
-    #[Test]
+    /** @test */
     public function PR04_stockMinimoNegativo_retornaError(): void
     {
         // Arrange
@@ -228,7 +228,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-05 · incrementarStock — método existe y es callable
-    #[Test]
+    /** @test */
     public function PR05_incrementarStock_metodoExiste(): void
     {
         // Assert
@@ -236,7 +236,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-06 · decrementarStock — método existe y es callable
-    #[Test]
+    /** @test */
     public function PR06_decrementarStock_metodoExiste(): void
     {
         // Assert
@@ -244,7 +244,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-07 · obtenerMovimientos — método existe
-    #[Test]
+    /** @test */
     public function PR07_obtenerMovimientos_metodoExiste(): void
     {
         // Assert
@@ -252,7 +252,7 @@ class ProductoTest extends TestCase
     }
 
     // PR-08 · Datos válidos sin presentación requerida — retorna true
-    #[Test]
+    /** @test */
     public function PR08_datosValidosSinPresentacion_retornaTrue(): void
     {
         // Arrange — tipo sin requiere_presentacion
