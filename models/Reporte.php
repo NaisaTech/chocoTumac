@@ -215,7 +215,8 @@ class Reporte
             WHERE $cond
         ");
         $stmt->execute($params);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return is_array($resultado) ? $resultado : [];
     }
 
     // ── Reporte de Compras ────────────────────────────────────────────
@@ -282,7 +283,8 @@ class Reporte
             WHERE $cond
         ");
         $stmt->execute($params);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return is_array($resultado) ? $resultado : [];
     }
 
     // ── Reporte de Inventario ─────────────────────────────────────────
