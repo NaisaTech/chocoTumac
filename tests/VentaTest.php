@@ -13,7 +13,6 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 require_once __DIR__ . '/TestHelper.php';
@@ -33,7 +32,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-01 · Validar cliente — sin cliente ni ocasional
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT01_sinClienteRegistradoNiOcasional_retornaError(): void
     {
         // Arrange
@@ -52,7 +51,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-02 · Validar cliente — cliente ocasional aceptado
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT02_clienteOcasional_retornaTrue(): void
     {
         // Arrange
@@ -70,7 +69,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-03 · Validar campos — sin producto_id
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT03_sinProductoId_retornaError(): void
     {
         // Arrange
@@ -88,7 +87,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-04 · Validar campos — fecha vacía
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT04_fechaVacia_retornaError(): void
     {
         // Arrange
@@ -106,7 +105,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-05 · Validar campos — fecha con formato inválido
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT05_fechaInvalida_retornaError(): void
     {
         // Arrange
@@ -124,7 +123,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-06 · Validar campos — cantidad cero
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT06_cantidadCero_retornaError(): void
     {
         // Arrange
@@ -142,7 +141,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-07 · Validar campos — cantidad negativa
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT07_cantidadNegativa_retornaError(): void
     {
         // Arrange
@@ -160,7 +159,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-08 · Validar cantidad por unidad — fracción en producto "und"
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT08_fraccionEnProductoUnd_retornaError(): void
     {
         // Arrange
@@ -186,7 +185,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-09 · Validar cantidad por unidad — entero en producto "und" OK
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT09_enteroEnProductoUnd_retornaTrue(): void
     {
         // Arrange
@@ -210,7 +209,7 @@ class VentaTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // VT-10 · Validar campos — precio unitario cero
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function VT10_precioUnitarioCero_retornaError(): void
     {
         // Arrange
