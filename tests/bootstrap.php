@@ -9,16 +9,34 @@ define('CHOCOTUMAC_APP',  true);
 // ── Stub: FakePDOStatement ────────────────────────────────────────
 class FakePDOStatement
 {
-    /**
-     * fetch() devuelve un array con todas las claves posibles que los tests
-     * verifican (RE04, RE07), así el modelo retorna un array válido con is_array().
-     */
+    private string $sql;
+
+    public function __construct(string $sql = '')
+    {
+        $this->sql = strtolower($sql);
+    }
+
     public function execute(array $params = []): bool { return true; }
 
-    public function fetch(int $mode = PDO::FETCH_ASSOC): array
+    /**
+     * Devuelve datos según el contexto de la query:
+     * - Queries de totales (COUNT/SUM/AVG/MAX) → array con claves esperadas
+     * - Cualquier otra query (obtenerPorId, etc.) → false (sin resultado)
+     *   Esto hace que !$prod sea true y validarCantidadPorUnidad() retorne true
+     *   sin intentar acceder a $prod['unidad'].
+     */
+    public function fetch(int $mode = PDO::FETCH_ASSOC): array|false
     {
-        // Devuelve un array con las claves que totalesVentas() y totalesCompras()
-        // necesitan para que los tests RE04 y RE07 pasen.
+        $esTotales = str_contains($this->sql, 'count(')
+                  || str_contains($this->sql, 'sum(')
+                  || str_contains($this->sql, 'avg(')
+                  || str_contains($this->sql, 'max(');
+
+        if (!$esTotales) {
+            return false;   // simula "no encontrado" para obtenerPorId, etc.
+        }
+
+        // Devuelve todas las claves posibles que los tests RE04 y RE07 verifican
         return [
             'transacciones_totales' => 0,
             'subtotal_suma'         => 0,
@@ -45,12 +63,12 @@ class FakePDO extends PDO
 
     public function prepare(string $sql, array $options = []): FakePDOStatement
     {
-        return new FakePDOStatement();
+        return new FakePDOStatement($sql);
     }
 
     public function query(string $sql, ?int $fetchMode = null, mixed ...$args): FakePDOStatement
     {
-        return new FakePDOStatement();
+        return new FakePDOStatement($sql);
     }
 
     public function lastInsertId(?string $name = null): string { return '1'; }
