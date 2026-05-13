@@ -16,7 +16,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
+
 
 require_once __DIR__ . '/TestHelper.php';
 
@@ -33,7 +33,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-01 · ventas() retorna array con FakePDO
-    #[Test]
+    /** @test */
     public function RE01_ventas_sinFiltros_retornaArray(): void
     {
         // Arrange — FakePDO::fetchAll() devuelve []
@@ -45,7 +45,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-02 · ventas() acepta filtros de fecha sin error
-    #[Test]
+   /** @test */
     public function RE02_ventas_conFiltroFecha_noLanzaExcepcion(): void
     {
         // Arrange
@@ -57,7 +57,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-03 · ventas() acepta búsqueda de texto sin error
-    #[Test]
+   /** @test */
     public function RE03_ventas_conBusqueda_noLanzaExcepcion(): void
     {
         // Arrange
@@ -68,7 +68,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-04 · totalesVentas() retorna array con claves esperadas
-    #[Test]
+    /** @test */
     public function RE04_totalesVentas_retornaArrayConClaves(): void
     {
         // Arrange — FakePDO::fetchColumn() devuelve 0
@@ -84,7 +84,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-05 · compras() retorna array sin errores
-    #[Test]
+    /** @test */
     public function RE05_compras_sinFiltros_retornaArray(): void
     {
         // Act
@@ -95,7 +95,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-06 · compras() acepta filtro de proveedor
-    #[Test]
+    /** @test */
     public function RE06_compras_conProveedorId_noLanzaExcepcion(): void
     {
         // Arrange
@@ -106,7 +106,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-07 · totalesCompras() retorna array con claves esperadas
-    #[Test]
+    /** @test */
     public function RE07_totalesCompras_retornaArrayConClaves(): void
     {
         // Act
@@ -121,7 +121,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-08 · inventario() retorna array sin errores
-    #[Test]
+    /** @test */
     public function RE08_inventario_sinFiltros_retornaArray(): void
     {
         // Act
@@ -132,7 +132,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-09 · inventario() acepta búsqueda de texto
-    #[Test]
+    /** @test */
     public function RE09_inventario_conBusqueda_noLanzaExcepcion(): void
     {
         // Arrange
@@ -143,7 +143,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-10 · productosMasVendidos() retorna array
-    #[Test]
+   /** @test */
     public function RE10_productosMasVendidos_retornaArray(): void
     {
         // Act
@@ -154,7 +154,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-11 · listaClientes() retorna array
-    #[Test]
+    /** @test */
     public function RE11_listaClientes_retornaArray(): void
     {
         // Act
@@ -165,7 +165,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-12 · listaProveedores() retorna array
-    #[Test]
+    /** @test */
     public function RE12_listaProveedores_retornaArray(): void
     {
         // Act
@@ -176,7 +176,7 @@ class ReporteTest extends TestCase
     }
 
     // RE-13 · resumenGeneral() retorna array con 8 claves KPI
-    #[Test]
+    /** @test */
     public function RE13_resumenGeneral_retornaArrayConOchoClaves(): void
     {
         // Act
