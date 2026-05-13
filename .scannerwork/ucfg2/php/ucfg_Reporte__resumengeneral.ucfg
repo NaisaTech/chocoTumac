@@ -1,0 +1,333 @@
+
+reporte::resumengeneral7
++C:\wamp64\www\chocoTumac\models\Reporte.phpå å(""1*Ò
+1
+é ó(
+
+
+é ó(	
+%1"$ArrayM
+K
+
+è" è(-
+%2"__id*1
+
+__unknown_file (*	
+reporte"
+conn|z
+
+è" è(S
+%3*"
+
+__unknown_file (
+
+%2*;
+
+__unknown_file (
+SELECT COUNT(*) FROM ventas2queryEC
+
+è" è(b
+%4*"
+
+__unknown_file (
+
+%32fetchcolumnó
+î
+
+é ó(	
+%5"__mapSet*"
+
+__unknown_file (
+
+%1*.
+
+__unknown_file (
+ventas_totales*"
+
+__unknown_file (
+
+%4M
+K
+
+ê" ê(-
+%6"__id*1
+
+__unknown_file (*	
+reporte"
+conn}{
+
+ê" ê(T
+%7*"
+
+__unknown_file (
+
+%6*<
+
+__unknown_file ( 
+SELECT COUNT(*) FROM compras2queryEC
+
+ê" ê(c
+%8*"
+
+__unknown_file (
+
+%72fetchcolumnñ
+ì
+
+é ó(	
+%9"__mapSet*"
+
+__unknown_file (
+
+%1*-
+
+__unknown_file (
+total_compras*"
+
+__unknown_file (
+
+%8N
+L
+
+ë" ë(-
+%10"__id*1
+
+__unknown_file (*	
+reporte"
+connçä
+
+ë" ë(a
+%11*#
+
+__unknown_file (
+
+%10*I
+
+__unknown_file (-+
+)SELECT COALESCE(SUM(total),0) FROM ventas2queryGE
+
+ë" ë(p
+%12*#
+
+__unknown_file (
+
+%112fetchcolumnô
+ñ
+
+é ó(	
+%13"__mapSet*"
+
+__unknown_file (
+
+%1*.
+
+__unknown_file (
+ingresos_total*#
+
+__unknown_file (
+
+%12N
+L
+
+í" í(-
+%14"__id*1
+
+__unknown_file (*	
+reporte"
+connéã
+
+í" í(b
+%15*#
+
+__unknown_file (
+
+%14*J
+
+__unknown_file (.,
+*SELECT COALESCE(SUM(total),0) FROM compras2queryGE
+
+í" í(q
+%16*#
+
+__unknown_file (
+
+%152fetchcolumnò
+ï
+
+é ó(	
+%17"__mapSet*"
+
+__unknown_file (
+
+%1*-
+
+__unknown_file (
+egresos_total*#
+
+__unknown_file (
+
+%16N
+L
+
+ì" ì(-
+%18"__id*1
+
+__unknown_file (*	
+reporte"
+connÄ~
+
+ì" ì(U
+%19*#
+
+__unknown_file (
+
+%18*=
+
+__unknown_file (!
+SELECT COUNT(*) FROM clientes2queryGE
+
+ì" ì(d
+%20*#
+
+__unknown_file (
+
+%192fetchcolumnõ
+ò
+
+é ó(	
+%21"__mapSet*"
+
+__unknown_file (
+
+%1*0
+
+__unknown_file (
+clientes_activos*#
+
+__unknown_file (
+
+%20N
+L
+
+î" î(-
+%22"__id*1
+
+__unknown_file (*	
+reporte"
+connëé
+
+î" î(e
+%23*#
+
+__unknown_file (
+
+%22*M
+
+__unknown_file (1/
+-SELECT COUNT(*) FROM productos WHERE activo=12queryGE
+
+î" î(t
+%24*#
+
+__unknown_file (
+
+%232fetchcolumnú
+ô
+
+é ó(	
+%25"__mapSet*"
+
+__unknown_file (
+
+%1*1
+
+__unknown_file (
+productos_activos*#
+
+__unknown_file (
+
+%24N
+L
+
+ï" ï(-
+%26"__id*1
+
+__unknown_file (*	
+reporte"
+conn≥∞
+ï" ï(Ü
+%27*#
+
+__unknown_file (
+
+%26*n
+
+__unknown_file (RP
+NSELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual <= stock_minimo2queryHF
+ï" ï(ï
+%28*#
+
+__unknown_file (
+
+%272fetchcolumnï
+í
+
+é ó(	
+%29"__mapSet*"
+
+__unknown_file (
+
+%1**
+
+__unknown_file (
+
+stock_bajo*#
+
+__unknown_file (
+
+%28N
+L
+
+ñ" ñ(-
+%30"__id*1
+
+__unknown_file (*	
+reporte"
+conn¶£
+
+ñ" ñ(z
+%31*#
+
+__unknown_file (
+
+%30*b
+
+__unknown_file (FD
+BSELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual = 02queryHF
+ñ" ñ(â
+%32*#
+
+__unknown_file (
+
+%312fetchcolumnî
+ë
+
+é ó(	
+%33"__mapSet*"
+
+__unknown_file (
+
+%1*)
+
+__unknown_file (
+	sin_stock*#
+
+__unknown_file (
+
+%32"
+
+é ó(
+
+
+%1B	
+reporteH

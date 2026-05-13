@@ -1,0 +1,112 @@
+
+clientecontroller::crearD
+:C:\wamp64\www\chocoTumac\controllers\ClienteController.phpl l("1*Ý
+2o o(XÈÅ
+o o(W
+%2*1
+
+__unknown_file (
+clientecontroller*(
+
+__unknown_file (
+
+clientes*G
+
+__unknown_file (+)
+'No tienes permisos para crear clientes.2redirecterror*
+3*¾
+3q q(TR
+q q(
+%3*1
+
+__unknown_file (
+clientecontroller2verificarcsrfV
+T
+r r(
+%4"__id*<
+
+__unknown_file ( *
+clientecontroller"
+modelVT
+r# r(;
+%5*1
+
+__unknown_file (
+clientecontroller2camposdesdeposta_
+r r(<
+%6*"
+
+__unknown_file (
+
+%4*"
+
+__unknown_file (
+
+%52crear>
+<
+r r(<
+$res"__id*"
+
+__unknown_file (
+
+%6*
+4
+5*÷
+4t t(5¤¡
+t t(5
+%8*1
+
+__unknown_file (
+clientecontroller*(
+
+__unknown_file (
+
+clientes*&
+
+__unknown_file (
+
+creado2
+redirectok<
+:
+s u(4
+%7"__id*"
+
+__unknown_file (
+
+%8*
+7*ø
+5u u(4¥¢
+u u(4
+%9*1
+
+__unknown_file (
+clientecontroller*(
+
+__unknown_file (
+
+clientes*$
+
+__unknown_file (
+
+$res2redirecterror<
+:
+s u(4
+%7"__id*"
+
+__unknown_file (
+
+%9*
+7*=
+7
+ClienteController.php"
+v v(
+implicit return*l
+1n n($US
+n n($
+%1*1
+
+__unknown_file (
+clientecontroller2puedegestionar*
+2
+3B
+clientecontrollerH

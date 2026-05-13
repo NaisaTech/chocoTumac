@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="12" assertions="16" errors="0" warnings="3" failures="0" skipped="0" time="0.010334">
+    <testsuite name="ChocoTumac – Suite completa" tests="12" assertions="16" errors="0" warnings="3" failures="0" skipped="0" time="0.010334">
+      <testsuite name="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" tests="9" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.005678">
+        <testcase name="CL01_nombreVacio_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="29" assertions="2" time="0.004341"/>
+        <testcase name="CL02_nombreUnCaracter_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="45" assertions="2" time="0.000121"/>
+        <testcase name="CL03_tipoDocInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="61" assertions="2" time="0.000100"/>
+        <testcase name="CL04_numDocConLetras_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="77" assertions="2" time="0.000101"/>
+        <testcase name="CL05_emailInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="93" assertions="2" time="0.000420"/>
+        <testcase name="CL06_telefonoCorto_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="109" assertions="2" time="0.000104"/>
+        <testcase name="CL07_digitoVerNITInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="125" assertions="2" time="0.000098"/>
+        <testcase name="CL08_digitoVerNITValido_retornaTrue" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="142" assertions="1" time="0.000295"/>
+        <testcase name="CL09_datosValidos_retornaTrue" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="158" assertions="1" time="0.000097"/>
+      </testsuite>
+      <testsuite name="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" tests="1" assertions="0" errors="0" warnings="1" failures="0" skipped="0" time="0.003783">
+        <testcase name="Warning" assertions="0" time="0.003783">
+          <warning type="PHPUnit\Framework\Warning">Warning
+No tests found in class "CompraTest".</warning>
+        </testcase>
+      </testsuite>
+      <testsuite name="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" tests="1" assertions="0" errors="0" warnings="1" failures="0" skipped="0" time="0.000432">
+        <testcase name="Warning" assertions="0" time="0.000432">
+          <warning type="PHPUnit\Framework\Warning">Warning
+No tests found in class "ReporteTest".</warning>
+        </testcase>
+      </testsuite>
+      <testsuite name="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" tests="1" assertions="0" errors="0" warnings="1" failures="0" skipped="0" time="0.000441">
+        <testcase name="Warning" assertions="0" time="0.000441">
+          <warning type="PHPUnit\Framework\Warning">Warning
+No tests found in class "VentaTest".</warning>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

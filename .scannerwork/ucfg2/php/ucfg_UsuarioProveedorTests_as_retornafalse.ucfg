@@ -1,0 +1,80 @@
+
+<usuariotest::us06_logincreadencialesincorrectas_retornafalseB
+8C:\wamp64\www\chocoTumac\tests\UsuarioProveedorTests.phph h(C"1*A
+2
+UsuarioProveedorTests.php"
+r r(
+implicit return*É
+1k k(HR
+P
+k! k(/
+%1"__id*8
+
+__unknown_file (*
+usuariotest"	
+usuario
+k9 k(F
+%2"fakepdoL
+J
+k9 k(F
+%3"fakepdo::__construct*"
+
+__unknown_file (
+
+%2Á¾
+k k(G
+%4*+
+
+__unknown_file (
+usuariotest*"
+
+__unknown_file (
+
+%1*$
+
+__unknown_file (
+conn*"
+
+__unknown_file (
+
+%22inyectarpropiedadR
+P
+n n(#
+%5"__id*8
+
+__unknown_file (*
+usuariotest"	
+usuarioš
+n n(M
+%6*"
+
+__unknown_file (
+
+%5*1
+
+__unknown_file (
+noexiste@test.com**
+
+__unknown_file (
+
+WrongPass12loginD
+B
+n n(M
+
+$resultado"__id*"
+
+__unknown_file (
+
+%6xv
+q q(&
+%7*+
+
+__unknown_file (
+usuariotest**
+
+__unknown_file (
+
+
+$resultado2assertfalse*
+2B
+usuariotestH

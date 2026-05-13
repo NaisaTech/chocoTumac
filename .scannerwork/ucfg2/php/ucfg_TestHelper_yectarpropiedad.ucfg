@@ -1,0 +1,79 @@
+
+testhelper::inyectarpropiedad7
+-C:\wamp64\www\chocoTumac\tests\TestHelper.php$ $(("1*6
+2
+TestHelper.php"
+) )(
+implicit return*Ø
+1& &(7H
+F
+$ $((
+$obj"__id*,
+
+__unknown_file (
+
+$objobjectR
+P
+$ $((
+	$property"__id*1
+
+__unknown_file (
+
+	$propertystringK
+I
+$ $((
+$value"__id*-
+
+__unknown_file (
+
+$valuemixed(&
+& &(6
+$ref"reflectionproperty«
+¨
+& &(6
+%1"reflectionproperty::__construct*$
+
+__unknown_file (
+
+$ref*$
+
+__unknown_file (
+
+$obj*)
+
+__unknown_file (
+
+	$propertymk
+' '(!
+%2*$
+
+__unknown_file (
+
+$ref*$
+
+__unknown_file (
+true2setaccessible‘Ž
+( (($
+%3*$
+
+__unknown_file (
+
+$ref*$
+
+__unknown_file (
+
+$obj*&
+
+__unknown_file (
+
+
+$value2setvalue*
+2:
+$) $(4
+$objobject:
+$6 $(F
+	$propertystring:
+$H $(T
+$valuemixedB
+
+testhelperH

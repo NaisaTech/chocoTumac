@@ -1,0 +1,33 @@
+
+proveedor::__construct7
+-C:\wamp64\www\chocoTumac\models\Proveedor.php ("1*5
+2
+Proveedor.php"
+ (
+implicit return*è
+1 (2
+ (&
+%1"databaseM
+K
+ (&
+%2"database::__construct*"
+
+__unknown_file (
+
+%1?=
+ (1
+%3*"
+
+__unknown_file (
+
+%12connectM
+K
+ (1
+	proveedor"
+conn"__id*"
+
+__unknown_file (
+
+%3*
+2B
+	proveedorH
