@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/TestHelper.php';
 
-class ClienteTest extends TestCase
+class ClienteProveedorTest extends TestCase
 {
     use TestHelper;
 
@@ -25,7 +25,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-01 · Nombre vacío
-    /**@test*/
+    /** @test */
     public function CL01_nombreVacio_retornaError(): void
     {
         // Arrange
@@ -41,7 +41,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-02 · Nombre de 1 carácter (mínimo 2)
-    /**@test*/
+   /** @test */
     public function CL02_nombreUnCaracter_retornaError(): void
     {
         // Arrange
@@ -57,7 +57,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-03 · Tipo de documento inválido
-    /**@test*/
+    /** @test */
     public function CL03_tipoDocInvalido_retornaError(): void
     {
         // Arrange
@@ -73,7 +73,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-04 · Número de documento con letras
-    /**@test*/
+    /** @test */
     public function CL04_numDocConLetras_retornaError(): void
     {
         // Arrange
@@ -89,7 +89,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-05 · Email con formato inválido
-    /**@test*/
+    /** @test */
     public function CL05_emailInvalido_retornaError(): void
     {
         // Arrange
@@ -105,7 +105,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-06 · Teléfono demasiado corto (menos de 7 dígitos)
-    /**@test*/
+    /** @test */
     public function CL06_telefonoCorto_retornaError(): void
     {
         // Arrange
@@ -121,7 +121,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-07 · Dígito de verificación NIT inválido (letra)
-   /**@test*/
+   /** @test */
     public function CL07_digitoVerNITInvalido_retornaError(): void
     {
         // Arrange
@@ -138,7 +138,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-08 · Dígito de verificación NIT válido
-   /**@test*/
+   /** @test */
     public function CL08_digitoVerNITValido_retornaTrue(): void
     {
         // Arrange
@@ -154,7 +154,7 @@ class ClienteTest extends TestCase
     }
 
     // CL-09 · Datos completamente válidos — retorna true
-    /**@test*/
+    /** @test */
     public function CL09_datosValidos_retornaTrue(): void
     {
         // Arrange
@@ -189,7 +189,7 @@ class ProveedorTest extends TestCase
     }
 
     // PV-01 · Nombre vacío
-  /**@test*/
+  /** @test */
     public function PV01_nombreVacio_retornaError(): void
     {
         // Arrange
@@ -205,7 +205,7 @@ class ProveedorTest extends TestCase
     }
 
     // PV-02 · Tipo de proveedor inválido
-    /**@test*/
+    /** @test */
     public function PV02_tipoProveedorInvalido_retornaError(): void
     {
         // Arrange
@@ -221,7 +221,7 @@ class ProveedorTest extends TestCase
     }
 
     // PV-03 · Email inválido
-    /**@test*/
+    /** @test */
     public function PV03_emailInvalido_retornaError(): void
     {
         // Arrange
@@ -237,7 +237,7 @@ class ProveedorTest extends TestCase
     }
 
     // PV-04 · Número de documento con letras
-   /**@test*/
+   /** @test */
     public function PV04_numDocConLetras_retornaError(): void
     {
         // Arrange
@@ -253,7 +253,7 @@ class ProveedorTest extends TestCase
     }
 
     // PV-05 · Datos completamente válidos — retorna true
-    /**@test*/
+   /** @test */
     public function PV05_datosValidos_retornaTrue(): void
     {
         // Arrange
