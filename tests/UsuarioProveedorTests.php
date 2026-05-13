@@ -131,7 +131,7 @@ class UsuarioTest extends TestCase
  *
  * @package ChocoTumac\Tests
  */
-class ProductoTest extends TestCase
+class UsuarioProveedorTest extends TestCase
 {
     use TestHelper;
 
