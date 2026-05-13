@@ -190,10 +190,6 @@ class Reporte
 
     /**
      * Totales del reporte de ventas (suma, promedio, conteo).
-     *
-     * CORRECCIÓN (Sprint 3 – RE04):
-     *   Alias renombrado de "total_transacciones" → "transacciones_totales"
-     *   para coincidir con el contrato del test RE04_totalesVentas_retornaArrayConClaves.
      */
     public function totalesVentas(
         ?string $desde      = null,
@@ -207,7 +203,7 @@ class Reporte
         $stmt = $this->conn->prepare("
             SELECT
                 COUNT(v.id)       AS transacciones_totales,
-                SUM(v.subtotal)   AS suma_subtotal,
+                SUM(v.subtotal)   AS subtotal_suma,
                 SUM(v.iva_valor)  AS suma_iva,
                 SUM(v.total)      AS suma_total,
                 AVG(v.total)      AS promedio_venta,
@@ -219,8 +215,7 @@ class Reporte
             WHERE $cond
         ");
         $stmt->execute($params);
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $resultado ?: [];
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // ── Reporte de Compras ────────────────────────────────────────────
@@ -264,10 +259,6 @@ class Reporte
 
     /**
      * Totales del reporte de compras.
-     *
-     * CORRECCIÓN (Sprint 3 – RE07):
-     *   Alias renombrado de "total_transacciones" → "transacciones_totales"
-     *   para coincidir con el contrato del test RE07_totalesCompras_retornaArrayConClaves.
      */
     public function totalesCompras(
         ?string $desde        = null,
@@ -291,8 +282,7 @@ class Reporte
             WHERE $cond
         ");
         $stmt->execute($params);
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $resultado ?: [];
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // ── Reporte de Inventario ─────────────────────────────────────────
@@ -400,22 +390,18 @@ class Reporte
 
     /**
      * Retorna métricas generales del sistema para el dashboard del gerente.
-     *
-     * CORRECCIÓN (Sprint 3 – RE13):
-     *   Clave renombrada de "compras_totales" → "total_compras"
-     *   para coincidir con el contrato del test RE13_resumenGeneral_retornaArrayConOchoClaves.
      */
     public function resumenGeneral(): array
     {
         return [
-            'ventas_totales'    => $this->conn->query("SELECT COUNT(*) FROM ventas")->fetchColumn(),
-            'total_compras'     => $this->conn->query("SELECT COUNT(*) FROM compras")->fetchColumn(),
-            'ingresos_total'    => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM ventas")->fetchColumn(),
-            'egresos_total'     => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM compras")->fetchColumn(),
-            'clientes_activos'  => $this->conn->query("SELECT COUNT(*) FROM clientes")->fetchColumn(),
-            'productos_activos' => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1")->fetchColumn(),
-            'stock_bajo'        => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual <= stock_minimo")->fetchColumn(),
-            'sin_stock'         => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual = 0")->fetchColumn(),
+            'ventas_totales'   => $this->conn->query("SELECT COUNT(*) FROM ventas")->fetchColumn(),
+            'total_compras'    => $this->conn->query("SELECT COUNT(*) FROM compras")->fetchColumn(),
+            'ingresos_total'   => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM ventas")->fetchColumn(),
+            'egresos_total'    => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM compras")->fetchColumn(),
+            'clientes_activos' => $this->conn->query("SELECT COUNT(*) FROM clientes")->fetchColumn(),
+            'productos_activos'=> $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1")->fetchColumn(),
+            'stock_bajo'       => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual <= stock_minimo")->fetchColumn(),
+            'sin_stock'        => $this->conn->query("SELECT COUNT(*) FROM productos WHERE activo=1 AND stock_actual = 0")->fetchColumn(),
         ];
     }
 }
