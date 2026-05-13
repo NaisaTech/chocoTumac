@@ -13,7 +13,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
+
 
 require_once __DIR__ . '/TestHelper.php';
 
@@ -31,7 +31,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-01 · Sin proveedor_id
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP01_sinProveedorId_retornaError(): void
     {
         // Arrange
@@ -49,7 +49,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-02 · Sin producto_id
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+   /** @test */
     public function CP02_sinProductoId_retornaError(): void
     {
         // Arrange
@@ -67,7 +67,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-03 · Fecha vacía
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP03_fechaVacia_retornaError(): void
     {
         // Arrange
@@ -85,7 +85,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-04 · Fecha con formato inválido
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP04_fechaFormatoInvalido_retornaError(): void
     {
         // Arrange
@@ -103,7 +103,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-05 · Cantidad cero
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP05_cantidadCero_retornaError(): void
     {
         // Arrange
@@ -121,7 +121,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-06 · Cantidad negativa
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP06_cantidadNegativa_retornaError(): void
     {
         // Arrange
@@ -139,7 +139,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-07 · Fracción en producto con unidad "und"
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP07_fraccionEnProductoUnd_retornaError(): void
     {
         // Arrange
@@ -165,7 +165,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-08 · Precio unitario cero
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+   /** @test */
     public function CP08_precioUnitarioCero_retornaError(): void
     {
         // Arrange
@@ -183,7 +183,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-09 · Precio unitario negativo
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP09_precioUnitarioNegativo_retornaError(): void
     {
         // Arrange
@@ -201,7 +201,7 @@ class CompraTest extends TestCase
     // ════════════════════════════════════════════════════════════════
     // CP-10 · Datos completamente válidos — retorna true
     // ════════════════════════════════════════════════════════════════
-    #[Test]
+    /** @test */
     public function CP10_datosValidos_retornaTrue(): void
     {
         // Arrange
