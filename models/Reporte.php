@@ -215,7 +215,8 @@ class Reporte
             WHERE $cond
         ");
         $stmt->execute($params);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ?: [];
     }
 
     // ── Reporte de Compras ────────────────────────────────────────────
@@ -282,7 +283,8 @@ class Reporte
             WHERE $cond
         ");
         $stmt->execute($params);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ?: [];
     }
 
     // ── Reporte de Inventario ─────────────────────────────────────────
@@ -394,8 +396,8 @@ class Reporte
     public function resumenGeneral(): array
     {
         return [
-            'total_ventas'     => $this->conn->query("SELECT COUNT(*) FROM ventas")->fetchColumn(),
-            'total_compras'    => $this->conn->query("SELECT COUNT(*) FROM compras")->fetchColumn(),
+            'ventas_totales'     => $this->conn->query("SELECT COUNT(*) FROM ventas")->fetchColumn(),
+            'compras_totales'    => $this->conn->query("SELECT COUNT(*) FROM compras")->fetchColumn(),
             'ingresos_total'   => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM ventas")->fetchColumn(),
             'egresos_total'    => $this->conn->query("SELECT COALESCE(SUM(total),0) FROM compras")->fetchColumn(),
             'clientes_activos' => $this->conn->query("SELECT COUNT(*) FROM clientes")->fetchColumn(),
