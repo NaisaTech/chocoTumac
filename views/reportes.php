@@ -89,7 +89,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     <!-- ── Encabezado ── -->
     <div class="d-flex justify-content-between align-items-center mb-3 no-print">
         <div>
-            <h4 class="fw-bold mb-0" style="color:var(--ct-brand);">📊 Módulo de Reportes</h4>
+            <h4 class="fw-bold mb-0" style="color:var(--ct-brand);">Módulo de Reportes</h4>
             <small class="text-muted">Solo visible para Gerentes · Datos en tiempo real</small>
         </div>
         <button onclick="window.print()" class="btn btn-sm text-white no-print"
@@ -138,10 +138,10 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     <nav aria-label="Secciones del reporte" class="no-print">
     <ul class="nav rep-tabs mb-0" id="repTabs">
         <?php foreach ([
-            'ventas'    => '📋 Ventas',
-            'compras'   => '🛒 Compras',
-            'inventario'=> '📦 Inventario',
-            'top'       => '🏆 Más vendidos',
+            'ventas'    => 'Ventas',
+            'compras'   => 'Compras',
+            'inventario'=> 'Inventario',
+            'top'       => 'Más vendidos',
         ] as $key => $label): ?>
         <li class="nav-item">
             <a class="nav-link <?= $tab === $key ? 'active' : '' ?>"
@@ -482,7 +482,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <div class="col-lg-7">
             <div class="rep-card h-100">
                 <h6 class="fw-bold mb-3" style="color:var(--ct-brand);">
-                    🏆 Top 10 Productos Más Vendidos
+                    Top 10 Productos Más Vendidos
                     <small class="text-muted fw-normal" style="font-size:.78rem;">
                         — por cantidad total
                         <?= $desde || $hasta ? '· ' . ($desde ? date('d/m/Y', strtotime($desde)) : '') . ($hasta ? ' a ' . date('d/m/Y', strtotime($hasta)) : '') : '' ?>
@@ -509,7 +509,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                         <?php foreach ($top_prod as $pos => $tp): ?>
                         <tr>
                             <td class="text-center fw-bold" style="color:<?= $pos === 0 ? '#C8860A' : ($pos === 1 ? '#666' : ($pos === 2 ? '#a05a2c' : '#999')) ?>">
-                                <?= $pos < 3 ? ['🥇','🥈','🥉'][$pos] : ($pos+1) ?>
+                                <?= $pos < 3 ? ['1','2','3'][$pos] : ($pos+1) ?>
                             </td>
                             <td class="fw-semibold"><?= htmlspecialchars($tp['producto']) ?></td>
                             <td class="text-muted"><?= htmlspecialchars($tp['tipo']) ?></td>
