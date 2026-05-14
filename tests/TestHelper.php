@@ -2,22 +2,26 @@
 /**
  * Trait TestHelper – ChocoTumac
  *
- * Provee métodos utilitarios para las clases de prueba:
- *   - Invocar métodos privados/protegidos via Reflection (caja blanca)
- *   - Inyectar propiedades privadas (como $conn) con un stub
+ * Provee métodos utilitarios reutilizables en toda la suite:
+ *   - invocarPrivado(): accede a métodos privados/protegidos via Reflection
+ *   - inyectarPropiedad(): inyecta dependencias (como FakePDO) via Reflection
+ *   - Fábricas de datos válidos por modelo (DRY: evita repetir arrays en cada test)
  *
- * Patrón AAA: las clases de test usan este trait para el paso
- * Arrange cuando necesitan acceso a la lógica interna del modelo.
+ * Patrón AAA: estas utilidades se usan en la fase Arrange de cada prueba.
+ *
+ * @package ChocoTumac\Tests
  */
 trait TestHelper
 {
     /**
      * Invoca un método privado o protegido de un objeto.
+     * Permite hacer pruebas de caja blanca sobre la lógica interna
+     * sin exponer los métodos en la interfaz pública del modelo.
      *
-     * @param object $obj    Instancia del objeto bajo prueba.
-     * @param string $method Nombre del método privado.
-     * @param array  $args   Argumentos a pasar al método.
-     * @return mixed         Resultado del método.
+     * @param object $obj    Instancia del modelo bajo prueba
+     * @param string $method Nombre del método privado a invocar
+     * @param array  $args   Argumentos para el método
+     * @return mixed         Resultado devuelto por el método
      */
     protected function invocarPrivado(object $obj, string $method, array $args = []): mixed
     {
@@ -28,10 +32,11 @@ trait TestHelper
 
     /**
      * Inyecta un valor en una propiedad privada o protegida.
+     * Se usa para sustituir $conn con FakePDO o $modelProducto con un mock.
      *
-     * @param object $obj      Instancia del objeto.
-     * @param string $property Nombre de la propiedad.
-     * @param mixed  $value    Valor a inyectar.
+     * @param object $obj      Instancia del modelo
+     * @param string $property Nombre de la propiedad a reemplazar
+     * @param mixed  $value    Valor a inyectar (FakePDO, mock, etc.)
      */
     protected function inyectarPropiedad(object $obj, string $property, mixed $value): void
     {
@@ -40,46 +45,11 @@ trait TestHelper
         $ref->setValue($obj, $value);
     }
 
-    /**
-     * Crea datos base válidos de venta para reutilizar en tests.
-     *
-     * @return array
-     */
-    protected function datosVentaValidos(): array
-    {
-        return [
-            'tipo_cliente'    => 'registrado',
-            'cliente_id'      => '1',
-            'producto_id'     => '1',
-            'fecha'           => date('Y-m-d'),
-            'cantidad'        => '5',
-            'precio_unitario' => '15000',
-            'iva_porcentaje'  => '19',
-            'forma_pago'      => 'contado',
-        ];
-    }
+    // ── Fábricas de datos válidos ─────────────────────────────────────────
 
     /**
-     * Crea datos base válidos de compra para reutilizar en tests.
-     *
-     * @return array
-     */
-    protected function datosCompraValidos(): array
-    {
-        return [
-            'proveedor_id'    => '1',
-            'producto_id'     => '1',
-            'fecha'           => date('Y-m-d'),
-            'cantidad'        => '50',
-            'precio_unitario' => '8500',
-            'observaciones'   => '',
-        ];
-    }
-
-    /**
-     * Crea datos base válidos de cliente para reutilizar en tests.
-     *
-     * @return array
+     * Datos mínimos válidos para crear o validar un Cliente.
+     * Tipo CC (no requiere dígito de verificación).
      */
     protected function datosClienteValidos(): array
     {
@@ -97,9 +67,8 @@ trait TestHelper
     }
 
     /**
-     * Crea datos base válidos de proveedor para reutilizar en tests.
-     *
-     * @return array
+     * Datos mínimos válidos para crear o validar un Proveedor.
+     * Tipo NIT con dígito de verificación.
      */
     protected function datosProveedorValidos(): array
     {
@@ -115,6 +84,40 @@ trait TestHelper
             'direccion'        => 'Vía principal km 3',
             'ciudad'           => 'Tumaco',
             'departamento'     => 'Nariño',
+        ];
+    }
+
+    /**
+     * Datos mínimos válidos para crear o validar una Compra.
+     * Producto 1 (cacao en grano), 50 unidades a $8.500.
+     */
+    protected function datosCompraValidos(): array
+    {
+        return [
+            'proveedor_id'    => '1',
+            'producto_id'     => '1',
+            'fecha'           => date('Y-m-d'),
+            'cantidad'        => '50',
+            'precio_unitario' => '8500',
+            'observaciones'   => '',
+        ];
+    }
+
+    /**
+     * Datos mínimos válidos para crear o validar una Venta.
+     * Cliente registrado, producto 1, 5 unidades a $15.000.
+     */
+    protected function datosVentaValidos(): array
+    {
+        return [
+            'tipo_cliente'    => 'registrado',
+            'cliente_id'      => '1',
+            'producto_id'     => '1',
+            'fecha'           => date('Y-m-d'),
+            'cantidad'        => '5',
+            'precio_unitario' => '15000',
+            'iva_porcentaje'  => '19',
+            'forma_pago'      => 'contado',
         ];
     }
 }

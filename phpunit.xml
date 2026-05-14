@@ -7,16 +7,27 @@
 
     <testsuites>
         <testsuite name="ChocoTumac – Suite completa">
-            <directory>tests/</directory>
+            <file>tests/GestionClientesTest.php</file>
+            <file>tests/GestionProveedoresTest.php</file>
+            <file>tests/GestionUsuariosTest.php</file>
+            <file>tests/GestionInventarioTest.php</file>
+            <file>tests/GestionComprasTest.php</file>
+            <file>tests/GestionVentasTest.php</file>
+            <file>tests/GeneracionReportesTest.php</file>
         </testsuite>
+        <testsuite name="Clientes">   <file>tests/GestionClientesTest.php</file>   </testsuite>
+        <testsuite name="Proveedores"><file>tests/GestionProveedoresTest.php</file> </testsuite>
+        <testsuite name="Usuarios">   <file>tests/GestionUsuariosTest.php</file>   </testsuite>
+        <testsuite name="Inventario"> <file>tests/GestionInventarioTest.php</file> </testsuite>
+        <testsuite name="Compras">    <file>tests/GestionComprasTest.php</file>    </testsuite>
+        <testsuite name="Ventas">     <file>tests/GestionVentasTest.php</file>     </testsuite>
+        <testsuite name="Reportes">   <file>tests/GeneracionReportesTest.php</file></testsuite>
     </testsuites>
 
     <coverage>
         <include>
             <directory suffix=".php">models/</directory>
         </include>
-        <!-- Excluir vistas (HTML mezclado, no testeables con PHPUnit)
-             y controllers (dependen de session_start/header/exit) -->
         <exclude>
             <directory suffix=".php">views/</directory>
             <directory suffix=".php">controllers/</directory>
