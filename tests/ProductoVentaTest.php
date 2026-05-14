@@ -3,9 +3,8 @@
  * ProductoVentaTest – ChocoTumac
  *
  * Pruebas adicionales para alcanzar ≥ 80 % de cobertura.
- * Cubre las ramas de Producto (crearTipo, validarCampos extendido),
- * Venta (formas de pago, IVA, cliente ocasional) y
- * Compra (precio unitario, datos válidos extendidos).
+ * Cubre CRUD completo de Cliente, Proveedor, Usuario, Compra, Venta
+ * y la gestión de tipos/productos de Producto.
  *
  * Patrón: AAA (Arrange – Act – Assert)
  * Tipo:   Pruebas unitarias de caja blanca
@@ -18,8 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/TestHelper.php';
 
+
 // ════════════════════════════════════════════════════════════════════
-//  Producto — crearTipo
+//  Producto — crearTipo y validarCampos extendido
 // ════════════════════════════════════════════════════════════════════
 class ProductoTipoTest extends TestCase
 {
@@ -37,18 +37,8 @@ class ProductoTipoTest extends TestCase
     /** @test */
     public function PT01_crearTipo_nombreVacio_retornaError(): void
     {
-        // Arrange
-        $data = [
-            'nombre'      => '',
-            'unidad'      => 'kg',
-            'unidad_venta'=> 'kg',
-            'descripcion' => '',
-        ];
-
-        // Act
+        $data = ['nombre' => '', 'unidad' => 'kg', 'unidad_venta' => 'kg', 'descripcion' => ''];
         $resultado = $this->producto->crearTipo($data);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('nombre', strtolower($resultado));
     }
@@ -57,18 +47,8 @@ class ProductoTipoTest extends TestCase
     /** @test */
     public function PT02_crearTipo_unidadInvalida_retornaError(): void
     {
-        // Arrange
-        $data = [
-            'nombre'       => 'Cacao Especial',
-            'unidad'       => 'litros',   // no válida
-            'unidad_venta' => 'kg',
-            'descripcion'  => '',
-        ];
-
-        // Act
+        $data = ['nombre' => 'Cacao Especial', 'unidad' => 'litros', 'unidad_venta' => 'kg', 'descripcion' => ''];
         $resultado = $this->producto->crearTipo($data);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('unidad', strtolower($resultado));
     }
@@ -77,18 +57,8 @@ class ProductoTipoTest extends TestCase
     /** @test */
     public function PT03_crearTipo_unidadVentaInvalida_retornaError(): void
     {
-        // Arrange
-        $data = [
-            'nombre'       => 'Cacao Especial',
-            'unidad'       => 'kg',
-            'unidad_venta' => 'tonelada',  // no válida
-            'descripcion'  => '',
-        ];
-
-        // Act
+        $data = ['nombre' => 'Cacao Especial', 'unidad' => 'kg', 'unidad_venta' => 'tonelada', 'descripcion' => ''];
         $resultado = $this->producto->crearTipo($data);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('unidad', strtolower($resultado));
     }
@@ -97,18 +67,9 @@ class ProductoTipoTest extends TestCase
     /** @test */
     public function PT04_crearTipo_datosValidos_retornaTrue(): void
     {
-        // Arrange — FakePDO::fetch() devuelve false → slug no existe → INSERT exitoso
-        $data = [
-            'nombre'       => 'Derivado Cacao',
-            'unidad'       => 'kg',
-            'unidad_venta' => 'und',
-            'descripcion'  => 'Tipo para derivados',
-        ];
-
-        // Act
+        // FakePDO::fetch() devuelve false → slug no existe → INSERT exitoso
+        $data = ['nombre' => 'Derivado Cacao', 'unidad' => 'kg', 'unidad_venta' => 'und', 'descripcion' => 'Tipo para derivados'];
         $resultado = $this->producto->crearTipo($data);
-
-        // Assert
         $this->assertTrue($resultado);
     }
 
@@ -116,95 +77,85 @@ class ProductoTipoTest extends TestCase
     /** @test */
     public function PT05_actualizarTipo_unidadInvalida_retornaError(): void
     {
-        // Arrange
-        $data = [
-            'nombre'       => 'Cacao Premium',
-            'unidad'       => 'metro',   // no válida
-            'unidad_venta' => 'kg',
-            'descripcion'  => '',
-        ];
-
-        // Act
+        $data = ['nombre' => 'Cacao Premium', 'unidad' => 'metro', 'unidad_venta' => 'kg', 'descripcion' => ''];
         $resultado = $this->producto->actualizarTipo(1, $data);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('unidad', strtolower($resultado));
     }
 
-    // PT-06 · validarCampos producto — precio_venta negativo
+    // PT-06 · actualizarTipo — datos válidos con FakePDO retorna true
     /** @test */
-    public function PT06_validarCampos_precioVentaNegativo_retornaError(): void
+    public function PT06_actualizarTipo_datosValidos_retornaTrue(): void
     {
-        // Arrange
-        $data = [
-            'nombre'       => 'Cacao Fino',
-            'tipo_id'      => '1',
-            'presentacion' => '',
-            'stock_minimo' => '5',
-            'precio_venta' => '-100',
-        ];
+        $data = ['nombre' => 'Cacao Premium', 'unidad' => 'kg', 'unidad_venta' => 'kg', 'descripcion' => '', 'activo' => 1];
+        $resultado = $this->producto->actualizarTipo(1, $data);
+        $this->assertTrue($resultado);
+    }
 
-        // Act
+    // PT-07 · validarCampos producto — precio_venta negativo
+    /** @test */
+    public function PT07_validarCampos_precioVentaNegativo_retornaError(): void
+    {
+        $data = ['nombre' => 'Cacao Fino', 'tipo_id' => '1', 'presentacion' => '', 'stock_minimo' => '5', 'precio_venta' => '-100'];
         $resultado = $this->invocarPrivado($this->producto, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('precio', strtolower($resultado));
     }
 
-    // PT-07 · validarCampos producto — stock mínimo no numérico
+    // PT-08 · validarCampos producto — stock mínimo no numérico
     /** @test */
-    public function PT07_validarCampos_stockMinimoTexto_retornaError(): void
+    public function PT08_validarCampos_stockMinimoTexto_retornaError(): void
     {
-        // Arrange
-        $data = [
-            'nombre'       => 'Cacao Fino',
-            'tipo_id'      => '1',
-            'presentacion' => '',
-            'stock_minimo' => 'mucho',
-            'precio_venta' => '5000',
-        ];
-
-        // Act
+        $data = ['nombre' => 'Cacao Fino', 'tipo_id' => '1', 'presentacion' => '', 'stock_minimo' => 'mucho', 'precio_venta' => '5000'];
         $resultado = $this->invocarPrivado($this->producto, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('stock', strtolower($resultado));
     }
 
-    // PT-08 · obtenerTipos — retorna array con FakePDO
+    // PT-09 · obtenerTipos — retorna array con FakePDO
     /** @test */
-    public function PT08_obtenerTipos_retornaArray(): void
+    public function PT09_obtenerTipos_retornaArray(): void
     {
-        // Act
-        $resultado = $this->producto->obtenerTipos();
-
-        // Assert
-        $this->assertIsArray($resultado);
+        $this->assertIsArray($this->producto->obtenerTipos());
     }
 
-    // PT-09 · obtenerActivos — retorna array con FakePDO
+    // PT-10 · obtenerActivos — retorna array con FakePDO
     /** @test */
-    public function PT09_obtenerActivos_retornaArray(): void
+    public function PT10_obtenerActivos_retornaArray(): void
     {
-        // Act
-        $resultado = $this->producto->obtenerActivos();
-
-        // Assert
-        $this->assertIsArray($resultado);
+        $this->assertIsArray($this->producto->obtenerActivos());
     }
 
-    // PT-10 · obtener — retorna array con FakePDO
+    // PT-11 · obtener — retorna array con FakePDO
     /** @test */
-    public function PT10_obtener_retornaArray(): void
+    public function PT11_obtener_retornaArray(): void
     {
-        // Act
-        $resultado = $this->producto->obtener();
+        $this->assertIsArray($this->producto->obtener());
+    }
 
-        // Assert
-        $this->assertIsArray($resultado);
+    // PT-12 · obtenerPorId — retorna false con FakePDO (sin BD real)
+    /** @test */
+    public function PT12_obtenerPorId_retornaFalseConFakePDO(): void
+    {
+        $resultado = $this->producto->obtenerPorId(99);
+        $this->assertFalse($resultado);
+    }
+
+    // PT-13 · obtenerPorTipo — retorna array con FakePDO
+    /** @test */
+    public function PT13_obtenerPorTipo_retornaArray(): void
+    {
+        $this->assertIsArray($this->producto->obtenerPorTipo('cacao_grano'));
+    }
+
+    // PT-14 · crear producto — nombre vacío retorna error
+    /** @test */
+    public function PT14_crearProducto_nombreVacio_retornaError(): void
+    {
+        $data = ['nombre' => '', 'tipo_id' => '1', 'presentacion' => '', 'stock_minimo' => '0', 'precio_venta' => '5000'];
+        $resultado = $this->producto->crear($data);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('nombre', strtolower($resultado));
     }
 }
 
@@ -228,31 +179,21 @@ class VentaAdicionalTest extends TestCase
     /** @test */
     public function VA01_clienteRegistradoConId_retornaTrue(): void
     {
-        // Arrange
         $data = $this->datosVentaValidos();
         $data['tipo_cliente'] = 'registrado';
         $data['cliente_id']   = '5';
-
-        // Act
         $resultado = $this->invocarPrivado($this->venta, 'validarCliente', [$data]);
-
-        // Assert
         $this->assertTrue($resultado);
     }
 
-    // VA-02 · validarCliente — tipo_cliente no reconocido (ni registrado ni ocasional)
+    // VA-02 · validarCliente — tipo desconocido sin ID retorna error
     /** @test */
     public function VA02_tipoClienteDesconocido_retornaError(): void
     {
-        // Arrange
         $data = $this->datosVentaValidos();
-        $data['tipo_cliente'] = 'mayorista';  // no existe
+        $data['tipo_cliente'] = 'mayorista';
         $data['cliente_id']   = '';
-
-        // Act
         $resultado = $this->invocarPrivado($this->venta, 'validarCliente', [$data]);
-
-        // Assert — debe retornar error al no tener cliente definido
         $this->assertIsString($resultado);
     }
 
@@ -260,14 +201,9 @@ class VentaAdicionalTest extends TestCase
     /** @test */
     public function VA03_cantidadTexto_retornaError(): void
     {
-        // Arrange
         $data = $this->datosVentaValidos();
         $data['cantidad'] = 'diez';
-
-        // Act
         $resultado = $this->invocarPrivado($this->venta, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('cantidad', strtolower($resultado));
     }
@@ -276,57 +212,67 @@ class VentaAdicionalTest extends TestCase
     /** @test */
     public function VA04_precioUnitarioNegativo_retornaError(): void
     {
-        // Arrange
         $data = $this->datosVentaValidos();
         $data['precio_unitario'] = '-1000';
-
-        // Act
         $resultado = $this->invocarPrivado($this->venta, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('precio', strtolower($resultado));
     }
 
-    // VA-05 · validarCampos — datos completamente válidos retorna true
+    // VA-05 · validarCampos — precio_unitario no numérico
     /** @test */
-    public function VA05_datosValidos_retornaTrue(): void
+    public function VA05_precioUnitarioTexto_retornaError(): void
     {
-        // Arrange
         $data = $this->datosVentaValidos();
-
-        // Act
+        $data['precio_unitario'] = 'gratis';
         $resultado = $this->invocarPrivado($this->venta, 'validarCampos', [$data]);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('precio', strtolower($resultado));
+    }
 
-        // Assert
+    // VA-06 · validarCampos — datos completamente válidos retorna true
+    /** @test */
+    public function VA06_datosValidos_retornaTrue(): void
+    {
+        $data = $this->datosVentaValidos();
+        $resultado = $this->invocarPrivado($this->venta, 'validarCampos', [$data]);
         $this->assertTrue($resultado);
     }
 
-    // VA-06 · obtener — retorna array con FakePDO
+    // VA-07 · obtener — retorna array con FakePDO
     /** @test */
-    public function VA06_obtener_retornaArray(): void
+    public function VA07_obtener_retornaArray(): void
     {
-        // Act
-        $resultado = $this->venta->obtener();
-
-        // Assert
-        $this->assertIsArray($resultado);
+        $this->assertIsArray($this->venta->obtener());
     }
 
-    // VA-07 · validarCampos — precio_unitario no numérico
+    // VA-08 · obtenerPorId — retorna false con FakePDO
     /** @test */
-    public function VA07_precioUnitarioTexto_retornaError(): void
+    public function VA08_obtenerPorId_retornaFalseConFakePDO(): void
     {
-        // Arrange
-        $data = $this->datosVentaValidos();
-        $data['precio_unitario'] = 'gratis';
+        $resultado = $this->venta->obtenerPorId(99);
+        $this->assertFalse($resultado);
+    }
 
-        // Act
-        $resultado = $this->invocarPrivado($this->venta, 'validarCampos', [$data]);
-
-        // Assert
+    // VA-09 · eliminar — ID inexistente retorna error
+    /** @test */
+    public function VA09_eliminar_idInexistente_retornaError(): void
+    {
+        // FakePDO::fetch() devuelve false → obtenerPorId retorna false
+        $resultado = $this->venta->eliminar(999, 1);
         $this->assertIsString($resultado);
-        $this->assertStringContainsString('precio', strtolower($resultado));
+        $this->assertStringContainsString('no encontrada', strtolower($resultado));
+    }
+
+    // VA-10 · crear — validación falla antes de llegar a la BD
+    /** @test */
+    public function VA10_crear_fechaVacia_retornaError(): void
+    {
+        $data = $this->datosVentaValidos();
+        $data['fecha'] = '';
+        $resultado = $this->venta->crear($data, 1);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('fecha', strtolower($resultado));
     }
 }
 
@@ -350,14 +296,9 @@ class CompraAdicionalTest extends TestCase
     /** @test */
     public function CA01_proveedorIdNoNumerico_retornaError(): void
     {
-        // Arrange
         $data = $this->datosCompraValidos();
         $data['proveedor_id'] = 'abc';
-
-        // Act
         $resultado = $this->invocarPrivado($this->compra, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('proveedor', strtolower($resultado));
     }
@@ -366,14 +307,9 @@ class CompraAdicionalTest extends TestCase
     /** @test */
     public function CA02_cantidadNoNumerica_retornaError(): void
     {
-        // Arrange
         $data = $this->datosCompraValidos();
         $data['cantidad'] = 'muchos';
-
-        // Act
         $resultado = $this->invocarPrivado($this->compra, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('cantidad', strtolower($resultado));
     }
@@ -382,14 +318,9 @@ class CompraAdicionalTest extends TestCase
     /** @test */
     public function CA03_precioUnitarioTexto_retornaError(): void
     {
-        // Arrange
         $data = $this->datosCompraValidos();
         $data['precio_unitario'] = 'caro';
-
-        // Act
         $resultado = $this->invocarPrivado($this->compra, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('precio', strtolower($resultado));
     }
@@ -398,17 +329,41 @@ class CompraAdicionalTest extends TestCase
     /** @test */
     public function CA04_obtener_retornaArray(): void
     {
-        // Act
-        $resultado = $this->compra->obtener();
+        $this->assertIsArray($this->compra->obtener());
+    }
 
-        // Assert
-        $this->assertIsArray($resultado);
+    // CA-05 · obtenerPorId — retorna false con FakePDO
+    /** @test */
+    public function CA05_obtenerPorId_retornaFalseConFakePDO(): void
+    {
+        $resultado = $this->compra->obtenerPorId(99);
+        $this->assertFalse($resultado);
+    }
+
+    // CA-06 · eliminar — ID inexistente retorna error
+    /** @test */
+    public function CA06_eliminar_idInexistente_retornaError(): void
+    {
+        $resultado = $this->compra->eliminar(999, 1);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('no encontrada', strtolower($resultado));
+    }
+
+    // CA-07 · crear — validación falla antes de la BD
+    /** @test */
+    public function CA07_crear_fechaVacia_retornaError(): void
+    {
+        $data = $this->datosCompraValidos();
+        $data['fecha'] = '';
+        $resultado = $this->compra->crear($data, 1);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('fecha', strtolower($resultado));
     }
 }
 
 
 // ════════════════════════════════════════════════════════════════════
-//  Cliente — casos adicionales
+//  Cliente — CRUD completo
 // ════════════════════════════════════════════════════════════════════
 class ClienteAdicionalTest extends TestCase
 {
@@ -426,46 +381,31 @@ class ClienteAdicionalTest extends TestCase
     /** @test */
     public function CLA01_numDocVacio_retornaError(): void
     {
-        // Arrange
         $data = $this->datosClienteValidos();
         $data['num_doc'] = '';
-
-        // Act
         $resultado = $this->invocarPrivado($this->cliente, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('documento', strtolower($resultado));
     }
 
-    // CLA-02 · validarCampos — teléfono con caracteres especiales inválidos
+    // CLA-02 · validarCampos — teléfono con caracteres inválidos
     /** @test */
     public function CLA02_telefonoCaracteresInvalidos_retornaError(): void
     {
-        // Arrange
         $data = $this->datosClienteValidos();
         $data['telefono'] = 'tel#@!';
-
-        // Act
         $resultado = $this->invocarPrivado($this->cliente, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('tel', strtolower($resultado));
     }
 
-    // CLA-03 · validarCampos — email vacío pasa validación (campo opcional)
+    // CLA-03 · validarCampos — email vacío es opcional (pasa validación)
     /** @test */
     public function CLA03_emailVacio_pasaValidacion(): void
     {
-        // Arrange — email vacío es permitido (campo opcional)
         $data = $this->datosClienteValidos();
         $data['email'] = '';
-
-        // Act
         $resultado = $this->invocarPrivado($this->cliente, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertTrue($resultado);
     }
 
@@ -473,24 +413,75 @@ class ClienteAdicionalTest extends TestCase
     /** @test */
     public function CLA04_obtener_noLanzaExcepcion(): void
     {
-        // Act — Cliente::obtener() usa query()->fetchAll() internamente;
-        // con FakePDO retorna FakePDOStatement (que tiene fetchAll()),
-        // así que verificamos que el método sea invocable sin error.
         $excepcion = null;
         try {
             $this->cliente->obtener();
         } catch (\Throwable $e) {
             $excepcion = $e;
         }
-
-        // Assert
         $this->assertNull($excepcion, 'obtener() no debe lanzar excepción');
+    }
+
+    // CLA-05 · obtenerPorId — retorna false con FakePDO
+    /** @test */
+    public function CLA05_obtenerPorId_retornaFalseConFakePDO(): void
+    {
+        $resultado = $this->cliente->obtenerPorId(99);
+        $this->assertFalse($resultado);
+    }
+
+    // CLA-06 · crear — nombre vacío retorna error
+    /** @test */
+    public function CLA06_crear_nombreVacio_retornaError(): void
+    {
+        $data = $this->datosClienteValidos();
+        $data['nombre'] = '';
+        $resultado = $this->cliente->crear($data);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('nombre', strtolower($resultado));
+    }
+
+    // CLA-07 · crear — datos válidos con FakePDO (existeDoc → false → inserta)
+    /** @test */
+    public function CLA07_crear_datosValidos_retornaTrue(): void
+    {
+        $data = $this->datosClienteValidos();
+        $resultado = $this->cliente->crear($data);
+        $this->assertTrue($resultado);
+    }
+
+    // CLA-08 · actualizar — email inválido retorna error
+    /** @test */
+    public function CLA08_actualizar_emailInvalido_retornaError(): void
+    {
+        $data = $this->datosClienteValidos();
+        $data['email'] = 'mal-formato';
+        $resultado = $this->cliente->actualizar(1, $data);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('correo', strtolower($resultado));
+    }
+
+    // CLA-09 · actualizar — datos válidos con FakePDO retorna true
+    /** @test */
+    public function CLA09_actualizar_datosValidos_retornaTrue(): void
+    {
+        $data = $this->datosClienteValidos();
+        $resultado = $this->cliente->actualizar(1, $data);
+        $this->assertTrue($resultado);
+    }
+
+    // CLA-10 · eliminar — retorna true con FakePDO
+    /** @test */
+    public function CLA10_eliminar_retornaTrue(): void
+    {
+        $resultado = $this->cliente->eliminar(1);
+        $this->assertTrue($resultado);
     }
 }
 
 
 // ════════════════════════════════════════════════════════════════════
-//  Proveedor — casos adicionales
+//  Proveedor — CRUD completo
 // ════════════════════════════════════════════════════════════════════
 class ProveedorAdicionalTest extends TestCase
 {
@@ -508,14 +499,9 @@ class ProveedorAdicionalTest extends TestCase
     /** @test */
     public function PVA01_nombreUnCaracter_retornaError(): void
     {
-        // Arrange
         $data = $this->datosProveedorValidos();
         $data['nombre'] = 'A';
-
-        // Act
         $resultado = $this->invocarPrivado($this->proveedor, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('2 caracteres', $resultado);
     }
@@ -524,14 +510,9 @@ class ProveedorAdicionalTest extends TestCase
     /** @test */
     public function PVA02_numDocVacio_retornaError(): void
     {
-        // Arrange
         $data = $this->datosProveedorValidos();
         $data['num_doc'] = '';
-
-        // Act
         $resultado = $this->invocarPrivado($this->proveedor, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('documento', strtolower($resultado));
     }
@@ -540,14 +521,9 @@ class ProveedorAdicionalTest extends TestCase
     /** @test */
     public function PVA03_tipoDocInvalido_retornaError(): void
     {
-        // Arrange
         $data = $this->datosProveedorValidos();
-        $data['tipo_doc'] = 'CURP';  // no válido
-
-        // Act
+        $data['tipo_doc'] = 'CURP';
         $resultado = $this->invocarPrivado($this->proveedor, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('documento', strtolower($resultado));
     }
@@ -556,14 +532,9 @@ class ProveedorAdicionalTest extends TestCase
     /** @test */
     public function PVA04_telefonoInvalido_retornaError(): void
     {
-        // Arrange
         $data = $this->datosProveedorValidos();
         $data['telefono'] = 'abc!!';
-
-        // Act
         $resultado = $this->invocarPrivado($this->proveedor, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('tel', strtolower($resultado));
     }
@@ -572,14 +543,9 @@ class ProveedorAdicionalTest extends TestCase
     /** @test */
     public function PVA05_emailVacio_pasaValidacion(): void
     {
-        // Arrange
         $data = $this->datosProveedorValidos();
         $data['email'] = '';
-
-        // Act
         $resultado = $this->invocarPrivado($this->proveedor, 'validarCampos', [$data]);
-
-        // Assert
         $this->assertTrue($resultado);
     }
 
@@ -587,22 +553,75 @@ class ProveedorAdicionalTest extends TestCase
     /** @test */
     public function PVA06_obtener_noLanzaExcepcion(): void
     {
-        // Act — igual que Cliente::obtener(), usa query() directamente
         $excepcion = null;
         try {
             $this->proveedor->obtener();
         } catch (\Throwable $e) {
             $excepcion = $e;
         }
-
-        // Assert
         $this->assertNull($excepcion, 'obtener() no debe lanzar excepción');
+    }
+
+    // PVA-07 · obtenerPorId — retorna false con FakePDO
+    /** @test */
+    public function PVA07_obtenerPorId_retornaFalseConFakePDO(): void
+    {
+        $resultado = $this->proveedor->obtenerPorId(99);
+        $this->assertFalse($resultado);
+    }
+
+    // PVA-08 · crear — nombre vacío retorna error
+    /** @test */
+    public function PVA08_crear_nombreVacio_retornaError(): void
+    {
+        $data = $this->datosProveedorValidos();
+        $data['nombre'] = '';
+        $resultado = $this->proveedor->crear($data);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('nombre', strtolower($resultado));
+    }
+
+    // PVA-09 · crear — datos válidos con FakePDO retorna true
+    /** @test */
+    public function PVA09_crear_datosValidos_retornaTrue(): void
+    {
+        $data = $this->datosProveedorValidos();
+        $resultado = $this->proveedor->crear($data);
+        $this->assertTrue($resultado);
+    }
+
+    // PVA-10 · actualizar — email inválido retorna error
+    /** @test */
+    public function PVA10_actualizar_emailInvalido_retornaError(): void
+    {
+        $data = $this->datosProveedorValidos();
+        $data['email'] = 'no-valido';
+        $resultado = $this->proveedor->actualizar(1, $data);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('correo', strtolower($resultado));
+    }
+
+    // PVA-11 · actualizar — datos válidos con FakePDO retorna true
+    /** @test */
+    public function PVA11_actualizar_datosValidos_retornaTrue(): void
+    {
+        $data = $this->datosProveedorValidos();
+        $resultado = $this->proveedor->actualizar(1, $data);
+        $this->assertTrue($resultado);
+    }
+
+    // PVA-12 · eliminar — retorna true con FakePDO
+    /** @test */
+    public function PVA12_eliminar_retornaTrue(): void
+    {
+        $resultado = $this->proveedor->eliminar(1);
+        $this->assertTrue($resultado);
     }
 }
 
 
 // ════════════════════════════════════════════════════════════════════
-//  Usuario — casos adicionales
+//  Usuario — CRUD completo
 // ════════════════════════════════════════════════════════════════════
 class UsuarioAdicionalTest extends TestCase
 {
@@ -620,22 +639,17 @@ class UsuarioAdicionalTest extends TestCase
     /** @test */
     public function USA01_contrasenaSinNumero_retornaError(): void
     {
-        // Arrange
         $resultado = $this->usuario->crear('Carlos Rivas', 'carlos@test.com', 'SinNumeros', 3, '');
-
-        // Assert
         $this->assertIsString($resultado);
         $this->assertStringContainsString('contrase', strtolower($resultado));
     }
 
-    // USA-02 · crear — email duplicado (FakePDO fetch devuelve false → sin duplicado)
+    // USA-02 · crear — datos válidos con FakePDO no lanza excepción
     /** @test */
     public function USA02_crearConFakePDO_noLanzaExcepcion(): void
     {
-        // Con FakePDO el flujo llega hasta el INSERT sin error de duplicado
+        // FakePDO::fetch() devuelve false → email no existe → INSERT
         $resultado = $this->usuario->crear('Luis Paz', 'luis@test.com', 'Admin123', 3, '');
-
-        // Assert — true o string son aceptables con FakePDO
         $this->assertTrue($resultado === true || is_string($resultado));
     }
 
@@ -643,36 +657,88 @@ class UsuarioAdicionalTest extends TestCase
     /** @test */
     public function USA03_obtener_noLanzaExcepcion(): void
     {
-        // Act — Usuario::obtener() usa query() con JOIN; FakePDO lo acepta
         $excepcion = null;
         try {
             $this->usuario->obtener();
         } catch (\Throwable $e) {
             $excepcion = $e;
         }
-
-        // Assert
         $this->assertNull($excepcion, 'obtener() no debe lanzar excepción');
     }
 
-    // USA-04 · actualizarPassword — método existe y acepta parámetros
+    // USA-04 · obtenerPorId — retorna false con FakePDO
     /** @test */
-    public function USA04_actualizarPassword_aceptaParametros(): void
+    public function USA04_obtenerPorId_retornaFalseConFakePDO(): void
     {
-        // Assert — existe el método con la firma correcta
-        $this->assertTrue(method_exists($this->usuario, 'actualizarPassword'));
-        $ref = new ReflectionMethod($this->usuario, 'actualizarPassword');
-        $this->assertGreaterThanOrEqual(2, $ref->getNumberOfParameters());
+        $resultado = $this->usuario->obtenerPorId(99);
+        $this->assertFalse($resultado);
     }
 
     // USA-05 · login — email vacío retorna false
     /** @test */
     public function USA05_loginEmailVacio_retornaFalse(): void
     {
-        // Act
         $resultado = $this->usuario->login('', 'Admin123');
+        $this->assertFalse($resultado);
+    }
 
-        // Assert
+    // USA-06 · login — credenciales incorrectas retorna false
+    /** @test */
+    public function USA06_loginCredencialesIncorrectas_retornaFalse(): void
+    {
+        $resultado = $this->usuario->login('noexiste@test.com', 'WrongPass1');
+        $this->assertFalse($resultado);
+    }
+
+    // USA-07 · actualizar — nombre vacío retorna error
+    /** @test */
+    public function USA07_actualizar_nombreVacio_retornaError(): void
+    {
+        $resultado = $this->usuario->actualizar(1, '', 'valido@test.com', 3);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('nombre', strtolower($resultado));
+    }
+
+    // USA-08 · actualizar — email inválido retorna error
+    /** @test */
+    public function USA08_actualizar_emailInvalido_retornaError(): void
+    {
+        $resultado = $this->usuario->actualizar(1, 'Ana Torres', 'no-es-email', 3);
+        $this->assertIsString($resultado);
+        $this->assertStringContainsString('correo', strtolower($resultado));
+    }
+
+    // USA-09 · actualizar — datos válidos con FakePDO retorna true
+    /** @test */
+    public function USA09_actualizar_datosValidos_retornaTrue(): void
+    {
+        // FakePDO::fetch() devuelve false → correo no duplicado → UPDATE
+        $resultado = $this->usuario->actualizar(1, 'Ana Torres', 'ana@test.com', 3);
+        $this->assertTrue($resultado);
+    }
+
+    // USA-10 · eliminar — retorna true con FakePDO
+    /** @test */
+    public function USA10_eliminar_retornaTrue(): void
+    {
+        $resultado = $this->usuario->eliminar(1);
+        $this->assertTrue($resultado);
+    }
+
+    // USA-11 · actualizarPassword — retorna true con FakePDO
+    /** @test */
+    public function USA11_actualizarPassword_retornaTrue(): void
+    {
+        $hash = password_hash('NuevaClave1', PASSWORD_BCRYPT);
+        $resultado = $this->usuario->actualizarPassword(1, $hash);
+        $this->assertTrue($resultado);
+    }
+
+    // USA-12 · obtenerConPassword — retorna false con FakePDO
+    /** @test */
+    public function USA12_obtenerConPassword_retornaFalse(): void
+    {
+        $resultado = $this->usuario->obtenerConPassword(99);
         $this->assertFalse($resultado);
     }
 }
