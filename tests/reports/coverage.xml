@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1778722398">
-  <project timestamp="1778722398">
+<coverage generated="1778722920">
+  <project timestamp="1778722920">
     <file name="C:\wamp64\www\chocoTumac\models\Cliente.php">
       <class name="Cliente" namespace="global">
         <metrics complexity="41" methods="9" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="82" coveredstatements="79" elements="91" coveredelements="85"/>
