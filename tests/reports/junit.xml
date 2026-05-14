@@ -1,56 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="42" assertions="83" errors="0" warnings="0" failures="0" skipped="0" time="0.050382">
-    <testsuite name="ChocoTumac – Suite completa" tests="42" assertions="83" errors="0" warnings="0" failures="0" skipped="0" time="0.050382">
-      <testsuite name="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" tests="9" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.011446">
-        <testcase name="CL01_nombreVacio_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="29" assertions="2" time="0.005124"/>
-        <testcase name="CL02_nombreUnCaracter_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="45" assertions="2" time="0.000518"/>
-        <testcase name="CL03_tipoDocInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="61" assertions="2" time="0.000435"/>
-        <testcase name="CL04_numDocConLetras_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="77" assertions="2" time="0.000400"/>
-        <testcase name="CL05_emailInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="93" assertions="2" time="0.002106"/>
-        <testcase name="CL06_telefonoCorto_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="109" assertions="2" time="0.000937"/>
-        <testcase name="CL07_digitoVerNITInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="125" assertions="2" time="0.000441"/>
-        <testcase name="CL08_digitoVerNITValido_retornaTrue" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="142" assertions="1" time="0.001109"/>
-        <testcase name="CL09_datosValidos_retornaTrue" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="158" assertions="1" time="0.000377"/>
+  <testsuite name="" tests="78" assertions="140" errors="0" warnings="0" failures="0" skipped="0" time="0.269540">
+    <testsuite name="ChocoTumac – Suite completa" tests="78" assertions="140" errors="0" warnings="0" failures="0" skipped="0" time="0.269540">
+      <testsuite name="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" tests="9" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.008920">
+        <testcase name="CL01_nombreVacio_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="29" assertions="2" time="0.004872"/>
+        <testcase name="CL02_nombreUnCaracter_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="45" assertions="2" time="0.000563"/>
+        <testcase name="CL03_tipoDocInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="61" assertions="2" time="0.000478"/>
+        <testcase name="CL04_numDocConLetras_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="77" assertions="2" time="0.000464"/>
+        <testcase name="CL05_emailInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="93" assertions="2" time="0.000751"/>
+        <testcase name="CL06_telefonoCorto_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="109" assertions="2" time="0.000391"/>
+        <testcase name="CL07_digitoVerNITInvalido_retornaError" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="125" assertions="2" time="0.000362"/>
+        <testcase name="CL08_digitoVerNITValido_retornaTrue" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="142" assertions="1" time="0.000682"/>
+        <testcase name="CL09_datosValidos_retornaTrue" class="ClienteProveedorTest" classname="ClienteProveedorTest" file="C:\wamp64\www\chocoTumac\tests\ClienteProveedorTest.php" line="158" assertions="1" time="0.000356"/>
       </testsuite>
-      <testsuite name="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" tests="10" assertions="18" errors="0" warnings="0" failures="0" skipped="0" time="0.024094">
-        <testcase name="CP01_sinProveedorId_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="35" assertions="2" time="0.001767"/>
-        <testcase name="CP02_sinProductoId_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="53" assertions="2" time="0.000531"/>
-        <testcase name="CP03_fechaVacia_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="71" assertions="2" time="0.000408"/>
-        <testcase name="CP04_fechaFormatoInvalido_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="89" assertions="2" time="0.001255"/>
-        <testcase name="CP05_cantidadCero_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="107" assertions="2" time="0.000402"/>
-        <testcase name="CP06_cantidadNegativa_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="125" assertions="2" time="0.000520"/>
-        <testcase name="CP07_fraccionEnProductoUnd_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="143" assertions="1" time="0.017940"/>
-        <testcase name="CP08_precioUnitarioCero_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="169" assertions="2" time="0.000485"/>
-        <testcase name="CP09_precioUnitarioNegativo_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="187" assertions="2" time="0.000401"/>
-        <testcase name="CP10_datosValidos_retornaTrue" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="205" assertions="1" time="0.000383"/>
+      <testsuite name="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" tests="10" assertions="18" errors="0" warnings="0" failures="0" skipped="0" time="0.014513">
+        <testcase name="CP01_sinProveedorId_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="35" assertions="2" time="0.000396"/>
+        <testcase name="CP02_sinProductoId_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="53" assertions="2" time="0.000363"/>
+        <testcase name="CP03_fechaVacia_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="71" assertions="2" time="0.000661"/>
+        <testcase name="CP04_fechaFormatoInvalido_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="89" assertions="2" time="0.000545"/>
+        <testcase name="CP05_cantidadCero_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="107" assertions="2" time="0.000401"/>
+        <testcase name="CP06_cantidadNegativa_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="125" assertions="2" time="0.000399"/>
+        <testcase name="CP07_fraccionEnProductoUnd_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="143" assertions="1" time="0.010129"/>
+        <testcase name="CP08_precioUnitarioCero_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="169" assertions="2" time="0.000496"/>
+        <testcase name="CP09_precioUnitarioNegativo_retornaError" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="187" assertions="2" time="0.000612"/>
+        <testcase name="CP10_datosValidos_retornaTrue" class="CompraTest" classname="CompraTest" file="C:\wamp64\www\chocoTumac\tests\CompraTest.php" line="205" assertions="1" time="0.000512"/>
       </testsuite>
-      <testsuite name="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" tests="13" assertions="31" errors="0" warnings="0" failures="0" skipped="0" time="0.006513">
-        <testcase name="RE01_ventas_sinFiltros_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="37" assertions="1" time="0.000734"/>
-        <testcase name="RE02_ventas_conFiltroFecha_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="49" assertions="1" time="0.000367"/>
-        <testcase name="RE03_ventas_conBusqueda_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="61" assertions="1" time="0.000563"/>
-        <testcase name="RE04_totalesVentas_retornaArrayConClaves" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="72" assertions="7" time="0.001311"/>
-        <testcase name="RE05_compras_sinFiltros_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="88" assertions="1" time="0.000390"/>
-        <testcase name="RE06_compras_conProveedorId_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="99" assertions="1" time="0.000367"/>
-        <testcase name="RE07_totalesCompras_retornaArrayConClaves" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="110" assertions="5" time="0.000571"/>
-        <testcase name="RE08_inventario_sinFiltros_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="125" assertions="1" time="0.000392"/>
-        <testcase name="RE09_inventario_conBusqueda_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="136" assertions="1" time="0.000356"/>
-        <testcase name="RE10_productosMasVendidos_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="147" assertions="1" time="0.000356"/>
-        <testcase name="RE11_listaClientes_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="158" assertions="1" time="0.000337"/>
-        <testcase name="RE12_listaProveedores_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="169" assertions="1" time="0.000341"/>
-        <testcase name="RE13_resumenGeneral_retornaArrayConOchoClaves" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="180" assertions="9" time="0.000427"/>
+      <testsuite name="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" tests="10" assertions="16" errors="0" warnings="0" failures="0" skipped="0" time="0.003586">
+        <testcase name="PT01_crearTipo_nombreVacio_retornaError" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="38" assertions="2" time="0.000376"/>
+        <testcase name="PT02_crearTipo_unidadInvalida_retornaError" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="58" assertions="2" time="0.000360"/>
+        <testcase name="PT03_crearTipo_unidadVentaInvalida_retornaError" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="78" assertions="2" time="0.000360"/>
+        <testcase name="PT04_crearTipo_datosValidos_retornaTrue" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="98" assertions="1" time="0.000405"/>
+        <testcase name="PT05_actualizarTipo_unidadInvalida_retornaError" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="117" assertions="2" time="0.000336"/>
+        <testcase name="PT06_validarCampos_precioVentaNegativo_retornaError" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="137" assertions="2" time="0.000352"/>
+        <testcase name="PT07_validarCampos_stockMinimoTexto_retornaError" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="158" assertions="2" time="0.000357"/>
+        <testcase name="PT08_obtenerTipos_retornaArray" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="179" assertions="1" time="0.000358"/>
+        <testcase name="PT09_obtenerActivos_retornaArray" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="190" assertions="1" time="0.000351"/>
+        <testcase name="PT10_obtener_retornaArray" class="ProductoTipoTest" classname="ProductoTipoTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="201" assertions="1" time="0.000331"/>
       </testsuite>
-      <testsuite name="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" tests="10" assertions="18" errors="0" warnings="0" failures="0" skipped="0" time="0.008329">
-        <testcase name="VT01_sinClienteRegistradoNiOcasional_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="36" assertions="2" time="0.000378"/>
-        <testcase name="VT02_clienteOcasional_retornaTrue" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="55" assertions="1" time="0.000354"/>
-        <testcase name="VT03_sinProductoId_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="73" assertions="2" time="0.000362"/>
-        <testcase name="VT04_fechaVacia_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="91" assertions="2" time="0.000539"/>
-        <testcase name="VT05_fechaInvalida_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="109" assertions="2" time="0.000571"/>
-        <testcase name="VT06_cantidadCero_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="127" assertions="2" time="0.000389"/>
-        <testcase name="VT07_cantidadNegativa_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="145" assertions="2" time="0.000433"/>
-        <testcase name="VT08_fraccionEnProductoUnd_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="163" assertions="2" time="0.004261"/>
-        <testcase name="VT09_enteroEnProductoUnd_retornaTrue" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="189" assertions="1" time="0.000624"/>
-        <testcase name="VT10_precioUnitarioCero_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="213" assertions="2" time="0.000418"/>
+      <testsuite name="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" tests="7" assertions="10" errors="0" warnings="0" failures="0" skipped="0" time="0.002906">
+        <testcase name="VA01_clienteRegistradoConId_retornaTrue" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="229" assertions="1" time="0.000374"/>
+        <testcase name="VA02_tipoClienteDesconocido_retornaError" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="245" assertions="1" time="0.000397"/>
+        <testcase name="VA03_cantidadTexto_retornaError" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="261" assertions="2" time="0.000508"/>
+        <testcase name="VA04_precioUnitarioNegativo_retornaError" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="277" assertions="2" time="0.000455"/>
+        <testcase name="VA05_datosValidos_retornaTrue" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="293" assertions="1" time="0.000404"/>
+        <testcase name="VA06_obtener_retornaArray" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="307" assertions="1" time="0.000347"/>
+        <testcase name="VA07_precioUnitarioTexto_retornaError" class="VentaAdicionalTest" classname="VentaAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="318" assertions="2" time="0.000420"/>
+      </testsuite>
+      <testsuite name="CompraAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" tests="4" assertions="7" errors="0" warnings="0" failures="0" skipped="0" time="0.001536">
+        <testcase name="CA01_proveedorIdNoNumerico_retornaError" class="CompraAdicionalTest" classname="CompraAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="351" assertions="2" time="0.000373"/>
+        <testcase name="CA02_cantidadNoNumerica_retornaError" class="CompraAdicionalTest" classname="CompraAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="367" assertions="2" time="0.000373"/>
+        <testcase name="CA03_precioUnitarioTexto_retornaError" class="CompraAdicionalTest" classname="CompraAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="383" assertions="2" time="0.000436"/>
+        <testcase name="CA04_obtener_retornaArray" class="CompraAdicionalTest" classname="CompraAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="399" assertions="1" time="0.000354"/>
+      </testsuite>
+      <testsuite name="ClienteAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" tests="4" assertions="6" errors="0" warnings="0" failures="0" skipped="0" time="0.004195">
+        <testcase name="CLA01_numDocVacio_retornaError" class="ClienteAdicionalTest" classname="ClienteAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="427" assertions="2" time="0.000382"/>
+        <testcase name="CLA02_telefonoCaracteresInvalidos_retornaError" class="ClienteAdicionalTest" classname="ClienteAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="443" assertions="2" time="0.000378"/>
+        <testcase name="CLA03_emailVacio_pasaValidacion" class="ClienteAdicionalTest" classname="ClienteAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="459" assertions="1" time="0.000358"/>
+        <testcase name="CLA04_obtener_noLanzaExcepcion" class="ClienteAdicionalTest" classname="ClienteAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="474" assertions="1" time="0.003076"/>
+      </testsuite>
+      <testsuite name="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" tests="6" assertions="10" errors="0" warnings="0" failures="0" skipped="0" time="0.002761">
+        <testcase name="PVA01_nombreUnCaracter_retornaError" class="ProveedorAdicionalTest" classname="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="509" assertions="2" time="0.000938"/>
+        <testcase name="PVA02_numDocVacio_retornaError" class="ProveedorAdicionalTest" classname="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="525" assertions="2" time="0.000400"/>
+        <testcase name="PVA03_tipoDocInvalido_retornaError" class="ProveedorAdicionalTest" classname="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="541" assertions="2" time="0.000355"/>
+        <testcase name="PVA04_telefonoInvalido_retornaError" class="ProveedorAdicionalTest" classname="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="557" assertions="2" time="0.000382"/>
+        <testcase name="PVA05_emailVacio_pasaValidacion" class="ProveedorAdicionalTest" classname="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="573" assertions="1" time="0.000351"/>
+        <testcase name="PVA06_obtener_noLanzaExcepcion" class="ProveedorAdicionalTest" classname="ProveedorAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="588" assertions="1" time="0.000335"/>
+      </testsuite>
+      <testsuite name="UsuarioAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" tests="5" assertions="8" errors="0" warnings="0" failures="0" skipped="0" time="0.218784">
+        <testcase name="USA01_contrasenaSinNumero_retornaError" class="UsuarioAdicionalTest" classname="UsuarioAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="621" assertions="2" time="0.000439"/>
+        <testcase name="USA02_crearConFakePDO_noLanzaExcepcion" class="UsuarioAdicionalTest" classname="UsuarioAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="633" assertions="1" time="0.215342"/>
+        <testcase name="USA03_obtener_noLanzaExcepcion" class="UsuarioAdicionalTest" classname="UsuarioAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="644" assertions="1" time="0.000578"/>
+        <testcase name="USA04_actualizarPassword_aceptaParametros" class="UsuarioAdicionalTest" classname="UsuarioAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="660" assertions="3" time="0.001769"/>
+        <testcase name="USA05_loginEmailVacio_retornaFalse" class="UsuarioAdicionalTest" classname="UsuarioAdicionalTest" file="C:\wamp64\www\chocoTumac\tests\ProductoVentaTest.php" line="670" assertions="1" time="0.000657"/>
+      </testsuite>
+      <testsuite name="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" tests="13" assertions="31" errors="0" warnings="0" failures="0" skipped="0" time="0.005350">
+        <testcase name="RE01_ventas_sinFiltros_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="37" assertions="1" time="0.000542"/>
+        <testcase name="RE02_ventas_conFiltroFecha_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="49" assertions="1" time="0.000419"/>
+        <testcase name="RE03_ventas_conBusqueda_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="61" assertions="1" time="0.000367"/>
+        <testcase name="RE04_totalesVentas_retornaArrayConClaves" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="72" assertions="7" time="0.000756"/>
+        <testcase name="RE05_compras_sinFiltros_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="88" assertions="1" time="0.000366"/>
+        <testcase name="RE06_compras_conProveedorId_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="99" assertions="1" time="0.000354"/>
+        <testcase name="RE07_totalesCompras_retornaArrayConClaves" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="110" assertions="5" time="0.000400"/>
+        <testcase name="RE08_inventario_sinFiltros_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="125" assertions="1" time="0.000344"/>
+        <testcase name="RE09_inventario_conBusqueda_noLanzaExcepcion" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="136" assertions="1" time="0.000370"/>
+        <testcase name="RE10_productosMasVendidos_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="147" assertions="1" time="0.000346"/>
+        <testcase name="RE11_listaClientes_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="158" assertions="1" time="0.000334"/>
+        <testcase name="RE12_listaProveedores_retornaArray" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="169" assertions="1" time="0.000331"/>
+        <testcase name="RE13_resumenGeneral_retornaArrayConOchoClaves" class="ReporteTest" classname="ReporteTest" file="C:\wamp64\www\chocoTumac\tests\ReporteTest.php" line="180" assertions="9" time="0.000420"/>
+      </testsuite>
+      <testsuite name="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" tests="10" assertions="18" errors="0" warnings="0" failures="0" skipped="0" time="0.006990">
+        <testcase name="VT01_sinClienteRegistradoNiOcasional_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="36" assertions="2" time="0.000370"/>
+        <testcase name="VT02_clienteOcasional_retornaTrue" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="55" assertions="1" time="0.000407"/>
+        <testcase name="VT03_sinProductoId_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="73" assertions="2" time="0.000616"/>
+        <testcase name="VT04_fechaVacia_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="91" assertions="2" time="0.000426"/>
+        <testcase name="VT05_fechaInvalida_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="109" assertions="2" time="0.000419"/>
+        <testcase name="VT06_cantidadCero_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="127" assertions="2" time="0.000382"/>
+        <testcase name="VT07_cantidadNegativa_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="145" assertions="2" time="0.000378"/>
+        <testcase name="VT08_fraccionEnProductoUnd_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="163" assertions="2" time="0.002976"/>
+        <testcase name="VT09_enteroEnProductoUnd_retornaTrue" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="189" assertions="1" time="0.000595"/>
+        <testcase name="VT10_precioUnitarioCero_retornaError" class="VentaTest" classname="VentaTest" file="C:\wamp64\www\chocoTumac\tests\VentaTest.php" line="213" assertions="2" time="0.000420"/>
       </testsuite>
     </testsuite>
   </testsuite>
