@@ -15,6 +15,13 @@
         <include>
             <directory suffix=".php">models/</directory>
         </include>
+        <!-- Excluir vistas (HTML mezclado, no testeables con PHPUnit)
+             y controllers (dependen de session_start/header/exit) -->
+        <exclude>
+            <directory suffix=".php">views/</directory>
+            <directory suffix=".php">controllers/</directory>
+            <directory suffix=".php">vendor/</directory>
+        </exclude>
     </coverage>
 
     <logging>
