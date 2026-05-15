@@ -1119,7 +1119,6 @@ body {
 
     /* === PIE DE PÁGINA === */
     .rep-print-footer {
-        display: block !important;
         position: fixed;
         bottom: 6mm;
         left: 10mm;

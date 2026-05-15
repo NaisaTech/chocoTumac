@@ -12,7 +12,7 @@ if (isset($_SESSION['user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iniciar sesión – Chocolate Tumaco</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
@@ -48,15 +48,15 @@ if (isset($_SESSION['user'])) {
               novalidate>
 
             <div class="mb-3">
-                <label class="form-label fw-semibold">Correo electrónico</label>
-                <input class="form-control" type="email" name="email"
+                <label for="fld-email" class="form-label fw-semibold">Correo electrónico</label>
+                <input id="fld-email" class="form-control" type="email" name="email"
                        placeholder="usuario@ejemplo.com"
                        autocomplete="username" required>
             </div>
 
             <div class="mb-4">
-                <label class="form-label fw-semibold">Contraseña</label>
-                <input class="form-control" type="password" name="password"
+                <label for="fld-password" class="form-label fw-semibold">Contraseña</label>
+                <input id="fld-password" class="form-control" type="password" name="password"
                        placeholder="••••••••"
                        autocomplete="current-password" required>
             </div>
@@ -70,7 +70,7 @@ if (isset($_SESSION['user'])) {
 </div>
 
 <!-- El código JavaScript al final del documento incluye la biblioteca de Bootstrap para manejar componentes interactivos como modales y alertas, así como un archivo personalizado app.js para funcionalidades específicas de la aplicación. Esto asegura que los componentes de la interfaz funcionen correctamente y que cualquier funcionalidad personalizada esté disponible para mejorar la experiencia del usuario durante el proceso de inicio de sesión en la aplicación. -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVzdl1" crossorigin="anonymous"></script>
 <script src="/chocoTumac/public/js/app.js"></script>
 </body>
 </html>

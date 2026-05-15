@@ -39,12 +39,18 @@ class Usuario {
         $email  = strtolower(trim($email));
 
         //VALIDACIONES BÁSICAS
-        if (empty($nombre)) return "El nombre es obligatorio.";
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return "El formato del correo no es válido.";
+        if (empty($nombre)) {
+            return "El nombre es obligatorio.";
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "El formato del correo no es válido.";
+        }
         if (!$this->passwordSegura($password)) {
             return "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.";
         }
-        if (!in_array((int)$rol_id, [1, 2, 3])) return "Rol no válido.";
+        if (!in_array((int)$rol_id, [1, 2, 3])) {
+            return "Rol no válido.";
+        }
         if (!empty($telefono) && !preg_match('/^[0-9+\s\-]{7,20}$/', trim($telefono))) {
             return "El formato del teléfono no es válido.";
         }
@@ -52,8 +58,9 @@ class Usuario {
         //VERIFICAR SI EL CORREO YA EXISTE
         $check = $this->conn->prepare("SELECT id FROM usuarios WHERE email = ?");
         $check->execute([$email]);
-        if ($check->fetch()) return "Ya existe un usuario registrado con ese correo.";
-
+        if ($check->fetch()) {
+            return "Ya existe un usuario registrado con ese correo.";
+        }
         //HASH DE LA CONTRASEÑA
         $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
         //INSERTAR USUARIO
@@ -92,8 +99,12 @@ class Usuario {
         $nombre = trim($nombre);
         $email  = strtolower(trim($email));
 
-        if (empty($nombre)) return "El nombre es obligatorio.";
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return "El formato del correo no es válido.";
+        if (empty($nombre)) {
+            return "El nombre es obligatorio.";
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return "El formato del correo no es válido.";
+        }
         if (!empty($telefono) && !preg_match('/^[0-9+\s\-]{7,20}$/', trim($telefono))) {
             return "El formato del teléfono no es válido.";
         }
@@ -101,8 +112,9 @@ class Usuario {
         //VERIFICAR SI EL CORREO YA EXISTE EN OTRO USUARIO
         $check = $this->conn->prepare("SELECT id FROM usuarios WHERE email = ? AND id != ?");
         $check->execute([$email, (int)$id]);
-        if ($check->fetch()) return "Ese correo ya está en uso por otro usuario.";
-
+        if ($check->fetch()) {
+            return "Ese correo ya está en uso por otro usuario.";
+        }
         $stmt = $this->conn->prepare(
             "UPDATE usuarios SET nombre = ?, email = ?, telefono = ?, rol_id = ? WHERE id = ?"
         );

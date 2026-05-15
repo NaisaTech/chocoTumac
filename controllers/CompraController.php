@@ -28,11 +28,14 @@ ini_set('display_errors', 0);
 session_start();
 
 require_once __DIR__ . '/../models/Compra.php';
+require_once __DIR__ . '/Redirectable.php';
 
 /** URL base del sistema para redirecciones */
 define("BASE_URL", "/chocoTumac/");
 
 class CompraController {
+    use Redirectable;
+
 
     /** @var Compra Instancia del modelo de compras */
     private $model;
@@ -69,9 +72,7 @@ class CompraController {
      */
     private function verificarCSRF() {
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
-            header("Location: " . BASE_URL . "index.php?view=compras&error="
-                . urlencode("Petición no válida. Recarga la página."));
-            exit();
+            $this->redirectError('compras', 'Petición no válida. Recarga la página.');
         }
     }
 
@@ -81,9 +82,7 @@ class CompraController {
      */
     private function verificarSesion() {
         if (!isset($_SESSION['user'])) {
-            header("Location: " . BASE_URL . "index.php?view=login&error="
-                . urlencode("Tu sesión ha expirado."));
-            exit();
+            $this->redirectError('login', 'Tu sesión ha expirado.');
         }
     }
 
@@ -107,9 +106,7 @@ class CompraController {
              */
             case 'crear':
                 if (!$this->puedeGestionar()) {
-                    header("Location: " . BASE_URL . "index.php?view=compras&error="
-                        . urlencode("No tienes permisos para registrar compras."));
-                    exit();
+                    $this->redirectError('compras', 'No tienes permisos para registrar compras.');
                 }
                 $this->verificarCSRF();
 
@@ -124,10 +121,8 @@ class CompraController {
                 ], $_SESSION['user']['id']);
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=compras&msg=creado");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=compras&error=" . urlencode($res));
-                }
+                    $this->redirectOk('compras', 'creado');} else {
+                    $this->redirectError('compras', $res);}
                 break;
 
             /**
@@ -137,9 +132,7 @@ class CompraController {
              */
             case 'eliminar':
                 if (!$this->esAdmin()) {
-                    header("Location: " . BASE_URL . "index.php?view=compras&error="
-                        . urlencode("Solo el administrador puede eliminar compras."));
-                    exit();
+                    $this->redirectError('compras', 'Solo el administrador puede eliminar compras.');
                 }
 
                 $res = $this->model->eliminar(
@@ -148,12 +141,13 @@ class CompraController {
                 );
 
                 if ($res === true) {
-                    header("Location: " . BASE_URL . "index.php?view=compras&msg=eliminado");
-                } else {
-                    header("Location: " . BASE_URL . "index.php?view=compras&error=" . urlencode($res));
-                }
+                    $this->redirectOk('compras', 'eliminado');} else {
+                    $this->redirectError('compras', $res);}
                 break;
-        }
+                    default:
+                $this->redirectError('compras', 'Acción no reconocida.');
+                break;
+}
     }
 }
 

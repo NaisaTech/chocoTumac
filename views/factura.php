@@ -99,8 +99,11 @@ function numeroALetras(float $n): string {
 
 $total_letras = numeroALetras($total);
 
-/* ── CUFE simulado (en producción se genera con WS DIAN) ────────────── */
-$cufe_simulado = strtoupper(md5($venta['codigo'] . $venta['fecha'] . $total . '900000000'));
+/* ── CUFE simulado (en producción se genera con WS DIAN) ────────────── *
+ * La DIAN especifica SHA-256 para el CUFE real (Resolución 000042/2020).  *
+ * md5() reemplazado por hash('sha256') para evitar algoritmos débiles     *
+ * (php:S4790). Este valor es solo referencial; no tiene validez fiscal.   */
+$cufe_simulado = strtoupper(hash('sha256', $venta['codigo'] . $venta['fecha'] . $total . '900000000'));
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -108,7 +111,7 @@ $cufe_simulado = strtoupper(md5($venta['codigo'] . $venta['fecha'] . $total . '9
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Factura <?= htmlspecialchars($venta['codigo']) ?> – Chocolate Tumaco</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
@@ -220,6 +223,13 @@ $cufe_simulado = strtoupper(md5($venta['codigo'] . $venta['fecha'] . $total . '9
         <!-- ── Desglose tributario ─────────────────────────────────── -->
         <div class="factura-totales">
             <table class="factura-totales-tabla">
+                <thead class="visually-hidden">
+                    <tr>
+                        <th scope="col">Concepto</th>
+                        <th scope="col">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <tr>
                     <td class="fac-label">Subtotal (base gravable):</td>
                     <td class="text-end">$ <?= number_format($subtotal, 2, ',', '.') ?></td>

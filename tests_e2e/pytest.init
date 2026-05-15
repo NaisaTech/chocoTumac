@@ -1,0 +1,37 @@
+[pytest]
+# ── Configuración de pytest para pruebas E2E de Chocolate Tumaco ──────────────
+
+# Marcadores personalizados
+markers =
+    autenticacion: Pruebas de login y control de acceso
+    clientes: Gestión de clientes (HU-03)
+    proveedores: Gestión de proveedores (HU-02)
+    inventario: Gestión de inventario (HU-06)
+    compras: Registro de compras (HU-04)
+    ventas: Registro de ventas (HU-05)
+    reportes: Generación de reportes (HU-07)
+    admin: Pruebas exclusivas de Administrador
+    gerente: Pruebas de Gerente
+    empleado: Pruebas de Empleado
+    smoke: Pruebas de humo básicas (ejecución rápida)
+
+# Directorio de pruebas
+testpaths = tests
+
+# Formato de salida
+console_output_style = progress
+
+# Opciones por defecto
+addopts =
+    -v
+    --tb=short
+    --strict-markers
+
+# Timeout por prueba (en segundos) — requiere pytest-timeout
+# timeout = 120
+
+# Codificación
+log_cli = true
+log_cli_level = WARNING
+log_file = reports/pytest.log
+log_file_level = DEBUG

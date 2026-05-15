@@ -27,11 +27,11 @@ $user = $_SESSION['user'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mi Perfil – Chocolate Tumaco</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require 'views/layout/navbar.php'; ?>
+<?php require_once 'views/layout/navbar.php'; ?>
 
 <div class="container mt-4" style="max-width:640px;">
 
@@ -70,18 +70,18 @@ $user = $_SESSION['user'];
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
             <div class="mb-3">
-                <label class="form-label fw-semibold">Nombre completo</label>
-                <input class="form-control" name="nombre" value="<?= htmlspecialchars($user['nombre']) ?>" required minlength="2">
+                <label for="fld-nombre" class="form-label fw-semibold">Nombre completo</label>
+                <input id="fld-nombre" class="form-control" name="nombre" value="<?= htmlspecialchars($user['nombre']) ?>" required minlength="2">
                 <div class="invalid-feedback">El nombre es obligatorio.</div>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Correo electrónico</label>
-                <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+                <label for="fld-email" class="form-label fw-semibold">Correo electrónico</label>
+                <input id="fld-email" class="form-control" type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
                 <div class="invalid-feedback">Ingresa un correo válido.</div>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Teléfono</label>
-                <input class="form-control" name="telefono" value="<?= htmlspecialchars($user['telefono'] ?? '') ?>" placeholder="3001234567">
+                <label for="fld-telefono" class="form-label fw-semibold">Teléfono</label>
+                <input id="fld-telefono" class="form-control" name="telefono" value="<?= htmlspecialchars($user['telefono'] ?? '') ?>" placeholder="3001234567">
             </div>
 
             <button type="submit" class="btn btn-ct-primary">Guardar cambios</button>
@@ -97,13 +97,13 @@ $user = $_SESSION['user'];
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
             <div class="mb-3">
-                <label class="form-label fw-semibold">Contraseña actual</label>
-                <input class="form-control" type="password" name="actual" placeholder="••••••••" autocomplete="current-password" required>
+                <label for="fld-actual" class="form-label fw-semibold">Contraseña actual</label>
+                <input id="fld-actual" class="form-control" type="password" name="actual" placeholder="••••••••" autocomplete="current-password" required>
                 <div class="invalid-feedback">Este campo es obligatorio.</div>
             </div>
             <div class="mb-3">
-                <label class="form-label fw-semibold">Nueva contraseña</label>
-                <input class="form-control" type="password" name="nueva" id="input-password"
+                <label for="fld-nueva" class="form-label fw-semibold">Nueva contraseña</label>
+                <input id="fld-nueva" class="form-control" type="password" name="nueva" id="input-password"
                        placeholder="Mínimo 8 caracteres" autocomplete="new-password" required>
                 <div id="feedback-password" class="form-text"></div>
                 <div class="invalid-feedback">Ingresa la nueva contraseña.</div>
@@ -115,7 +115,7 @@ $user = $_SESSION['user'];
 </div>
 
 <!-- El código JavaScript al final del documento incluye la biblioteca de Bootstrap para manejar componentes interactivos como modales y alertas, así como un archivo personalizado app.js para funcionalidades específicas de la aplicación. Esto asegura que los componentes de la interfaz funcionen correctamente y que cualquier funcionalidad personalizada esté disponible para mejorar la experiencia del usuario al gestionar su perfil en la aplicación. -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVzdl1" crossorigin="anonymous"></script>
 <script src="/chocoTumac/public/js/app.js"></script>
 </body>
 </html>

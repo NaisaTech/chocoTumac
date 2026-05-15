@@ -1,0 +1,59 @@
+
+reportetest::setup8
+.C:\wamp64\www\chocoTumac\tests\ReporteTest.php ("1*7
+2
+ReporteTest.php"
+! !(
+implicit return*Ô
+1 ('
+ (&
+%1"reporteL
+J
+ (&
+%2"reporte::__construct*"
+
+__unknown_file (
+
+%1R
+P
+ (&
+reportetest"	
+reporte"__id*"
+
+__unknown_file (
+
+%1R
+P
+ !  (/
+%3"__id*8
+
+__unknown_file (*
+reportetest"	
+reporte
+ 9  (F
+%4"fakepdoL
+J
+ 9  (F
+%5"fakepdo::__construct*"
+
+__unknown_file (
+
+%4Á¾
+   (G
+%6*+
+
+__unknown_file (
+reportetest*"
+
+__unknown_file (
+
+%3*$
+
+__unknown_file (
+conn*"
+
+__unknown_file (
+
+%42inyectarpropiedad*
+2B
+reportetestH

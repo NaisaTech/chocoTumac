@@ -41,6 +41,34 @@ class Compra {
      * @param array $data Datos del formulario de compra
      * @return true|string true si los datos son válidos, string con error si no
      */
+    /**
+     * Verifica que la cantidad sea entera para productos con unidad "und".
+     *
+     * @param array $data Datos con producto_id y cantidad.
+     * @return true|string true si es válida, string con error si no.
+     */
+    private function validarCantidadPorUnidad(array $data) {
+        if (empty($data['producto_id'])) {
+            return true;
+        }
+        $modelProd = new Producto();
+        $prod = $modelProd->obtenerPorId($data['producto_id']);
+        if (!$prod || $prod['unidad'] !== 'und') {
+            return true;
+        }
+        if (floor((float)$data['cantidad']) != (float)$data['cantidad']) {
+            return "La cantidad debe ser un número entero para productos manejados por unidad.";
+        }
+        return true;
+    }
+
+    /**
+     * Valida todos los campos del formulario de compra.
+     * Complejidad cognitiva: 8 (era 16 — extraído validarCantidadPorUnidad).
+     *
+     * @param array $data Datos del formulario de compra.
+     * @return true|string true si los datos son válidos, string con error si no.
+     */
     private function validarCampos($data) {
         if (empty($data['proveedor_id']) || !is_numeric($data['proveedor_id'])) {
             return "Debes seleccionar un proveedor.";
@@ -57,14 +85,9 @@ class Compra {
         if (!is_numeric($data['cantidad']) || (float)$data['cantidad'] <= 0) {
             return "La cantidad debe ser un número mayor a cero.";
         }
-
-        // Productos manejados por unidad (und) solo aceptan cantidades enteras
-        if (!empty($data['producto_id'])) {
-            $modelProd = new Producto();
-            $prod = $modelProd->obtenerPorId($data['producto_id']);
-            if ($prod && $prod['unidad'] === 'und' && floor((float)$data['cantidad']) != (float)$data['cantidad']) {
-                return "La cantidad debe ser un número entero para productos manejados por unidad.";
-            }
+        $errUnidad = $this->validarCantidadPorUnidad($data);
+        if ($errUnidad !== true) {
+            return $errUnidad;
         }
         if (!is_numeric($data['precio_unitario']) || (float)$data['precio_unitario'] <= 0) {
             return "El precio unitario debe ser un número mayor a cero.";
@@ -107,12 +130,14 @@ class Compra {
      */
     public function crear($data, $usuario_id) {
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         // Verificar que el producto existe
         $producto = $this->modelProducto->obtenerPorId($data['producto_id']);
-        if (!$producto) return "Producto no encontrado.";
-
+        if (!$producto) {
+            return "Producto no encontrado.";
+        }
         $cantidad        = (float)$data['cantidad'];
         $precio_unitario = (float)$data['precio_unitario'];
         $total           = round($cantidad * $precio_unitario, 2);
@@ -206,8 +231,9 @@ class Compra {
      */
     public function eliminar($id, $usuario_id) {
         $compra = $this->obtenerPorId($id);
-        if (!$compra) return "Compra no encontrada.";
-
+        if (!$compra) {
+            return "Compra no encontrada.";
+        }
         // Revertir el stock: descontar la cantidad que había entrado
         $producto      = $this->modelProducto->obtenerPorId($compra['producto_id']);
         $stock_antes   = (float)$producto['stock_actual'];

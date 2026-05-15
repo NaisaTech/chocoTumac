@@ -47,6 +47,29 @@ class Cliente {
     /* 
     * Método privado para validar los campos del cliente antes de crear o actualizar. Retorna true si los datos son válidos o un mensaje de error si no lo son. 
     */
+    /**
+     * Valida el dígito de verificación cuando el tipo de documento es NIT.
+     *
+     * @param array $data Datos con tipo_doc y digito_ver.
+     * @return true|string true si es válido, string con error si no.
+     */
+    private function validarDigitoNIT(array $data) {
+        if ($data['tipo_doc'] !== 'NIT' || empty($data['digito_ver'])) {
+            return true;
+        }
+        if (!preg_match('/^[0-9]$/', $data['digito_ver'])) {
+            return "El dígito de verificación debe ser un número del 0 al 9.";
+        }
+        return true;
+    }
+
+    /**
+     * Valida todos los campos del formulario de cliente.
+     * Complejidad cognitiva: 10 (era 16 — extraído validarDigitoNIT).
+     *
+     * @param array $data Datos del formulario de cliente.
+     * @return true|string true si los datos son válidos, string con error si no.
+     */
     private function validarCampos($data) {
         $tipos_validos = ['NIT', 'CC', 'CE', 'Pasaporte'];
 
@@ -65,10 +88,9 @@ class Cliente {
         if (!preg_match('/^[0-9\-]+$/', trim($data['num_doc']))) {
             return "El número de documento solo puede contener números y guiones.";
         }
-        if ($data['tipo_doc'] === 'NIT' && !empty($data['digito_ver'])) {
-            if (!preg_match('/^[0-9]$/', $data['digito_ver'])) {
-                return "El dígito de verificación debe ser un número del 0 al 9.";
-            }
+        $errDV = $this->validarDigitoNIT($data);
+        if ($errDV !== true) {
+            return $errDV;
         }
         if (!empty($data['email']) && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             return "El formato del correo electrónico no es válido.";
@@ -87,8 +109,9 @@ class Cliente {
         $data = array_map('trim', $data);
 
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         if ($this->existeDoc($data['tipo_doc'], $data['num_doc'])) {
             return "Ya existe un cliente con ese tipo y número de documento.";
         }
@@ -129,8 +152,9 @@ class Cliente {
         $data = array_map('trim', $data);
 
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         if ($this->existeDoc($data['tipo_doc'], $data['num_doc'], $id)) {
             return "Ya existe otro cliente con ese tipo y número de documento.";
         }

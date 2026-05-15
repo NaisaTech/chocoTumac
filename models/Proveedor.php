@@ -87,8 +87,9 @@ class Proveedor {
         $data = array_map('trim', $data);
     // Validar campos
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         if ($this->existeDoc($data['tipo_doc'], $data['num_doc'])) {
             return "Ya existe un proveedor con ese tipo y número de documento.";
         }
@@ -136,8 +137,9 @@ class Proveedor {
         $data = array_map('trim', $data);
 
         $val = $this->validarCampos($data);
-        if ($val !== true) return $val;
-
+        if ($val !== true) {
+            return $val;
+        }
         if ($this->existeDoc($data['tipo_doc'], $data['num_doc'], $id)) {
             return "Ya existe otro proveedor con ese tipo y número de documento.";
         }

@@ -1,49 +1,34 @@
 <?php
 /**
- * Clase Database
- * 
- * Se encarga de establecer la conexión con la base de datos
- * utilizando PDO, aplicando buenas prácticas de seguridad.
- */ 
-class Database {
+ * Configuración de conexión a la base de datos – ChocoTumac.
+ *
+ * Ajusta los valores de $host, $db, $user y $pass
+ * según tu entorno WampServer local.
+ */
+if (!class_exists('Database')) {
+    class Database {
 
-    /** @var string Host del servidor */
-    private $host = "localhost";
-    /** @var string Host del servidor */
-    private $db   = "chocolatetumaco";
-    /** @var string Usuario de la base de datos */
-    private $user = "root";
-    /** @var string Contraseña de la base de datos */
-    private $pass = "";
+        private string $host = 'localhost';
+        private string $db   = 'chocolatetumaco';
+        private string $user = 'root';
+        private string $pass = '';          // WampServer por defecto no tiene contraseña
 
-
-    /**
-     * Método que crea y retorna una conexión PDO
-     * 
-     * @return PDO
-     */
-    public function connect() {
-        try {
-            $pdo = new PDO(
-                "mysql:host={$this->host};dbname={$this->db};charset=utf8",
-                $this->user,
-                $this->pass,
-                [
-                    //Modo error: lanza excepciones
-                    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                    //Devuelve resultados como arrays asociativos
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    //Desactiva emulación (más seguro)
-                    PDO::ATTR_EMULATE_PREPARES   => false,
-                ]
-            );
-            return $pdo;
-        } catch (PDOException $e) {
-            /* No exponer detalles del error al usuario*/
-            //Registrar error internamente (no mostrar al usuario)
-            error_log("DB Error: " . $e->getMessage());
-            //Mensaje genérico para el usuario
-            die("Error de conexión a la base de datos. Intenta más tarde.");
+        public function connect(): PDO {
+            try {
+                return new PDO(
+                    "mysql:host={$this->host};dbname={$this->db};charset=utf8",
+                    $this->user,
+                    $this->pass,
+                    [
+                        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES   => false,
+                    ]
+                );
+            } catch (PDOException $e) {
+                error_log("DB Error: " . $e->getMessage());
+                die("Error de conexión a la base de datos. Intenta más tarde.");
+            }
         }
     }
 }

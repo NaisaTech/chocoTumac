@@ -52,11 +52,11 @@ $rol = $_SESSION['user']['rol_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ventas – Chocolate Tumaco</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
 </head>
 <body>
-<?php require 'views/layout/navbar.php'; ?>
+<?php require_once 'views/layout/navbar.php'; ?>
 
 <div class="container mt-4">
 
@@ -112,10 +112,10 @@ $rol = $_SESSION['user']['rol_id'];
 
             <!-- ── Selector tipo de cliente ───────────────────────── -->
             <div class="mb-3">
-                <label class="form-label small fw-semibold">Tipo de cliente</label>
+                <label for="fld-tipo-cliente" class="form-label small fw-semibold">Tipo de cliente</label>
                 <div class="d-flex gap-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio"
+                        <input id="fld-tipo-cliente" class="form-check-input" type="radio"
                                name="tipo_cliente" id="radio-registrado"
                                value="registrado" checked>
                         <label class="form-check-label" for="radio-registrado">
@@ -137,10 +137,10 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Cliente registrado (desplegable) -->
                 <div class="col-md-3" id="div-cliente-registrado">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-cliente-id">
                         Cliente <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" name="cliente_id" id="sel-cliente">
+                    <select id="fld-cliente-id" class="form-select" name="cliente_id" id="sel-cliente">
                         <option value="">— Selecciona cliente —</option>
                         <?php foreach ($clientes as $cli): ?>
                         <option value="<?= $cli['id'] ?>">
@@ -152,11 +152,11 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Cliente ocasional (campo de texto) -->
                 <div class="col-md-3" id="div-cliente-ocasional" style="display:none;">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-cliente-ocas">
                         Nombre del cliente
                         <span class="text-muted small">(opcional)</span>
                     </label>
-                    <input class="form-control" name="cliente_ocasional"
+                    <input id="fld-cliente-ocas" class="form-control" name="cliente_ocasional"
                            id="inp-cliente-ocasional"
                            placeholder="Ej: Juan García o dejar vacío">
                     <div class="form-text text-muted">
@@ -166,7 +166,7 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Documento cliente ocasional -->
                 <div class="col-md-3" id="div-doc-ocasional" style="display:none;">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-doc-ocas">
                         Documento
                         <span class="text-muted small">(opcional)</span>
                     </label>
@@ -178,7 +178,7 @@ $rol = $_SESSION['user']['rol_id'];
                             <option value="CE">CE</option>
                             <option value="Pasaporte">Pasaporte</option>
                         </select>
-                        <input class="form-control" type="text"
+                        <input id="fld-doc-ocas" class="form-control" type="text"
                                name="doc_ocasional_num" id="inp-doc-num"
                                placeholder="Número">
                     </div>
@@ -187,10 +187,10 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Producto -->
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-producto-id">
                         Producto <span class="text-danger">*</span>
                     </label>
-                    <select class="form-select" name="producto_id"
+                    <select id="fld-producto-id" class="form-select" name="producto_id"
                             id="sel-producto-venta" required>
                         <option value="">— Selecciona producto —</option>
                         <?php foreach ($productos as $prod): ?>
@@ -210,19 +210,19 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Fecha -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-fecha-v">
                         Fecha <span class="text-danger">*</span>
                     </label>
-                    <input class="form-control" type="date" name="fecha"
+                    <input id="fld-fecha-v" class="form-control" type="date" name="fecha"
                            value="<?= date('Y-m-d') ?>" required>
                 </div>
 
                 <!-- Cantidad -->
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-cantidad-v">
                         Cantidad <span class="text-danger">*</span>
                     </label>
-                    <input class="form-control" type="number" name="cantidad"
+                    <input id="fld-cantidad-v" class="form-control" type="number" name="cantidad"
                            id="inp-cant-venta" min="1" step="1"
                            placeholder="0" required>
                     <div class="invalid-feedback">Ingresa la cantidad.</div>
@@ -234,17 +234,17 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Unidad (solo lectura, se llena automáticamente) -->
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">Unidad</label>
+                    <label for="fld-unidad-v" class="form-label small fw-semibold">Unidad</label>
                     <input class="form-control" type="text" id="txt-unidad-venta"
                            readonly style="background:#f8f3ec;" placeholder="—">
                 </div>
 
                 <!-- Precio unitario -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">
+                    <label class="form-label small fw-semibold" for="fld-precio-v">
                         Precio unit. ($) <span class="text-danger">*</span>
                     </label>
-                    <input class="form-control" type="number" name="precio_unitario"
+                    <input id="fld-precio-v" class="form-control" type="number" name="precio_unitario"
                            id="inp-precio-venta" min="0.01" step="0.01"
                            placeholder="0.00" required>
                     <div class="invalid-feedback">Ingresa el precio.</div>
@@ -252,7 +252,7 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Total calculado -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Total ($)</label>
+                    <label for="fld-total-venta" class="form-label small fw-semibold">Total ($)</label>
                     <input class="form-control fw-bold" type="text"
                            id="inp-total-venta" readonly placeholder="0.00"
                            style="background:#f8f3ec;">
@@ -260,8 +260,8 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- IVA -->
                 <div class="col-md-1">
-                    <label class="form-label small fw-semibold">IVA</label>
-                    <select class="form-select" name="iva_porcentaje" id="sel-iva">
+                    <label for="fld-iva_porcentaje" class="form-label small fw-semibold">IVA</label>
+                    <select id="fld-iva_porcentaje" class="form-select" name="iva_porcentaje" id="sel-iva">
                         <option value="0">0%</option>
                         <option value="5">5%</option>
                         <option value="19">19%</option>
@@ -270,8 +270,8 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Forma de pago -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Forma de pago</label>
-                    <select class="form-select" name="forma_pago">
+                    <label for="fld-forma_pago" class="form-label small fw-semibold">Forma de pago</label>
+                    <select id="fld-forma_pago" class="form-select" name="forma_pago">
                         <option value="contado">Contado</option>
                         <option value="credito">Crédito</option>
                     </select>
@@ -279,7 +279,7 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Stock disponible informativo -->
                 <div class="col-md-2">
-                    <label class="form-label small fw-semibold">Stock disponible</label>
+                    <label for="fld-stock-disp" class="form-label small fw-semibold">Stock disponible</label>
                     <input class="form-control text-success fw-bold" type="text"
                            id="txt-stock-disp" readonly placeholder="—"
                            style="background:#f0faf0;">
@@ -287,8 +287,8 @@ $rol = $_SESSION['user']['rol_id'];
 
                 <!-- Observaciones -->
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Observaciones</label>
-                    <input class="form-control" name="observaciones"
+                    <label for="fld-observaciones" class="form-label small fw-semibold">Observaciones</label>
+                    <input id="fld-observaciones" class="form-control" name="observaciones"
                            placeholder="Notas adicionales (opcional)">
                 </div>
 
@@ -399,7 +399,7 @@ $rol = $_SESSION['user']['rol_id'];
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVzdl1" crossorigin="anonymous"></script>
 <script src="/chocoTumac/public/js/app.js"></script>
 <script src="/chocoTumac/public/js/ventas.js"></script>
 </body>

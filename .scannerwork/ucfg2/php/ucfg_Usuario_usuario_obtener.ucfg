@@ -1,0 +1,29 @@
+
+usuario::obtener5
++C:\wamp64\www\chocoTumac\models\Usuario.phpN N("1*à
+1O T(
+K
+I
+O O(
+%1"__id*1
+
+__unknown_file (*	
+usuario"
+connïì
+O T(	
+%2*"
+
+__unknown_file (
+
+%1*®
+
+__unknown_file (‘Ž
+‹SELECT u.*, r.nombre AS rol
+             FROM usuarios u
+             JOIN roles r ON u.rol_id = r.id
+             ORDER BY u.nombre ASC2query"
+O T(
+
+
+%2B	
+usuarioH

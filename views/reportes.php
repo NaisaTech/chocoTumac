@@ -27,12 +27,31 @@ require_once 'models/Reporte.php';
 
 $reporte = new Reporte();
 
-// ── Filtros activos ────────────────────────────────────────────────
-$tab        = $_GET['tab']         ?? 'ventas';
-$desde      = $_GET['desde']       ?? '';
-$hasta      = $_GET['hasta']       ?? '';
-$busqueda   = trim($_GET['busqueda']   ?? '');
-$cliente_id = (int)($_GET['cliente_id'] ?? 0) ?: null;
+/**
+ * Escapa una cadena para salida HTML segura.
+ * Previene XSS (Cross-Site Scripting) en todas las vistas.
+ *
+ * @param  mixed  $val  Valor a escapar.
+ * @return string       Cadena segura para insertar en HTML.
+ */
+function h($val): string {
+    return htmlspecialchars((string)$val, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+/** Formato estándar de fecha y hora para todos los reportes impresos. */
+define('FMT_DATETIME', 'd/m/Y H:i');
+
+// ── Filtros activos (sanitizados contra XSS) ──────────────────────
+$tabs_validos  = ['ventas', 'compras', 'inventario', 'top'];
+$tab_raw       = $_GET['tab'] ?? 'ventas';
+$tab           = in_array($tab_raw, $tabs_validos, true) ? $tab_raw : 'ventas';
+
+$desde        = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['desde'] ?? '')
+                    ? $_GET['desde'] : '';
+$hasta        = preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['hasta'] ?? '')
+                    ? $_GET['hasta'] : '';
+$busqueda     = trim($_GET['busqueda'] ?? '');
+$cliente_id   = (int)($_GET['cliente_id']   ?? 0) ?: null;
 $proveedor_id = (int)($_GET['proveedor_id'] ?? 0) ?: null;
 
 // ── Datos ─────────────────────────────────────────────────────────
@@ -57,13 +76,13 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reportes – Chocolate Tumaco</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="/chocoTumac/public/css/styles.css">
     
 </head>
 <body>
 
-<?php require __DIR__ . '/layout/navbar.php'; ?>
+<?php require_once __DIR__ . '/layout/navbar.php'; ?>
 
 <div class="container-fluid mt-4 px-4" style="max-width:1400px;">
 
@@ -75,7 +94,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         </div>
         <button onclick="window.print()" class="btn btn-sm text-white no-print"
                 style="background:var(--ct-brand);">
-            Imprimir reporte
+            🖨 Imprimir reporte
         </button>
     </div>
 
@@ -116,7 +135,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
     </div>
 
     <!-- ── Tabs ── -->
-    <ul class="nav rep-tabs mb-0 no-print" id="repTabs">
+    <nav aria-label="Secciones del reporte" class="no-print">
+    <ul class="nav rep-tabs mb-0" id="repTabs">
         <?php foreach ([
             'ventas'    => 'Ventas',
             'compras'   => 'Compras',
@@ -125,12 +145,15 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         ] as $key => $label): ?>
         <li class="nav-item">
             <a class="nav-link <?= $tab === $key ? 'active' : '' ?>"
-               href="?view=reportes&tab=<?= $key ?>&desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&busqueda=<?= urlencode($busqueda) ?>">
-                <?= $label ?>
+               href="?view=reportes&tab=<?= h($key) ?>&desde=<?= urlencode($desde) ?>&hasta=<?= urlencode($hasta) ?>&busqueda=<?= urlencode($busqueda) ?>"
+               aria-label="Ver reporte de <?= h(strip_tags($label)) ?>"
+               <?= $tab === $key ? 'aria-current="page"' : '' ?>>
+                <?= h($label) ?>
             </a>
         </li>
         <?php endforeach; ?>
     </ul>
+    </nav>
 
     <!-- ── Filtros ── -->
     <form method="GET" action="index.php" class="filtros-bar no-print">
@@ -140,31 +163,31 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
 
             <!-- Búsqueda general -->
             <div class="col-md-3">
-                <label class="form-label small fw-semibold mb-1">Búsqueda rápida</label>
-                <input class="form-control form-control-sm" name="busqueda"
+                <label for="fld-busqueda" class="form-label small fw-semibold mb-1">🔍 Búsqueda rápida</label>
+                <input id="fld-busqueda" class="form-control form-control-sm" name="busqueda"
                        placeholder="Código, cliente, proveedor, producto..."
                        value="<?= htmlspecialchars($busqueda) ?>">
             </div>
 
             <!-- Desde -->
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Desde</label>
-                <input class="form-control form-control-sm" type="date" name="desde"
+                <label for="fld-desde" class="form-label small fw-semibold mb-1">Desde</label>
+                <input id="fld-desde" class="form-control form-control-sm" type="date" name="desde"
                        value="<?= htmlspecialchars($desde) ?>">
             </div>
 
             <!-- Hasta -->
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Hasta</label>
-                <input class="form-control form-control-sm" type="date" name="hasta"
+                <label for="fld-hasta" class="form-label small fw-semibold mb-1">Hasta</label>
+                <input id="fld-hasta" class="form-control form-control-sm" type="date" name="hasta"
                        value="<?= htmlspecialchars($hasta) ?>">
             </div>
 
             <!-- Cliente (solo tab ventas) -->
             <?php if ($tab === 'ventas'): ?>
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Cliente</label>
-                <select class="form-select form-select-sm" name="cliente_id">
+                <label for="fld-cliente_id" class="form-label small fw-semibold mb-1">Cliente</label>
+                <select id="fld-cliente_id" class="form-select form-select-sm" name="cliente_id">
                     <option value="">— Todos —</option>
                     <?php foreach ($clientes as $c): ?>
                     <option value="<?= $c['id'] ?>" <?= $cliente_id == $c['id'] ? 'selected' : '' ?>>
@@ -178,8 +201,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
             <!-- Proveedor (solo tab compras) -->
             <?php if ($tab === 'compras'): ?>
             <div class="col-md-2">
-                <label class="form-label small fw-semibold mb-1">Proveedor</label>
-                <select class="form-select form-select-sm" name="proveedor_id">
+                <label for="fld-proveedor_id" class="form-label small fw-semibold mb-1">Proveedor</label>
+                <select id="fld-proveedor_id" class="form-select form-select-sm" name="proveedor_id">
                     <option value="">— Todos —</option>
                     <?php foreach ($proveedores as $pv): ?>
                     <option value="<?= $pv['id'] ?>" <?= $proveedor_id == $pv['id'] ? 'selected' : '' ?>>
@@ -195,8 +218,9 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     Filtrar
                 </button>
                 <?php if ($hay_filtros): ?>
-                <a href="?view=reportes&tab=<?= $tab ?>" class="btn btn-sm btn-outline-secondary ms-1">
-                    Limpiar
+                <a href="?view=reportes&tab=<?= h($tab) ?>" class="btn btn-sm btn-outline-secondary ms-1"
+                   aria-label="Limpiar filtros del reporte">
+                    ✕ Limpiar
                 </a>
                 <?php endif; ?>
             </div>
@@ -234,11 +258,11 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <!-- Encabezado visible solo al imprimir -->
         <div class="rep-print-header" style="display:none;">
             <h2>Chocolate Tumaco &mdash; Reporte de Ventas</h2>
-            <p>Generado el <?= date('d/m/Y H:i') ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
+            <p>Generado el <?= date(FMT_DATETIME) ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
         </div>
         <div class="rep-print-footer" style="display:none;">
             <span>ChocoTumac &copy; <?= date('Y') ?></span>
-            <span>Reporte de Ventas &mdash; <?= date('d/m/Y H:i') ?></span>
+            <span>Reporte de Ventas &mdash; <?= date(FMT_DATETIME) ?></span>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle rep-table tbl-ventas mb-0">
@@ -283,7 +307,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     <td class="text-end fw-bold text-success">$<?= number_format($v['total'], 0, ',', '.') ?></td>
                     <td>
                         <span class="badge <?= $v['forma_pago'] === 'contado' ? 'bg-success' : 'bg-warning text-dark' ?>">
-                            <?= ucfirst($v['forma_pago']) ?>
+                            <?= h(ucfirst($v['forma_pago'])) ?>
                         </span>
                     </td>
                     <td class="text-muted"><?= htmlspecialchars($v['registrado_por']) ?></td>
@@ -325,11 +349,11 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <!-- Encabezado visible solo al imprimir -->
         <div class="rep-print-header" style="display:none;">
             <h2>Chocolate Tumaco &mdash; Reporte de Compras</h2>
-            <p>Generado el <?= date('d/m/Y H:i') ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
+            <p>Generado el <?= date(FMT_DATETIME) ?><?= $desde || $hasta ? ' &nbsp;|&nbsp; Período: '.($desde?date('d/m/Y',strtotime($desde)):'inicio').' – '.($hasta?date('d/m/Y',strtotime($hasta)):'hoy') : '' ?></p>
         </div>
         <div class="rep-print-footer" style="display:none;">
             <span>ChocoTumac &copy; <?= date('Y') ?></span>
-            <span>Reporte de Compras &mdash; <?= date('d/m/Y H:i') ?></span>
+            <span>Reporte de Compras &mdash; <?= date(FMT_DATETIME) ?></span>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle rep-table tbl-compras mb-0">
@@ -390,11 +414,11 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <!-- Encabezado visible solo al imprimir -->
         <div class="rep-print-header" style="display:none;">
             <h2>Chocolate Tumaco &mdash; Inventario Actualizado</h2>
-            <p>Generado el <?= date('d/m/Y H:i') ?></p>
+            <p>Generado el <?= date(FMT_DATETIME) ?></p>
         </div>
         <div class="rep-print-footer" style="display:none;">
             <span>ChocoTumac &copy; <?= date('Y') ?></span>
-            <span>Inventario &mdash; <?= date('d/m/Y H:i') ?></span>
+            <span>Inventario &mdash; <?= date(FMT_DATETIME) ?></span>
         </div>
         <div class="table-responsive">
             <table class="table table-hover align-middle rep-table tbl-inventario mb-0">
@@ -420,8 +444,8 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                     <td class="fw-semibold"><?= htmlspecialchars($p['nombre']) ?></td>
                     <td><?= htmlspecialchars($p['tipo']) ?></td>
                     <td class="text-muted"><?= htmlspecialchars($p['presentacion'] ?? '—') ?></td>
-                    <td><span class="badge bg-secondary"><?= $p['unidad'] ?></span></td>
-                    <td><span class="badge bg-info text-dark"><?= $p['unidad_venta'] ?></span></td>
+                    <td><span class="badge bg-secondary"><?= h($p['unidad']) ?></span></td>
+                    <td><span class="badge bg-info text-dark"><?= h($p['unidad_venta']) ?></span></td>
                     <td class="text-end fw-bold"><?= number_format($p['stock_actual'], 2) ?></td>
                     <td class="text-end text-muted"><?= number_format($p['stock_minimo'], 2) ?></td>
                     <td class="text-end">$<?= number_format($p['precio_venta'], 0, ',', '.') ?></td>
@@ -443,7 +467,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
             </table>
         </div>
         <p class="text-muted text-end mt-2 mb-0" style="font-size:.78rem;">
-            <?= count($inventario) ?> producto(s) · Actualizado: <?= date('d/m/Y H:i') ?>
+            <?= count($inventario) ?> producto(s) · Actualizado: <?= date(FMT_DATETIME) ?>
         </p>
         <?php endif; ?>
     </div>
@@ -458,7 +482,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
         <div class="col-lg-7">
             <div class="rep-card h-100">
                 <h6 class="fw-bold mb-3" style="color:var(--ct-brand);">
-                    🏆 Top 10 Productos Más Vendidos
+                    Top 10 Productos Más Vendidos
                     <small class="text-muted fw-normal" style="font-size:.78rem;">
                         — por cantidad total
                         <?= $desde || $hasta ? '· ' . ($desde ? date('d/m/Y', strtotime($desde)) : '') . ($hasta ? ' a ' . date('d/m/Y', strtotime($hasta)) : '') : '' ?>
@@ -485,7 +509,7 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
                         <?php foreach ($top_prod as $pos => $tp): ?>
                         <tr>
                             <td class="text-center fw-bold" style="color:<?= $pos === 0 ? '#C8860A' : ($pos === 1 ? '#666' : ($pos === 2 ? '#a05a2c' : '#999')) ?>">
-                                <?= $pos < 3 ? ['🥇','🥈','🥉'][$pos] : ($pos+1) ?>
+                                <?= $pos < 3 ? ['1','2','3'][$pos] : ($pos+1) ?>
                             </td>
                             <td class="fw-semibold"><?= htmlspecialchars($tp['producto']) ?></td>
                             <td class="text-muted"><?= htmlspecialchars($tp['tipo']) ?></td>
@@ -543,6 +567,6 @@ $hay_filtros = $desde || $hasta || $busqueda || $cliente_id || $proveedor_id;
 
 </div><!-- /container -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVzdl1" crossorigin="anonymous"></script>
 </body>
 </html>

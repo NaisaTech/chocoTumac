@@ -45,7 +45,7 @@ document.getElementById('sel-producto-venta')?.addEventListener('change', functi
 
     if (txtUnidad) txtUnidad.value = unidadVenta;
     if (txtStock) txtStock.value = stock
-        ? parseFloat(stock).toFixed(unidad === 'und' ? 0 : 2) + ' ' + unidad : '—';
+        ? Number.parseFloat(stock).toFixed(unidad === 'und' ? 0 : 2) + ' ' + unidad : '—';
     if (inpPrecio && precio) inpPrecio.value = precio;
 
     // Ajustar cantidad: enteros para und, decimales para kg/g/lb
@@ -64,9 +64,9 @@ document.getElementById('sel-producto-venta')?.addEventListener('change', functi
  * Calcula el total de la venta en tiempo real (cantidad × precio).
  */
 function calcularTotalVenta() {
-    const cantidad = parseFloat(document.getElementById('inp-cant-venta')?.value) || 0;
-    const precio = parseFloat(document.getElementById('inp-precio-venta')?.value) || 0;
-    const ivaPct = parseFloat(document.getElementById('sel-iva')?.value) || 0;
+    const cantidad = Number.parseFloat(document.getElementById('inp-cant-venta')?.value) || 0;
+    const precio = Number.parseFloat(document.getElementById('inp-precio-venta')?.value) || 0;
+    const ivaPct = Number.parseFloat(document.getElementById('sel-iva')?.value) || 0;
     const subtotal = cantidad * precio;
     const ivaValor = subtotal * ivaPct / 100;
     const total = document.getElementById('inp-total-venta');
