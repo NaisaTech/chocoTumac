@@ -1,0 +1,56 @@
+
+8reportetest::re02_ventas_confiltrofecha_nolanzaexcepcion8
+.C:\wamp64\www\chocoTumac\tests\ReporteTest.php1 1(?"1*7
+2
+ReporteTest.php"
+9 9(
+implicit return*Ä
+14 4(H
+F
+4 4(
+$desde"__id**
+
+__unknown_file (
+
+2026-01-01H
+F
+5 5(
+$hasta"__id**
+
+__unknown_file (
+
+2026-12-31R
+P
+8 8(+
+%1"__id*8
+
+__unknown_file (*
+reportetest"	
+reporteèå
+8 8(C
+%2*"
+
+__unknown_file (
+
+%1*&
+
+__unknown_file (
+
+
+$desde*&
+
+__unknown_file (
+
+
+$hasta2ventasrp
+8 8(D
+%3*+
+
+__unknown_file (
+reportetest*"
+
+__unknown_file (
+
+%22assertisarray*
+2B
+reportetestH

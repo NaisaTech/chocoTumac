@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         stopOnFailure="false">
+
+    <testsuites>
+        <testsuite name="ChocoTumac – Suite completa">
+            <file>tests/GestionClientesTest.php</file>
+            <file>tests/GestionProveedoresTest.php</file>
+            <file>tests/GestionUsuariosTest.php</file>
+            <file>tests/GestionInventarioTest.php</file>
+            <file>tests/GestionComprasTest.php</file>
+            <file>tests/GestionVentasTest.php</file>
+            <file>tests/GeneracionReportesTest.php</file>
+        </testsuite>
+        <testsuite name="Clientes">   <file>tests/GestionClientesTest.php</file>   </testsuite>
+        <testsuite name="Proveedores"><file>tests/GestionProveedoresTest.php</file> </testsuite>
+        <testsuite name="Usuarios">   <file>tests/GestionUsuariosTest.php</file>   </testsuite>
+        <testsuite name="Inventario"> <file>tests/GestionInventarioTest.php</file> </testsuite>
+        <testsuite name="Compras">    <file>tests/GestionComprasTest.php</file>    </testsuite>
+        <testsuite name="Ventas">     <file>tests/GestionVentasTest.php</file>     </testsuite>
+        <testsuite name="Reportes">   <file>tests/GeneracionReportesTest.php</file></testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">models/</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">views/</directory>
+            <directory suffix=".php">controllers/</directory>
+            <directory suffix=".php">vendor/</directory>
+        </exclude>
+    </coverage>
+
+    <logging>
+        <junit outputFile="tests/reports/junit.xml"/>
+    </logging>
+</phpunit>

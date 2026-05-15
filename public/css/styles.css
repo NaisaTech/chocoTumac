@@ -1,0 +1,1133 @@
+/* === ChocoTumac – Estilos globales === */
+
+:root {
+    --ct-brand: #5C3317;
+    /* marrón cacao */
+    --ct-accent: #C8860A;
+    /* dorado */
+    --ct-light: #FDF6EC;
+    /* crema */
+    --ct-success: #198754;
+    /* verde éxito */
+    --ct-danger: #DC3545;
+    /* rojo peligro */
+    --ct-warning: #FFC107;
+    /* amarillo advertencia */
+}
+
+/* Estilos globales */
+body {
+    background: #F4F1EC;
+    /* fondo claro */
+    font-family: 'Segoe UI', sans-serif;
+    /* fuente moderna y legible */
+    color: #333;
+    /* texto oscuro para buen contraste */
+}
+
+/* Navbar */
+.navbar {
+    background: var(--ct-brand) !important;
+    /* fondo marrón cacao */
+}
+
+/* Resaltar el nombre de la marca en la navbar */
+.navbar-brand {
+    font-weight: 700;
+    /* negrita para destacar */
+    letter-spacing: .5px;
+    /* espacio entre letras para elegancia */
+    color: var(--ct-accent) !important;
+    /* color dorado para contraste */
+}
+
+/* Cards */
+.card {
+    border: none;
+    /* sin borde */
+    border-radius: 12px;
+    /* bordes redondeados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+    /* sombra suave para profundidad */
+}
+
+/* Página de login */
+.login-wrapper {
+    min-height: 100vh;
+    /* ocupar toda la altura de la pantalla */
+    background: linear-gradient(135deg, var(--ct-brand) 0%, #3a1f0b 100%);
+    /* fondo degradado marrón oscuro */
+    display: flex;
+    /* usar flexbox para centrar el contenido */
+    align-items: center;
+    /* centrar verticalmente */
+    justify-content: center;
+    /* centrar horizontalmente */
+}
+
+.login-card {
+    /* card para el formulario de login */
+    width: 360px;
+    /* ancho fijo para consistencia */
+    border-radius: 16px;
+    /* bordes más redondeados para un look moderno */
+    padding: 2rem;
+    /* espacio interno generoso */
+}
+
+.login-logo {
+    /* logo o título en la página de login */
+    font-size: 2rem;
+    /* tamaño grande para destacar */
+    color: var(--ct-brand);
+    /* color marrón cacao */
+    text-align: center;
+    /* centrar el texto */
+    margin-bottom: .25rem;
+    /* espacio debajo del logo */
+}
+
+.login-subtitle {
+    /* subtítulo en la página de login */
+    color: #888;
+    /* color gris para el subtítulo */
+    font-size: .9rem;
+    /* tamaño más pequeño para el subtítulo */
+    text-align: center;
+    /* centrar el texto */
+    margin-bottom: 1.5rem;
+    /* espacio debajo del subtítulo */
+}
+
+/* Tablas */
+.table thead th {
+    /* encabezados de tabla */
+    background: var(--ct-brand);
+    /* fondo marrón cacao */
+    color: #fff;
+    /* texto blanco para contraste */
+    font-weight: 600;
+    /* peso de fuente semi-negrita para destacar */
+    font-size: .85rem;
+    /* tamaño de fuente ligeramente más pequeño para un look más elegante */
+    text-transform: uppercase;
+    /* convertir a mayúsculas para un estilo más formal */
+    letter-spacing: .5px;
+    /* espacio entre letras para mejorar la legibilidad */
+}
+
+.table-hover tbody tr:hover {
+    /* efecto hover para filas de tabla */
+    background: #fdf0dc;
+    /* fondo claro al pasar el mouse para resaltar la fila */
+}
+
+/* Alertas con auto-cierre visual */
+.alert-dismissible {
+    /* estilo para alertas que se pueden cerrar */
+    border-left: 4px solid transparent;
+    /* borde izquierdo para resaltar el tipo de alerta */
+}
+
+.alert-success {
+    /* estilo para alertas de éxito */
+    border-left-color: var(--ct-success);
+    /* color verde para éxito */
+}
+
+.alert-danger {
+    /* estilo para alertas de peligro */
+    border-left-color: var(--ct-danger);
+    /* color rojo para peligro */
+}
+
+.alert-warning {
+    /* estilo para alertas de advertencia */
+    border-left-color: var(--ct-warning);
+    /* color amarillo para advertencia */
+}
+
+/* Badges de rol */
+.badge-admin {
+    /* estilo para badge de administrador */
+    background: #5C3317;
+    /* marrón cacao para administrador */
+}
+
+.badge-gerente {
+    /* estilo para badge de gerente */
+    background: #0d6efd;
+    /* azul para gerente */
+}
+
+.badge-empleado {
+    /* estilo para badge de empleado */
+    background: #198754;
+    /* verde para empleado */
+}
+
+/* Botones */
+.btn-ct-primary {
+    /* estilo para botones primarios */
+    background: var(--ct-brand);
+    /* fondo marrón cacao */
+    color: #fff;
+    /* texto blanco para contraste */
+    border: none;
+    /* sin borde */
+}
+
+.btn-ct-primary:hover {
+    /* estilo para botón primario al pasar el mouse */
+    background: #3a1f0b;
+    /* marrón más oscuro al hover */
+    color: #fff;
+    /* mantener texto blanco al hover */
+}
+
+/* Page header */
+.page-header {
+    /* estilo para el encabezado de las páginas internas */
+    display: flex;
+    /* usar flexbox para alinear el título y el botón */
+    align-items: center;
+    /* centrar verticalmente */
+    justify-content: space-between;
+    /* separar el título y el botón a los extremos */
+    margin-bottom: 1.25rem;
+    /* espacio debajo del encabezado */
+}
+
+.page-header h2 {
+    /* estilo para el título en el encabezado de las páginas internas */
+    margin: 0;
+    /* eliminar margen para un mejor control del espacio */
+    font-weight: 700;
+    /* negrita para destacar el título */
+    color: var(--ct-brand);
+    /* color marrón cacao para el título */
+}
+
+/* =========================================================
+   Factura imprimible – ChocoTumac Sprint 2
+   ========================================================= */
+
+.factura-wrapper {
+    max-width: 720px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, .12);
+    overflow: hidden;
+}
+
+/* Encabezado con marca */
+.factura-header {
+    background: var(--ct-brand);
+    color: #fff;
+    padding: 2rem 2.5rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.factura-logo {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: .5px;
+    color: var(--ct-accent);
+    line-height: 1.1;
+}
+
+.factura-logo small {
+    display: block;
+    font-size: .75rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, .75);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+.factura-codigo-box {
+    text-align: right;
+}
+
+.factura-codigo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ct-accent);
+    letter-spacing: 1px;
+}
+
+.factura-fecha {
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .7);
+    margin-top: 4px;
+}
+
+/* Cuerpo */
+.factura-body {
+    padding: 2rem 2.5rem;
+}
+
+/* Sección vendedor / cliente */
+.factura-partes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.factura-parte h6 {
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ct-accent);
+    border-bottom: 2px solid var(--ct-accent);
+    padding-bottom: 4px;
+    margin-bottom: .6rem;
+}
+
+.factura-parte p {
+    margin: 0;
+    font-size: .9rem;
+    line-height: 1.7;
+    color: #444;
+}
+
+.factura-parte .nombre {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #222;
+}
+
+/* Tabla de ítems */
+.factura-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: .9rem;
+}
+
+.factura-tabla thead tr {
+    background: var(--ct-brand);
+    color: #fff;
+}
+
+.factura-tabla thead th {
+    padding: .65rem .9rem;
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.factura-tabla tbody tr {
+    border-bottom: 1px solid #f0e8de;
+}
+
+.factura-tabla tbody tr:last-child {
+    border-bottom: none;
+}
+
+.factura-tabla tbody td {
+    padding: .7rem .9rem;
+    color: #333;
+}
+
+.factura-tabla tfoot tr {
+    background: var(--ct-light);
+}
+
+.factura-tabla tfoot td {
+    padding: .7rem .9rem;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Total */
+.total-amount {
+    color: var(--ct-brand);
+    font-size: 1.25rem;
+}
+
+/* Observaciones */
+.factura-obs {
+    background: var(--ct-light);
+    border-left: 4px solid var(--ct-accent);
+    border-radius: 0 6px 6px 0;
+    padding: .75rem 1rem;
+    font-size: .87rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+/* Pie */
+.factura-footer {
+    border-top: 1px solid #eee;
+    padding-top: 1.25rem;
+    text-align: center;
+    font-size: .78rem;
+    color: #999;
+    line-height: 1.7;
+}
+
+/* Sello pagado */
+.sello-pagado {
+    display: inline-block;
+    border: 3px solid #198754;
+    color: #198754;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: .25rem 1rem;
+    border-radius: 6px;
+    transform: rotate(-8deg);
+    opacity: .35;
+    margin: .5rem 0 1rem;
+}
+
+/* Barra de acciones */
+.acciones-barra {
+    background: #fff;
+    border-top: 3px solid var(--ct-brand);
+    padding: 1rem 2.5rem;
+    display: flex;
+    gap: .75rem;
+    justify-content: flex-end;
+}
+
+/* Print: solo la factura, sin botones ni fondo */
+@media print {
+    body {
+        background: #fff !important;
+    }
+
+    .acciones-barra {
+        display: none !important;
+    }
+
+    .factura-wrapper {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+}
+
+/* ── Factura: elementos DIAN ────────────────────────────── */
+.factura-tipo-doc {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, .6);
+    margin-bottom: 4px;
+}
+
+.fac-label {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Tabla de totales alineada a la derecha */
+.factura-totales {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: .75rem;
+}
+
+.factura-totales-tabla {
+    width: 320px;
+    font-size: .88rem;
+    border-collapse: collapse;
+}
+
+.factura-totales-tabla td {
+    padding: .25rem .5rem;
+}
+
+.factura-totales-tabla tr+tr {
+    border-top: 1px solid #f0e8de;
+}
+
+.factura-total-row td {
+    font-weight: 700;
+    font-size: 1rem;
+    padding-top: .5rem;
+    border-top: 2px solid var(--ct-brand) !important;
+}
+
+/* Total en letras */
+.factura-letras {
+    background: var(--ct-light);
+    border-radius: 6px;
+    padding: .5rem 1rem;
+    font-size: .82rem;
+    color: #444;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+/* CUFE */
+.factura-cufe {
+    border: 1px dashed #ddd;
+    border-radius: 6px;
+    padding: .6rem .9rem;
+    margin-bottom: 1rem;
+    background: #fafafa;
+}
+
+@media print {
+    body {
+        background: #fff !important;
+    }
+
+    .acciones-barra {
+        display: none !important;
+    }
+
+    .factura-wrapper {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+    }
+}
+
+/* =========================================================
+   Reportes – ChocoTumac Sprint 3
+   ========================================================= */
+/* ── Variables ── */
+.rep-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .07);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+/* ── KPI cards ── */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: .9rem;
+    margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .07);
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--ct-brand);
+}
+
+.kpi-card.accent {
+    border-left-color: var(--ct-accent);
+}
+
+.kpi-card.green {
+    border-left-color: #198754;
+}
+
+.kpi-card.red {
+    border-left-color: #dc3545;
+}
+
+.kpi-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ct-brand);
+    line-height: 1;
+}
+
+.kpi-label {
+    font-size: .78rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* ── Tabs ── */
+.rep-tabs .nav-link {
+    color: var(--ct-brand);
+    font-weight: 500;
+    border-radius: 8px 8px 0 0;
+    padding: .5rem 1.25rem;
+}
+
+.rep-tabs .nav-link.active {
+    background: var(--ct-brand);
+    color: #fff;
+}
+
+/* ── Tablas ── */
+.rep-table {
+    font-size: .84rem;
+}
+
+.rep-table thead th {
+    background: var(--ct-brand);
+    color: #fff;
+    font-weight: 500;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+
+.rep-table tbody tr:hover td {
+    background: #fdf6ec;
+}
+
+/* ── Totales ── */
+.totales-bar {
+    background: var(--ct-light);
+    border-radius: 8px;
+    padding: .75rem 1.25rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-size: .88rem;
+    margin-bottom: 1rem;
+}
+
+.totales-bar .t-item strong {
+    color: var(--ct-brand);
+    font-size: 1rem;
+}
+
+/* ── Barras top productos ── */
+.bar-wrap {
+    margin-bottom: .5rem;
+}
+
+.bar-label {
+    font-size: .82rem;
+    margin-bottom: 2px;
+}
+
+.bar-bg {
+    background: #f0ebe3;
+    border-radius: 20px;
+    height: 22px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ct-brand), var(--ct-accent));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+}
+
+.bar-val {
+    font-size: .75rem;
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ── Badges stock ── */
+.badge-ok {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-stock_bajo {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-sin_stock {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ── Filtros ── */
+.filtros-bar {
+    background: #fff;
+    border-radius: 10px;
+    padding: .9rem 1.25rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+    margin-bottom: 1.25rem;
+}
+
+/* ── Print ── */
+@media print {
+
+    /* === PÁGINA === */
+    @page {
+        size: A4 landscape;
+        margin: 12mm 10mm 14mm 10mm;
+    }
+
+    /* === RESET GENERAL === */
+    *,
+    *::before,
+    *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    html,
+    body {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        font-size: 9pt !important;
+        font-family: Arial, sans-serif !important;
+    }
+
+    /* === OCULTAR UI === */
+    .no-print,
+    .navbar,
+    .filtros-bar,
+    .rep-tabs,
+    .sidebar,
+    .totales-bar,
+    nav,
+    header {
+        display: none !important;
+    }
+
+    /* === CONTENEDOR === */
+    .container,
+    .container-fluid,
+    .container-lg {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* === ENCABEZADO DE REPORTE (visible al imprimir) === */
+    .rep-print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 6mm;
+        border-bottom: 2pt solid #3d2314;
+        padding-bottom: 3mm;
+    }
+
+    .rep-print-header h2 {
+        font-size: 13pt;
+        font-weight: 700;
+        color: #3d2314 !important;
+        margin: 0 0 1mm 0;
+    }
+
+    .rep-print-header p {
+        font-size: 8pt;
+        color: #555 !important;
+        margin: 0;
+    }
+
+    /* === CARDS === */
+    .rep-card {
+        box-shadow: none !important;
+        border: 1pt solid #ccc !important;
+        border-radius: 0 !important;
+        padding: 4mm 5mm !important;
+        margin-bottom: 4mm !important;
+        page-break-inside: avoid;
+    }
+
+    .rep-card h5,
+    .rep-card h6 {
+        font-size: 10pt !important;
+        margin-bottom: 3mm !important;
+    }
+
+    /* === KPI GRID (compacto) === */
+    .kpi-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 3mm !important;
+        margin-bottom: 4mm !important;
+    }
+
+    .kpi-card {
+        border-left: 3pt solid #3d2314 !important;
+        padding: 2mm 3mm !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        page-break-inside: avoid;
+    }
+
+    .kpi-num {
+        font-size: 11pt !important;
+    }
+
+    .kpi-label {
+        font-size: 7pt !important;
+    }
+
+    /* === TABLA CONTENEDOR === */
+    .table-responsive {
+        overflow: visible !important;
+        width: 100% !important;
+    }
+
+    /* === TABLAS === */
+    .rep-table {
+        width: 100% !important;
+        font-size: 7.5pt !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+    }
+
+    .rep-table thead th {
+        background: #3d2314 !important;
+        color: #fff !important;
+        font-size: 6.5pt !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: .2px !important;
+        padding: 2mm 1.5mm !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        border: 0.5pt solid #5a3020 !important;
+    }
+
+    .rep-table tbody td {
+        padding: 1.5mm 1.5mm !important;
+        border: 0.5pt solid #ddd !important;
+        vertical-align: top !important;
+        word-break: break-word !important;
+        white-space: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    /* Filas alternas para legibilidad */
+    .rep-table tbody tr:nth-child(even) td {
+        background: #f9f4ef !important;
+    }
+
+    .rep-table tbody tr:hover td {
+        background: inherit !important;
+    }
+
+    /* Evitar cortes de fila entre páginas */
+    .rep-table tbody tr {
+        page-break-inside: avoid !important;
+    }
+
+    /* Repetir cabecera en cada página */
+    .rep-table thead {
+        display: table-header-group !important;
+    }
+
+    /* === ANCHOS POR TABLA === */
+
+    /* VENTAS (14 cols en landscape) */
+    .rep-table.tbl-ventas th:nth-child(1),
+    .rep-table.tbl-ventas td:nth-child(1) {
+        width: 9%;
+    }
+
+    /* Código */
+    .rep-table.tbl-ventas th:nth-child(2),
+    .rep-table.tbl-ventas td:nth-child(2) {
+        width: 6%;
+    }
+
+    /* Fecha */
+    .rep-table.tbl-ventas th:nth-child(3),
+    .rep-table.tbl-ventas td:nth-child(3) {
+        width: 13%;
+    }
+
+    /* Cliente */
+    .rep-table.tbl-ventas th:nth-child(4),
+    .rep-table.tbl-ventas td:nth-child(4) {
+        width: 8%;
+    }
+
+    /* Documento */
+    .rep-table.tbl-ventas th:nth-child(5),
+    .rep-table.tbl-ventas td:nth-child(5) {
+        width: 12%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-ventas th:nth-child(6),
+    .rep-table.tbl-ventas td:nth-child(6) {
+        width: 6%;
+    }
+
+    /* Cantidad */
+    .rep-table.tbl-ventas th:nth-child(7),
+    .rep-table.tbl-ventas td:nth-child(7) {
+        width: 5%;
+    }
+
+    /* Unidad */
+    .rep-table.tbl-ventas th:nth-child(8),
+    .rep-table.tbl-ventas td:nth-child(8) {
+        width: 7%;
+    }
+
+    /* Precio unit */
+    .rep-table.tbl-ventas th:nth-child(9),
+    .rep-table.tbl-ventas td:nth-child(9) {
+        width: 7%;
+    }
+
+    /* Subtotal */
+    .rep-table.tbl-ventas th:nth-child(10),
+    .rep-table.tbl-ventas td:nth-child(10) {
+        width: 5%;
+    }
+
+    /* IVA % */
+    .rep-table.tbl-ventas th:nth-child(11),
+    .rep-table.tbl-ventas td:nth-child(11) {
+        width: 6%;
+    }
+
+    /* IVA $ */
+    .rep-table.tbl-ventas th:nth-child(12),
+    .rep-table.tbl-ventas td:nth-child(12) {
+        width: 8%;
+    }
+
+    /* Total */
+    .rep-table.tbl-ventas th:nth-child(13),
+    .rep-table.tbl-ventas td:nth-child(13) {
+        width: 5%;
+    }
+
+    /* Pago */
+    .rep-table.tbl-ventas th:nth-child(14),
+    .rep-table.tbl-ventas td:nth-child(14) {
+        width: 8%;
+    }
+
+    /* Registrado */
+
+    /* COMPRAS (11 cols) */
+    .rep-table.tbl-compras th:nth-child(1),
+    .rep-table.tbl-compras td:nth-child(1) {
+        width: 10%;
+    }
+
+    /* Código */
+    .rep-table.tbl-compras th:nth-child(2),
+    .rep-table.tbl-compras td:nth-child(2) {
+        width: 7%;
+    }
+
+    /* Fecha */
+    .rep-table.tbl-compras th:nth-child(3),
+    .rep-table.tbl-compras td:nth-child(3) {
+        width: 15%;
+    }
+
+    /* Proveedor */
+    .rep-table.tbl-compras th:nth-child(4),
+    .rep-table.tbl-compras td:nth-child(4) {
+        width: 9%;
+    }
+
+    /* Documento */
+    .rep-table.tbl-compras th:nth-child(5),
+    .rep-table.tbl-compras td:nth-child(5) {
+        width: 14%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-compras th:nth-child(6),
+    .rep-table.tbl-compras td:nth-child(6) {
+        width: 7%;
+    }
+
+    /* Cantidad */
+    .rep-table.tbl-compras th:nth-child(7),
+    .rep-table.tbl-compras td:nth-child(7) {
+        width: 6%;
+    }
+
+    /* Unidad */
+    .rep-table.tbl-compras th:nth-child(8),
+    .rep-table.tbl-compras td:nth-child(8) {
+        width: 9%;
+    }
+
+    /* Precio unit */
+    .rep-table.tbl-compras th:nth-child(9),
+    .rep-table.tbl-compras td:nth-child(9) {
+        width: 9%;
+    }
+
+    /* Total */
+    .rep-table.tbl-compras th:nth-child(10),
+    .rep-table.tbl-compras td:nth-child(10) {
+        width: 10%;
+    }
+
+    /* Observaciones */
+    .rep-table.tbl-compras th:nth-child(11),
+    .rep-table.tbl-compras td:nth-child(11) {
+        width: 9%;
+    }
+
+    /* Registrado */
+
+    /* INVENTARIO (11 cols) */
+    .rep-table.tbl-inventario th:nth-child(1),
+    .rep-table.tbl-inventario td:nth-child(1) {
+        width: 4%;
+    }
+
+    /* # */
+    .rep-table.tbl-inventario th:nth-child(2),
+    .rep-table.tbl-inventario td:nth-child(2) {
+        width: 18%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-inventario th:nth-child(3),
+    .rep-table.tbl-inventario td:nth-child(3) {
+        width: 10%;
+    }
+
+    /* Tipo */
+    .rep-table.tbl-inventario th:nth-child(4),
+    .rep-table.tbl-inventario td:nth-child(4) {
+        width: 10%;
+    }
+
+    /* Presentación */
+    .rep-table.tbl-inventario th:nth-child(5),
+    .rep-table.tbl-inventario td:nth-child(5) {
+        width: 8%;
+    }
+
+    /* Unidad inv */
+    .rep-table.tbl-inventario th:nth-child(6),
+    .rep-table.tbl-inventario td:nth-child(6) {
+        width: 8%;
+    }
+
+    /* Unidad venta */
+    .rep-table.tbl-inventario th:nth-child(7),
+    .rep-table.tbl-inventario td:nth-child(7) {
+        width: 9%;
+    }
+
+    /* Stock actual */
+    .rep-table.tbl-inventario th:nth-child(8),
+    .rep-table.tbl-inventario td:nth-child(8) {
+        width: 8%;
+    }
+
+    /* Stock mín */
+    .rep-table.tbl-inventario th:nth-child(9),
+    .rep-table.tbl-inventario td:nth-child(9) {
+        width: 10%;
+    }
+
+    /* Precio venta */
+    .rep-table.tbl-inventario th:nth-child(10),
+    .rep-table.tbl-inventario td:nth-child(10) {
+        width: 8%;
+    }
+
+    /* Estado */
+    .rep-table.tbl-inventario th:nth-child(11),
+    .rep-table.tbl-inventario td:nth-child(11) {
+        width: 7%;
+    }
+
+    /* Movimientos */
+
+    /* TOP VENDIDOS (7 cols) */
+    .rep-table.tbl-top th:nth-child(1),
+    .rep-table.tbl-top td:nth-child(1) {
+        width: 4%;
+    }
+
+    /* # */
+    .rep-table.tbl-top th:nth-child(2),
+    .rep-table.tbl-top td:nth-child(2) {
+        width: 28%;
+    }
+
+    /* Producto */
+    .rep-table.tbl-top th:nth-child(3),
+    .rep-table.tbl-top td:nth-child(3) {
+        width: 15%;
+    }
+
+    /* Tipo */
+    .rep-table.tbl-top th:nth-child(4),
+    .rep-table.tbl-top td:nth-child(4) {
+        width: 10%;
+    }
+
+    /* Unidad */
+    .rep-table.tbl-top th:nth-child(5),
+    .rep-table.tbl-top td:nth-child(5) {
+        width: 12%;
+    }
+
+    /* N° ventas */
+    .rep-table.tbl-top th:nth-child(6),
+    .rep-table.tbl-top td:nth-child(6) {
+        width: 13%;
+    }
+
+    /* Cantidad total */
+    .rep-table.tbl-top th:nth-child(7),
+    .rep-table.tbl-top td:nth-child(7) {
+        width: 18%;
+    }
+
+    /* Ingresos */
+
+    /* === BADGES === */
+    .badge-ok {
+        background: #d4edda !important;
+        color: #155724 !important;
+        font-size: 7pt !important;
+        padding: 1mm 2mm !important;
+    }
+
+    .badge-stock_bajo {
+        background: #fff3cd !important;
+        color: #856404 !important;
+        font-size: 7pt !important;
+        padding: 1mm 2mm !important;
+    }
+
+    .badge-sin_stock {
+        background: #f8d7da !important;
+        color: #721c24 !important;
+        font-size: 7pt !important;
+        padding: 1mm 2mm !important;
+    }
+
+    /* === PIE DE PÁGINA === */
+    .rep-print-footer {
+        position: fixed;
+        bottom: 6mm;
+        left: 10mm;
+        right: 10mm;
+        font-size: 7pt;
+        color: #888 !important;
+        border-top: 0.5pt solid #ccc;
+        padding-top: 2mm;
+        display: flex;
+        justify-content: space-between;
+    }
+}

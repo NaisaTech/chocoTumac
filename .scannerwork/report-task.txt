@@ -1,0 +1,7 @@
+organization=naisatech
+projectKey=NaisaTech_chocoTumac
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.87479
+dashboardUrl=https://sonarcloud.io/dashboard?id=NaisaTech_chocoTumac
+ceTaskId=AZ4jPSQDxX17QG8JYafy
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZ4jPSQDxX17QG8JYafy
