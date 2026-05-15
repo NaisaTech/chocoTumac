@@ -159,8 +159,12 @@ class ClienteController
         if (!$cliente) {
             $this->redirectError('clientes', 'Cliente no encontrado.');
         }
-        $this->model->eliminar((int)$_GET['id']);
-        $this->redirectOk('clientes', 'eliminado');
+        try {
+            $this->model->eliminar((int)$_GET['id']);
+            $this->redirectOk('clientes', 'eliminado');
+        } catch (\PDOException $e) {
+            $this->redirectError('clientes', 'No se puede eliminar: el cliente tiene ventas registradas.');
+        }
     }
 }
 

@@ -191,8 +191,13 @@ class ProveedorController
             $this->redirectError('proveedores', 'Proveedor no encontrado.');
         }
 
-        $this->model->eliminar((int)$_GET['id']);
-        $this->redirectOk('proveedores', 'eliminado');
+        try {
+            $this->model->eliminar((int)$_GET['id']);
+            $this->redirectOk('proveedores', 'eliminado');
+        } catch (\PDOException $e) {
+            // FK constraint: el proveedor tiene compras asociadas
+            $this->redirectError('proveedores', 'No se puede eliminar: el proveedor tiene compras registradas.');
+        }
     }
 }
 

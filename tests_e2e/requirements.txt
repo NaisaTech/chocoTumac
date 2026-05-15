@@ -1,0 +1,18 @@
+# Dependencias para pruebas E2E – Chocolate Tumaco
+# Instalar con: pip install -r requirements.txt
+
+# Framework de automatización de navegador
+selenium>=4.15.0
+
+# Framework de pruebas
+pytest>=7.4.0
+
+# Reporte HTML de pytest
+pytest-html>=4.0.0
+
+# Gestión automática de ChromeDriver
+webdriver-manager>=4.0.1
+
+# Utilidades
+pytest-xdist>=3.3.1      # Ejecución paralela (-n auto)
+pytest-timeout>=2.2.0    # Timeout por prueba
